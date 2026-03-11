@@ -2,9 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## What is OpenSpec?
+## What is This Repo?
 
-OpenSpec is an AI-native CLI tool for spec-driven development. It maintains structured specifications where changes are proposed as delta specs, reviewed, and merged — giving AI coding assistants a shared source of truth instead of relying on chat history. Published as `@fission-ai/openspec` on npm.
+This is a **minimal fork** of the upstream [OpenSpec](https://github.com/Fission-AI/OpenSpec) project. The sole intended difference from upstream is the **complete removal of telemetry** (PostHog) to guarantee it is not a potential data exfiltration vector. All other changes should come from upstream via merges — do not introduce feature divergence.
+
+OpenSpec itself is an AI-native CLI tool for spec-driven development. It maintains structured specifications where changes are proposed as delta specs, reviewed, and merged — giving AI coding assistants a shared source of truth instead of relying on chat history.
 
 ## Build & Development Commands
 
