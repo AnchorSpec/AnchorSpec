@@ -1,3 +1,28 @@
+# AnchorSpec
+
+Minimal fork of [OpenSpec](https://github.com/Fission-AI/OpenSpec) with telemetry removed and the CLI rebranded to `anchorspec`. All upstream features are preserved — the only differences are no PostHog and the name swap (applied at build time, so `src/` stays mergeable with upstream).
+
+## Install from source
+
+```bash
+git clone <this-repo-url> anchorspec && cd anchorspec
+pnpm install
+pnpm run build
+pnpm link --global   # makes `anchorspec` available everywhere
+```
+
+Then in any project:
+
+```bash
+anchorspec init
+```
+
+---
+
+*Everything below is the upstream OpenSpec README.*
+
+---
+
 <p align="center">
   <a href="https://github.com/Fission-AI/OpenSpec">
     <picture>
