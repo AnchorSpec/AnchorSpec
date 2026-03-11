@@ -24,6 +24,12 @@ console.log('Compiling TypeScript...');
 try {
   runTsc(['--version']);
   runTsc();
+
+  if (!process.env.VITEST) {
+    console.log('Applying rebrand...');
+    execFileSync(process.execPath, ['scripts/rebrand.js'], { stdio: 'inherit' });
+  }
+
   console.log('\n✅ Build completed successfully!');
 } catch (error) {
   console.error('\n❌ Build failed!');
