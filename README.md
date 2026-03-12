@@ -21,6 +21,8 @@ anchorspec init
 
 *Everything below is the upstream OpenSpec README.*
 
+:warning: Substitute `openspec` with `anchorspec`, and `/opsx:` with `/anchorspec:` when following instructions. The underlying functionality is the same, just rebranded and without telemetry.
+
 ---
 
 <p align="center">
