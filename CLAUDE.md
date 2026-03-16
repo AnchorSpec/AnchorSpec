@@ -77,3 +77,9 @@ pnpm vitest run -t "pattern"
 ## CI
 
 GitHub Actions runs on PRs and main pushes: lint, type-check (`tsc --noEmit`), tests on Linux/macOS/Windows, Nix flake validation, and changeset verification. PR merge requires all checks to pass.
+
+## Fork Strategy & Future Direction
+
+**Current priority: upstream mergeability.** This fork is in early evaluation. Minimize divergence from OpenSpec — telemetry removal only. Publishing to npm as `anchorspec` is acceptable if needed (just maintenance overhead). Do not introduce feature changes.
+
+**Investigated but deferred: CLI-free skills.** The generated skills/commands (`anchorspec init` output) depend on the CLI being installed because they embed commands like `openspec status --json` and `openspec instructions <id> --json`. Investigation (2026-03-15) found this *could* be replaced — most CLI commands are thin wrappers around file I/O, and the only non-trivial logic (artifact dependency graph resolution) is small enough to embed in skill instructions. The archive skill already operates CLI-free as a proof of concept. However, this would create a true fork that can't merge from upstream, so it's **not worth pursuing unless upstream mergeability is abandoned.** If that decision is made, the path is: bake schema knowledge into skill templates, copy schemas into the project directory (not symlinks to node_modules), and drop most of the CLI infrastructure.
