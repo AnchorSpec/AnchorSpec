@@ -59,7 +59,7 @@ export async function ensureCliBuilt() {
   }
 
   if (!buildPromise) {
-    buildPromise = runCommand('pnpm', ['run', 'build']).catch((error) => {
+    buildPromise = runCommand('pnpm', ['run', 'build'], { env: { VITEST: '1' } }).catch((error) => {
       buildPromise = undefined;
       throw error;
     });
