@@ -1,5 +1,5 @@
 {
-  "name": "@anchorspec/anchorspec",
+  "name": "anchorspec",
   "version": "1.2.0",
   "description": "AI-native system for spec-driven development",
   "keywords": [
@@ -17,9 +17,6 @@
   "license": "MIT",
   "author": "OpenSpec Contributors",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
