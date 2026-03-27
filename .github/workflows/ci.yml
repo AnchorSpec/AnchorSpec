@@ -63,6 +63,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          VITEST: '1'
 
       - name: Run tests
         run: pnpm test
@@ -120,6 +122,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          VITEST: '1'
 
       - name: Run tests
         run: pnpm test
