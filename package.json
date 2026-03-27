@@ -1,5 +1,5 @@
 {
-  "name": "@fission-ai/openspec",
+  "name": "@anchorspec/anchorspec",
   "version": "1.2.0",
   "description": "AI-native system for spec-driven development",
   "keywords": [
@@ -9,10 +9,10 @@
     "ai",
     "development"
   ],
-  "homepage": "https://github.com/Fission-AI/OpenSpec",
+  "homepage": "https://github.com/AnchorSpec/AnchorSpec",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Fission-AI/OpenSpec"
+    "url": "https://github.com/AnchorSpec/AnchorSpec"
   },
   "license": "MIT",
   "author": "OpenSpec Contributors",
