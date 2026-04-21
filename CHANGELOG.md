@@ -1,5 +1,11 @@
 # @fission-ai/openspec
 
+## 1.2.1
+
+### Patch Changes
+
+- [#3](https://github.com/AnchorSpec/AnchorSpec/pull/3) [`1bbf06b`](https://github.com/AnchorSpec/AnchorSpec/commit/1bbf06b8d9f2ad3547e7dc122668f04a2d2b25f2) Thanks [@StevenWolfe](https://github.com/StevenWolfe)! - Fix npm publish auth and CI pipeline for initial AnchorSpec release
+
 ## 1.2.0
 
 ### Minor Changes
