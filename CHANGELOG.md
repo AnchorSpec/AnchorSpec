@@ -1,5 +1,11 @@
 # anchorspec
 
+## 1.3.1
+
+### Patch Changes
+
+- [#5](https://github.com/AnchorSpec/AnchorSpec/pull/5) [`bd90ab8`](https://github.com/AnchorSpec/AnchorSpec/commit/bd90ab86785f02caa3cf4955e246ef635af210fa) Thanks [@StevenWolfe](https://github.com/StevenWolfe)! - Test CI and release pipeline
+
 ## 1.2.1
 
 ### Patch Changes
