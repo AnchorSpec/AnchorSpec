@@ -1,33 +1,3 @@
-# AnchorSpec
-
-Minimal fork of [OpenSpec](https://github.com/Fission-AI/OpenSpec) with telemetry removed and the CLI rebranded to `anchorspec`. All upstream features are preserved — the only differences are no PostHog and the name swap (applied at build time, so `src/` stays mergeable with upstream).
-
-## Install
-
-```bash
-npm install -g anchorspec
-```
-
-Or use without installing:
-
-```bash
-npx anchorspec init
-```
-
-Then in any project:
-
-```bash
-anchorspec init
-```
-
----
-
-*Everything below is the upstream OpenSpec README.*
-
-:warning: Substitute `openspec` with `anchorspec`, and `/opsx:` with `/anchorspec:` when following instructions. The underlying functionality is the same, just rebranded and without telemetry.
-
----
-
 <p align="center">
   <a href="https://github.com/Fission-AI/OpenSpec">
     <picture>
@@ -126,7 +96,7 @@ openspec init
 
 Now tell your AI: `/opsx:propose <what-you-want-to-build>`
 
-If you want the expanded workflow (`/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/opsx:verify`, `/opsx:sync`, `/opsx:bulk-archive`, `/opsx:onboard`), select it with `openspec config profile` and apply with `openspec update`.
+If you want the expanded workflow (`/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/opsx:verify`, `/opsx:bulk-archive`, `/opsx:onboard`), select it with `openspec config profile` and apply with `openspec update`.
 
 > [!NOTE]
 > Not sure if your tool is supported? [View the full list](docs/supported-tools.md) – we support 25+ tools and growing.
@@ -143,6 +113,13 @@ If you want the expanded workflow (`/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/
 → **[Concepts](docs/concepts.md)**: how it all fits<br>
 → **[Multi-Language](docs/multi-language.md)**: multi-language support<br>
 → **[Customization](docs/customization.md)**: make it yours
+
+
+## Community schemas
+
+Third-party schema bundles distributed via standalone repositories — these provide opinionated workflows that integrate OpenSpec with other tools, similar to how [github/spec-kit's community extension catalog](https://github.com/github/spec-kit/tree/main/extensions) handles tool integrations.
+
+→ **[Browse the catalog](docs/customization.md#community-schemas)** in the customization docs.
 
 
 ## Why OpenSpec?
