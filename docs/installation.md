@@ -9,39 +9,39 @@
 ### npm
 
 ```bash
-npm install -g @fission-ai/openspec@latest
+npm install -g anchorspec@latest
 ```
 
 ### pnpm
 
 ```bash
-pnpm add -g @fission-ai/openspec@latest
+pnpm add -g anchorspec@latest
 ```
 
 ### yarn
 
 ```bash
-yarn global add @fission-ai/openspec@latest
+yarn global add anchorspec@latest
 ```
 
 ### bun
 
 ```bash
-bun add -g @fission-ai/openspec@latest
+bun add -g anchorspec@latest
 ```
 
 ## Nix
 
-Run OpenSpec directly without installation:
+Run AnchorSpec directly without installation:
 
 ```bash
-nix run github:Fission-AI/OpenSpec -- init
+nix run github:AnchorSpec/AnchorSpec -- init
 ```
 
 Or install to your profile:
 
 ```bash
-nix profile install github:Fission-AI/OpenSpec
+nix profile install github:AnchorSpec/AnchorSpec
 ```
 
 Or add to your development environment in `flake.nix`:
@@ -50,12 +50,12 @@ Or add to your development environment in `flake.nix`:
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    openspec.url = "github:Fission-AI/OpenSpec";
+    anchorspec.url = "github:AnchorSpec/AnchorSpec";
   };
 
-  outputs = { nixpkgs, openspec, ... }: {
+  outputs = { nixpkgs, anchorspec, ... }: {
     devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
-      buildInputs = [ openspec.packages.x86_64-linux.default ];
+      buildInputs = [ anchorspec.packages.x86_64-linux.default ];
     };
   };
 }
@@ -64,16 +64,16 @@ Or add to your development environment in `flake.nix`:
 ## Verify Installation
 
 ```bash
-openspec --version
+anchorspec --version
 ```
 
 ## Next Steps
 
-After installing, initialize OpenSpec in your project:
+After installing, initialize AnchorSpec in your project:
 
 ```bash
 cd your-project
-openspec init
+anchorspec init
 ```
 
 See [Getting Started](getting-started.md) for a full walkthrough.
