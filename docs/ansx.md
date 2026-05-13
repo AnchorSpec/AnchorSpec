@@ -1,7 +1,5 @@
 # ANSX Workflow
 
-> Feedback welcome on [Discord](https://discord.gg/YctCnvvshC).
-
 ## What Is It?
 
 ANSX is now the standard workflow for AnchorSpec.
