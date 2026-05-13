@@ -8,6 +8,10 @@ This is a **minimal fork** of the upstream [OpenSpec](https://github.com/Fission
 
 OpenSpec itself is an AI-native CLI tool for spec-driven development. It maintains structured specifications where changes are proposed as delta specs, reviewed, and merged — giving AI coding assistants a shared source of truth instead of relying on chat history.
 
+### Documentation
+
+The docs/ included in the upstream and this repo are being rebranded and the published via a seperate repository, AnchorSpec/www -- the process is still being defined.  Each version of THIS package should produce a corresponding set of docs/ under the correct version folder in the www repo.
+
 ## Build & Development Commands
 
 ```bash
