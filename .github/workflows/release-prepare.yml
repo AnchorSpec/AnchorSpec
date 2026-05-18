@@ -38,6 +38,7 @@ jobs:
 
       # Opens/updates the Version Packages PR; publishes when the Version PR merges
       # Auth: npm OIDC trusted publishing (id-token: write above). No NPM_TOKEN needed.
+      # NPM_CONFIG_PROVENANCE=true triggers the OIDC token exchange with npmjs.com.
       - name: Create/Update Version PR
         id: changesets
         uses: changesets/action@v1
@@ -47,3 +48,4 @@ jobs:
           publish: pnpm run release:ci
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
+          NPM_CONFIG_PROVENANCE: 'true'
