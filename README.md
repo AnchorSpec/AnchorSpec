@@ -154,7 +154,7 @@ anchorspec update
 
 ## Usage Notes
 
-**Model selection**: AnchorSpec works best with high-reasoning models. We recommend Opus 4.5 and GPT 5.2 for both planning and implementation.
+**Model selection**: AnchorSpec works best with high-reasoning models. We recommend claude-opus-4-7 and o3 for both planning and implementation.
 
 **Context hygiene**: AnchorSpec benefits from a clean context window. Clear your context before starting implementation and maintain good context hygiene throughout your session.
 
