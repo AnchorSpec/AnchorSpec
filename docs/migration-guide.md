@@ -590,6 +590,5 @@ project/
 
 ## Getting Help
 
-- **Discord**: [discord.gg/YctCnvvshC](https://discord.gg/YctCnvvshC)
 - **GitHub Issues**: [github.com/AnchorSpec/AnchorSpec/issues](https://github.com/AnchorSpec/AnchorSpec/issues)
 - **Documentation**: [docs/ansx.md](ansx.md) for the full ANSX reference

@@ -11,7 +11,6 @@
   <a href="https://github.com/AnchorSpec/AnchorSpec/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/AnchorSpec/AnchorSpec/actions/workflows/ci.yml/badge.svg" /></a>
   <a href="https://www.npmjs.com/package/anchorspec"><img alt="npm version" src="https://img.shields.io/npm/v/anchorspec?style=flat-square" /></a>
   <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" /></a>
-  <a href="https://discord.gg/YctCnvvshC"><img alt="Discord" src="https://img.shields.io/discord/1411657095639601154?style=flat-square&logo=discord&logoColor=white&label=Discord&suffix=%20online" /></a>
 </p>
 
 <details>
