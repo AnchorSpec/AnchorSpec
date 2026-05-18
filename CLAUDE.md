@@ -10,7 +10,7 @@ OpenSpec itself is an AI-native CLI tool for spec-driven development. It maintai
 
 ### Documentation
 
-The docs/ included in the upstream and this repo are being rebranded and the published via a seperate repository, AnchorSpec/www -- the process is still being defined.  Each version of THIS package should produce a corresponding set of docs/ under the correct version folder in the www repo.
+Docs live in `docs/` and are rebranded at build time by `scripts/rebrand.js` (runs automatically via `pnpm build`). After tagging a release, copy the rebranded `docs/` folder into the [www repo](https://github.com/AnchorSpec/www) at `src/docs/v{version}/` and update the `VERSIONS` array and redirect in `src/pages/docs/`. The www repo is deployed separately via GH Pages.
 
 ## Build & Development Commands
 
