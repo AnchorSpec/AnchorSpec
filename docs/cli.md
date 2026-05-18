@@ -1,12 +1,12 @@
 # CLI Reference
 
-The OpenSpec CLI (`openspec`) provides terminal commands for project setup, validation, status inspection, and management. These commands complement the AI slash commands (like `/opsx:propose`) documented in [Commands](commands.md).
+The AnchorSpec CLI (`anchorspec`) provides terminal commands for project setup, validation, status inspection, and management. These commands complement the AI slash commands (like `/ansx:propose`) documented in [Commands](commands.md).
 
 ## Summary
 
 | Category | Commands | Purpose |
 |----------|----------|---------|
-| **Setup** | `init`, `update` | Initialize and update OpenSpec in your project |
+| **Setup** | `init`, `update` | Initialize and update AnchorSpec in your project |
 | **Browsing** | `list`, `view`, `show` | Explore changes and specs |
 | **Validation** | `validate` | Check changes and specs for issues |
 | **Lifecycle** | `archive` | Finalize completed changes |
@@ -27,11 +27,11 @@ These commands are interactive and designed for terminal use:
 
 | Command | Purpose |
 |---------|---------|
-| `openspec init` | Initialize project (interactive prompts) |
-| `openspec view` | Interactive dashboard |
-| `openspec config edit` | Open config in editor |
-| `openspec feedback` | Submit feedback via GitHub |
-| `openspec completion install` | Install shell completions |
+| `anchorspec init` | Initialize project (interactive prompts) |
+| `anchorspec view` | Interactive dashboard |
+| `anchorspec config edit` | Open config in editor |
+| `anchorspec feedback` | Submit feedback via GitHub |
+| `anchorspec completion install` | Install shell completions |
 
 ### Agent-Compatible Commands
 
@@ -39,13 +39,13 @@ These commands support `--json` output for programmatic use by AI agents and scr
 
 | Command | Human Use | Agent Use |
 |---------|-----------|-----------|
-| `openspec list` | Browse changes/specs | `--json` for structured data |
-| `openspec show <item>` | Read content | `--json` for parsing |
-| `openspec validate` | Check for issues | `--all --json` for bulk validation |
-| `openspec status` | See artifact progress | `--json` for structured status |
-| `openspec instructions` | Get next steps | `--json` for agent instructions |
-| `openspec templates` | Find template paths | `--json` for path resolution |
-| `openspec schemas` | List available schemas | `--json` for schema discovery |
+| `anchorspec list` | Browse changes/specs | `--json` for structured data |
+| `anchorspec show <item>` | Read content | `--json` for parsing |
+| `anchorspec validate` | Check for issues | `--all --json` for bulk validation |
+| `anchorspec status` | See artifact progress | `--json` for structured status |
+| `anchorspec instructions` | Get next steps | `--json` for agent instructions |
+| `anchorspec templates` | Find template paths | `--json` for path resolution |
+| `anchorspec schemas` | List available schemas | `--json` for schema discovery |
 
 ---
 
@@ -63,14 +63,14 @@ These options work with all commands:
 
 ## Setup Commands
 
-### `openspec init`
+### `anchorspec init`
 
-Initialize OpenSpec in your project. Creates the folder structure and configures AI tool integrations.
+Initialize AnchorSpec in your project. Creates the folder structure and configures AI tool integrations.
 
 Default behavior uses global config defaults: profile `core`, delivery `both`, workflows `propose, explore, apply, archive`.
 
 ```
-openspec init [path] [options]
+anchorspec init [path] [options]
 ```
 
 **Arguments:**
@@ -87,7 +87,7 @@ openspec init [path] [options]
 | `--force` | Auto-cleanup legacy files without prompting |
 | `--profile <profile>` | Override global profile for this init run (`core` or `custom`) |
 
-`--profile custom` uses whatever workflows are currently selected in global config (`openspec config profile`).
+`--profile custom` uses whatever workflows are currently selected in global config (`anchorspec config profile`).
 
 **Supported tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `claude`, `cline`, `codex`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `kilocode`, `kiro`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `windsurf`
 
@@ -95,46 +95,46 @@ openspec init [path] [options]
 
 ```bash
 # Interactive initialization
-openspec init
+anchorspec init
 
 # Initialize in a specific directory
-openspec init ./my-project
+anchorspec init ./my-project
 
 # Non-interactive: configure for Claude and Cursor
-openspec init --tools claude,cursor
+anchorspec init --tools claude,cursor
 
 # Configure for all supported tools
-openspec init --tools all
+anchorspec init --tools all
 
 # Override profile for this run
-openspec init --profile core
+anchorspec init --profile core
 
 # Skip prompts and auto-cleanup legacy files
-openspec init --force
+anchorspec init --force
 ```
 
 **What it creates:**
 
 ```
-openspec/
+anchorspec/
 ├── specs/              # Your specifications (source of truth)
 ├── changes/            # Proposed changes
 └── config.yaml         # Project configuration
 
 .claude/skills/         # Claude Code skills (if claude selected)
 .cursor/skills/         # Cursor skills (if cursor selected)
-.cursor/commands/       # Cursor OPSX commands (if delivery includes commands)
+.cursor/commands/       # Cursor ANSX commands (if delivery includes commands)
 ... (other tool configs)
 ```
 
 ---
 
-### `openspec update`
+### `anchorspec update`
 
-Update OpenSpec instruction files after upgrading the CLI. Re-generates AI tool configuration files using your current global profile, selected workflows, and delivery mode.
+Update AnchorSpec instruction files after upgrading the CLI. Re-generates AI tool configuration files using your current global profile, selected workflows, and delivery mode.
 
 ```
-openspec update [path] [options]
+anchorspec update [path] [options]
 ```
 
 **Arguments:**
@@ -153,20 +153,20 @@ openspec update [path] [options]
 
 ```bash
 # Update instruction files after npm upgrade
-npm update @fission-ai/openspec
-openspec update
+npm update anchorspec
+anchorspec update
 ```
 
 ---
 
 ## Browsing Commands
 
-### `openspec list`
+### `anchorspec list`
 
 List changes or specs in your project.
 
 ```
-openspec list [options]
+anchorspec list [options]
 ```
 
 **Options:**
@@ -182,13 +182,13 @@ openspec list [options]
 
 ```bash
 # List all active changes
-openspec list
+anchorspec list
 
 # List all specs
-openspec list --specs
+anchorspec list --specs
 
 # JSON output for scripts
-openspec list --json
+anchorspec list --json
 ```
 
 **Output (text):**
@@ -201,24 +201,24 @@ Active changes:
 
 ---
 
-### `openspec view`
+### `anchorspec view`
 
 Display an interactive dashboard for exploring specs and changes.
 
 ```
-openspec view
+anchorspec view
 ```
 
 Opens a terminal-based interface for navigating your project's specifications and changes.
 
 ---
 
-### `openspec show`
+### `anchorspec show`
 
 Display details of a change or spec.
 
 ```
-openspec show [item-name] [options]
+anchorspec show [item-name] [options]
 ```
 
 **Arguments:**
@@ -253,28 +253,28 @@ openspec show [item-name] [options]
 
 ```bash
 # Interactive selection
-openspec show
+anchorspec show
 
 # Show a specific change
-openspec show add-dark-mode
+anchorspec show add-dark-mode
 
 # Show a specific spec
-openspec show auth --type spec
+anchorspec show auth --type spec
 
 # JSON output for parsing
-openspec show add-dark-mode --json
+anchorspec show add-dark-mode --json
 ```
 
 ---
 
 ## Validation Commands
 
-### `openspec validate`
+### `anchorspec validate`
 
 Validate changes and specs for structural issues.
 
 ```
-openspec validate [item-name] [options]
+anchorspec validate [item-name] [options]
 ```
 
 **Arguments:**
@@ -293,26 +293,26 @@ openspec validate [item-name] [options]
 | `--type <type>` | Specify type when name is ambiguous: `change` or `spec` |
 | `--strict` | Enable strict validation mode |
 | `--json` | Output as JSON |
-| `--concurrency <n>` | Max parallel validations (default: 6, or `OPENSPEC_CONCURRENCY` env) |
+| `--concurrency <n>` | Max parallel validations (default: 6, or `ANCHORSPEC_CONCURRENCY` env) |
 | `--no-interactive` | Disable prompts |
 
 **Examples:**
 
 ```bash
 # Interactive validation
-openspec validate
+anchorspec validate
 
 # Validate a specific change
-openspec validate add-dark-mode
+anchorspec validate add-dark-mode
 
 # Validate all changes
-openspec validate --changes
+anchorspec validate --changes
 
 # Validate everything with JSON output (for CI/scripts)
-openspec validate --all --json
+anchorspec validate --all --json
 
 # Strict validation with increased parallelism
-openspec validate --all --strict --concurrency 12
+anchorspec validate --all --strict --concurrency 12
 ```
 
 **Output (text):**
@@ -352,12 +352,12 @@ Validating add-dark-mode...
 
 ## Lifecycle Commands
 
-### `openspec archive`
+### `anchorspec archive`
 
 Archive a completed change and merge delta specs into main specs.
 
 ```
-openspec archive [change-name] [options]
+anchorspec archive [change-name] [options]
 ```
 
 **Arguments:**
@@ -378,37 +378,37 @@ openspec archive [change-name] [options]
 
 ```bash
 # Interactive archive
-openspec archive
+anchorspec archive
 
 # Archive specific change
-openspec archive add-dark-mode
+anchorspec archive add-dark-mode
 
 # Archive without prompts (CI/scripts)
-openspec archive add-dark-mode --yes
+anchorspec archive add-dark-mode --yes
 
 # Archive a tooling change that doesn't affect specs
-openspec archive update-ci-config --skip-specs
+anchorspec archive update-ci-config --skip-specs
 ```
 
 **What it does:**
 
 1. Validates the change (unless `--no-validate`)
 2. Prompts for confirmation (unless `--yes`)
-3. Merges delta specs into `openspec/specs/`
-4. Moves change folder to `openspec/changes/archive/YYYY-MM-DD-<name>/`
+3. Merges delta specs into `anchorspec/specs/`
+4. Moves change folder to `anchorspec/changes/archive/YYYY-MM-DD-<name>/`
 
 ---
 
 ## Workflow Commands
 
-These commands support the artifact-driven OPSX workflow. They're useful for both humans checking progress and agents determining next steps.
+These commands support the artifact-driven ANSX workflow. They're useful for both humans checking progress and agents determining next steps.
 
-### `openspec status`
+### `anchorspec status`
 
 Display artifact completion status for a change.
 
 ```
-openspec status [options]
+anchorspec status [options]
 ```
 
 **Options:**
@@ -423,13 +423,13 @@ openspec status [options]
 
 ```bash
 # Interactive status check
-openspec status
+anchorspec status
 
 # Status for specific change
-openspec status --change add-dark-mode
+anchorspec status --change add-dark-mode
 
 # JSON for agent use
-openspec status --change add-dark-mode --json
+anchorspec status --change add-dark-mode --json
 ```
 
 **Output (text):**
@@ -464,12 +464,12 @@ Progress: 2/4 artifacts complete
 
 ---
 
-### `openspec instructions`
+### `anchorspec instructions`
 
 Get enriched instructions for creating an artifact or applying tasks. Used by AI agents to understand what to create next.
 
 ```
-openspec instructions [artifact] [options]
+anchorspec instructions [artifact] [options]
 ```
 
 **Arguments:**
@@ -492,16 +492,16 @@ openspec instructions [artifact] [options]
 
 ```bash
 # Get instructions for next artifact
-openspec instructions --change add-dark-mode
+anchorspec instructions --change add-dark-mode
 
 # Get specific artifact instructions
-openspec instructions design --change add-dark-mode
+anchorspec instructions design --change add-dark-mode
 
 # Get apply/implementation instructions
-openspec instructions apply --change add-dark-mode
+anchorspec instructions apply --change add-dark-mode
 
 # JSON for agent consumption
-openspec instructions design --change add-dark-mode --json
+anchorspec instructions design --change add-dark-mode --json
 ```
 
 **Output includes:**
@@ -513,12 +513,12 @@ openspec instructions design --change add-dark-mode --json
 
 ---
 
-### `openspec templates`
+### `anchorspec templates`
 
 Show resolved template paths for all artifacts in a schema.
 
 ```
-openspec templates [options]
+anchorspec templates [options]
 ```
 
 **Options:**
@@ -532,13 +532,13 @@ openspec templates [options]
 
 ```bash
 # Show template paths for default schema
-openspec templates
+anchorspec templates
 
 # Show templates for custom schema
-openspec templates --schema my-workflow
+anchorspec templates --schema my-workflow
 
 # JSON for programmatic use
-openspec templates --json
+anchorspec templates --json
 ```
 
 **Output (text):**
@@ -547,20 +547,20 @@ openspec templates --json
 Schema: spec-driven
 
 Templates:
-  proposal  → ~/.openspec/schemas/spec-driven/templates/proposal.md
-  specs     → ~/.openspec/schemas/spec-driven/templates/specs.md
-  design    → ~/.openspec/schemas/spec-driven/templates/design.md
-  tasks     → ~/.openspec/schemas/spec-driven/templates/tasks.md
+  proposal  → ~/.anchorspec/schemas/spec-driven/templates/proposal.md
+  specs     → ~/.anchorspec/schemas/spec-driven/templates/specs.md
+  design    → ~/.anchorspec/schemas/spec-driven/templates/design.md
+  tasks     → ~/.anchorspec/schemas/spec-driven/templates/tasks.md
 ```
 
 ---
 
-### `openspec schemas`
+### `anchorspec schemas`
 
 List available workflow schemas with their descriptions and artifact flows.
 
 ```
-openspec schemas [options]
+anchorspec schemas [options]
 ```
 
 **Options:**
@@ -572,7 +572,7 @@ openspec schemas [options]
 **Example:**
 
 ```bash
-openspec schemas
+anchorspec schemas
 ```
 
 **Output:**
@@ -595,12 +595,12 @@ Available schemas:
 
 Commands for creating and managing custom workflow schemas.
 
-### `openspec schema init`
+### `anchorspec schema init`
 
 Create a new project-local schema.
 
 ```
-openspec schema init <name> [options]
+anchorspec schema init <name> [options]
 ```
 
 **Arguments:**
@@ -624,10 +624,10 @@ openspec schema init <name> [options]
 
 ```bash
 # Interactive schema creation
-openspec schema init research-first
+anchorspec schema init research-first
 
 # Non-interactive with specific artifacts
-openspec schema init rapid \
+anchorspec schema init rapid \
   --description "Rapid iteration workflow" \
   --artifacts "proposal,tasks" \
   --default
@@ -636,7 +636,7 @@ openspec schema init rapid \
 **What it creates:**
 
 ```
-openspec/schemas/<name>/
+anchorspec/schemas/<name>/
 ├── schema.yaml           # Schema definition
 └── templates/
     ├── proposal.md       # Template for each artifact
@@ -647,12 +647,12 @@ openspec/schemas/<name>/
 
 ---
 
-### `openspec schema fork`
+### `anchorspec schema fork`
 
 Copy an existing schema to your project for customization.
 
 ```
-openspec schema fork <source> [name] [options]
+anchorspec schema fork <source> [name] [options]
 ```
 
 **Arguments:**
@@ -673,17 +673,17 @@ openspec schema fork <source> [name] [options]
 
 ```bash
 # Fork the built-in spec-driven schema
-openspec schema fork spec-driven my-workflow
+anchorspec schema fork spec-driven my-workflow
 ```
 
 ---
 
-### `openspec schema validate`
+### `anchorspec schema validate`
 
 Validate a schema's structure and templates.
 
 ```
-openspec schema validate [name] [options]
+anchorspec schema validate [name] [options]
 ```
 
 **Arguments:**
@@ -703,20 +703,20 @@ openspec schema validate [name] [options]
 
 ```bash
 # Validate a specific schema
-openspec schema validate my-workflow
+anchorspec schema validate my-workflow
 
 # Validate all schemas
-openspec schema validate
+anchorspec schema validate
 ```
 
 ---
 
-### `openspec schema which`
+### `anchorspec schema which`
 
 Show where a schema resolves from (useful for debugging precedence).
 
 ```
-openspec schema which [name] [options]
+anchorspec schema which [name] [options]
 ```
 
 **Arguments:**
@@ -736,32 +736,32 @@ openspec schema which [name] [options]
 
 ```bash
 # Check where a schema comes from
-openspec schema which spec-driven
+anchorspec schema which spec-driven
 ```
 
 **Output:**
 
 ```
 spec-driven resolves from: package
-  Source: /usr/local/lib/node_modules/@fission-ai/openspec/schemas/spec-driven
+  Source: /usr/local/lib/node_modules/anchorspec/schemas/spec-driven
 ```
 
 **Schema precedence:**
 
-1. Project: `openspec/schemas/<name>/`
-2. User: `~/.local/share/openspec/schemas/<name>/`
+1. Project: `anchorspec/schemas/<name>/`
+2. User: `~/.local/share/anchorspec/schemas/<name>/`
 3. Package: Built-in schemas
 
 ---
 
 ## Configuration Commands
 
-### `openspec config`
+### `anchorspec config`
 
-View and modify global OpenSpec configuration.
+View and modify global AnchorSpec configuration.
 
 ```
-openspec config <subcommand> [options]
+anchorspec config <subcommand> [options]
 ```
 
 **Subcommands:**
@@ -781,57 +781,57 @@ openspec config <subcommand> [options]
 
 ```bash
 # Show config file path
-openspec config path
+anchorspec config path
 
 # List all settings
-openspec config list
+anchorspec config list
 
 # Get a specific value
-openspec config get telemetry.enabled
+anchorspec config get telemetry.enabled
 
 # Set a value
-openspec config set telemetry.enabled false
+anchorspec config set telemetry.enabled false
 
 # Set a string value explicitly
-openspec config set user.name "My Name" --string
+anchorspec config set user.name "My Name" --string
 
 # Remove a custom setting
-openspec config unset user.name
+anchorspec config unset user.name
 
 # Reset all configuration
-openspec config reset --all --yes
+anchorspec config reset --all --yes
 
 # Edit config in your editor
-openspec config edit
+anchorspec config edit
 
 # Configure profile with action-based wizard
-openspec config profile
+anchorspec config profile
 
 # Fast preset: switch workflows to core (keeps delivery mode)
-openspec config profile core
+anchorspec config profile core
 ```
 
-`openspec config profile` starts with a current-state summary, then lets you choose:
+`anchorspec config profile` starts with a current-state summary, then lets you choose:
 - Change delivery + workflows
 - Change delivery only
 - Change workflows only
 - Keep current settings (exit)
 
 If you keep current settings, no changes are written and no update prompt is shown.
-If there are no config changes but the current project files are out of sync with your global profile/delivery, OpenSpec will show a warning and suggest running `openspec update`.
+If there are no config changes but the current project files are out of sync with your global profile/delivery, AnchorSpec will show a warning and suggest running `anchorspec update`.
 Pressing `Ctrl+C` also cancels the flow cleanly (no stack trace) and exits with code `130`.
-In the workflow checklist, `[x]` means the workflow is selected in global config. To apply those selections to project files, run `openspec update` (or choose `Apply changes to this project now?` when prompted inside a project).
+In the workflow checklist, `[x]` means the workflow is selected in global config. To apply those selections to project files, run `anchorspec update` (or choose `Apply changes to this project now?` when prompted inside a project).
 
 **Interactive examples:**
 
 ```bash
 # Delivery-only update
-openspec config profile
+anchorspec config profile
 # choose: Change delivery only
 # choose delivery: Skills only
 
 # Workflows-only update
-openspec config profile
+anchorspec config profile
 # choose: Change workflows only
 # toggle workflows in the checklist, then confirm
 ```
@@ -840,12 +840,12 @@ openspec config profile
 
 ## Utility Commands
 
-### `openspec feedback`
+### `anchorspec feedback`
 
-Submit feedback about OpenSpec. Creates a GitHub issue.
+Submit feedback about AnchorSpec. Creates a GitHub issue.
 
 ```
-openspec feedback <message> [options]
+anchorspec feedback <message> [options]
 ```
 
 **Arguments:**
@@ -865,18 +865,18 @@ openspec feedback <message> [options]
 **Example:**
 
 ```bash
-openspec feedback "Add support for custom artifact types" \
+anchorspec feedback "Add support for custom artifact types" \
   --body "I'd like to define my own artifact types beyond the built-in ones."
 ```
 
 ---
 
-### `openspec completion`
+### `anchorspec completion`
 
-Manage shell completions for the OpenSpec CLI.
+Manage shell completions for the AnchorSpec CLI.
 
 ```
-openspec completion <subcommand> [shell]
+anchorspec completion <subcommand> [shell]
 ```
 
 **Subcommands:**
@@ -893,16 +893,16 @@ openspec completion <subcommand> [shell]
 
 ```bash
 # Install completions (auto-detects shell)
-openspec completion install
+anchorspec completion install
 
 # Install for specific shell
-openspec completion install zsh
+anchorspec completion install zsh
 
 # Generate script for manual installation
-openspec completion generate bash > ~/.bash_completion.d/openspec
+anchorspec completion generate bash > ~/.bash_completion.d/anchorspec
 
 # Uninstall
-openspec completion uninstall
+anchorspec completion uninstall
 ```
 
 ---
@@ -920,17 +920,17 @@ openspec completion uninstall
 
 | Variable | Description |
 |----------|-------------|
-| `OPENSPEC_TELEMETRY` | Set to `0` to disable telemetry |
+| `ANCHORSPEC_TELEMETRY` | Set to `0` to disable telemetry |
 | `DO_NOT_TRACK` | Set to `1` to disable telemetry (standard DNT signal) |
-| `OPENSPEC_CONCURRENCY` | Default concurrency for bulk validation (default: 6) |
-| `EDITOR` or `VISUAL` | Editor for `openspec config edit` |
+| `ANCHORSPEC_CONCURRENCY` | Default concurrency for bulk validation (default: 6) |
+| `EDITOR` or `VISUAL` | Editor for `anchorspec config edit` |
 | `NO_COLOR` | Disable color output when set |
 
 ---
 
 ## Related Documentation
 
-- [Commands](commands.md) - AI slash commands (`/opsx:propose`, `/opsx:apply`, etc.)
+- [Commands](commands.md) - AI slash commands (`/ansx:propose`, `/ansx:apply`, etc.)
 - [Workflows](workflows.md) - Common patterns and when to use each command
 - [Customization](customization.md) - Create custom schemas and templates
 - [Getting Started](getting-started.md) - First-time setup guide

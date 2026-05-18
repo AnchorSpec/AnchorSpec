@@ -8,6 +8,10 @@ This is a **minimal fork** of the upstream [OpenSpec](https://github.com/Fission
 
 OpenSpec itself is an AI-native CLI tool for spec-driven development. It maintains structured specifications where changes are proposed as delta specs, reviewed, and merged — giving AI coding assistants a shared source of truth instead of relying on chat history.
 
+### Documentation
+
+Docs live in `docs/` and are rebranded at build time by `scripts/rebrand.js` (runs automatically via `pnpm build`). After tagging a release, copy the rebranded `docs/` folder into the [www repo](https://github.com/AnchorSpec/www) at `src/docs/v{version}/` and update the `VERSIONS` array and redirect in `src/pages/docs/`. The www repo is deployed separately via GH Pages.
+
 ## Build & Development Commands
 
 ```bash

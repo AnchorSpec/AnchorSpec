@@ -1,55 +1,24 @@
-# AnchorSpec
-
-Minimal fork of [OpenSpec](https://github.com/Fission-AI/OpenSpec) with telemetry removed and the CLI rebranded to `anchorspec`. All upstream features are preserved — the only differences are no PostHog and the name swap (applied at build time, so `src/` stays mergeable with upstream).
-
-## Install
-
-```bash
-npm install -g anchorspec
-```
-
-Or use without installing:
-
-```bash
-npx anchorspec init
-```
-
-Then in any project:
-
-```bash
-anchorspec init
-```
-
----
-
-*Everything below is the upstream OpenSpec README.*
-
-:warning: Substitute `openspec` with `anchorspec`, and `/opsx:` with `/anchorspec:` when following instructions. The underlying functionality is the same, just rebranded and without telemetry.
-
----
-
 <p align="center">
-  <a href="https://github.com/Fission-AI/OpenSpec">
+  <a href="https://github.com/AnchorSpec/AnchorSpec">
     <picture>
-      <source srcset="assets/openspec_bg.png">
-      <img src="assets/openspec_bg.png" alt="OpenSpec logo">
+      <source srcset="assets/anchorspec_bg.png">
+      <img src="assets/anchorspec_bg.png" alt="AnchorSpec logo">
     </picture>
   </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Fission-AI/OpenSpec/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Fission-AI/OpenSpec/actions/workflows/ci.yml/badge.svg" /></a>
-  <a href="https://www.npmjs.com/package/@fission-ai/openspec"><img alt="npm version" src="https://img.shields.io/npm/v/@fission-ai/openspec?style=flat-square" /></a>
+  <a href="https://github.com/AnchorSpec/AnchorSpec/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/AnchorSpec/AnchorSpec/actions/workflows/ci.yml/badge.svg" /></a>
+  <a href="https://www.npmjs.com/package/anchorspec"><img alt="npm version" src="https://img.shields.io/npm/v/anchorspec?style=flat-square" /></a>
   <a href="./LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" /></a>
-  <a href="https://discord.gg/YctCnvvshC"><img alt="Discord" src="https://img.shields.io/discord/1411657095639601154?style=flat-square&logo=discord&logoColor=white&label=Discord&suffix=%20online" /></a>
 </p>
 
 <details>
 <summary><strong>The most loved spec framework.</strong></summary>
 
-[![Stars](https://img.shields.io/github/stars/Fission-AI/OpenSpec?style=flat-square&label=Stars)](https://github.com/Fission-AI/OpenSpec/stargazers)
-[![Downloads](https://img.shields.io/npm/dm/@fission-ai/openspec?style=flat-square&label=Downloads/mo)](https://www.npmjs.com/package/@fission-ai/openspec)
-[![Contributors](https://img.shields.io/github/contributors/Fission-AI/OpenSpec?style=flat-square&label=Contributors)](https://github.com/Fission-AI/OpenSpec/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/AnchorSpec/AnchorSpec?style=flat-square&label=Stars)](https://github.com/AnchorSpec/AnchorSpec/stargazers)
+[![Downloads](https://img.shields.io/npm/dm/anchorspec?style=flat-square&label=Downloads/mo)](https://www.npmjs.com/package/anchorspec)
+[![Contributors](https://img.shields.io/github/contributors/AnchorSpec/AnchorSpec?style=flat-square&label=Contributors)](https://github.com/AnchorSpec/AnchorSpec/graphs/contributors)
 
 </details>
 <p></p>
@@ -64,28 +33,26 @@ Our philosophy:
 ```
 
 > [!TIP]
-> **New workflow now available!** We've rebuilt OpenSpec with a new artifact-guided workflow.
+> **New workflow now available!** We've rebuilt AnchorSpec with a new artifact-guided workflow.
 >
-> Run `/opsx:propose "your idea"` to get started. → [Learn more here](docs/opsx.md)
+> Run `/ansx:propose "your idea"` to get started. → [Learn more here](docs/ansx.md)
 
-<p align="center">
-  Follow <a href="https://x.com/0xTab">@0xTab on X</a> for updates · Join the <a href="https://discord.gg/YctCnvvshC">OpenSpec Discord</a> for help and questions.
-</p>
 
-<!-- TODO: Add GIF demo of /opsx:propose → /opsx:archive workflow -->
+
+<!-- TODO: Add GIF demo of /ansx:propose → /ansx:archive workflow -->
 
 ## See it in action
 
 ```text
-You: /opsx:propose add-dark-mode
-AI:  Created openspec/changes/add-dark-mode/
+You: /ansx:propose add-dark-mode
+AI:  Created anchorspec/changes/add-dark-mode/
      ✓ proposal.md — why we're doing this, what's changing
      ✓ specs/       — requirements and scenarios
      ✓ design.md    — technical approach
      ✓ tasks.md     — implementation checklist
      Ready for implementation!
 
-You: /opsx:apply
+You: /ansx:apply
 AI:  Implementing tasks...
      ✓ 1.1 Add theme context provider
      ✓ 1.2 Create toggle component
@@ -93,16 +60,16 @@ AI:  Implementing tasks...
      ✓ 2.2 Wire up localStorage
      All tasks complete!
 
-You: /opsx:archive
-AI:  Archived to openspec/changes/archive/2025-01-23-add-dark-mode/
+You: /ansx:archive
+AI:  Archived to anchorspec/changes/archive/2025-01-23-add-dark-mode/
      Specs updated. Ready for the next feature.
 ```
 
 <details>
-<summary><strong>OpenSpec Dashboard</strong></summary>
+<summary><strong>AnchorSpec Dashboard</strong></summary>
 
 <p align="center">
-  <img src="assets/openspec_dashboard.png" alt="OpenSpec dashboard preview" width="90%">
+  <img src="assets/anchorspec_dashboard.png" alt="AnchorSpec dashboard preview" width="90%">
 </p>
 
 </details>
@@ -111,22 +78,22 @@ AI:  Archived to openspec/changes/archive/2025-01-23-add-dark-mode/
 
 **Requires Node.js 20.19.0 or higher.**
 
-Install OpenSpec globally:
+Install AnchorSpec globally:
 
 ```bash
-npm install -g @fission-ai/openspec@latest
+npm install -g anchorspec@latest
 ```
 
 Then navigate to your project directory and initialize:
 
 ```bash
 cd your-project
-openspec init
+anchorspec init
 ```
 
-Now tell your AI: `/opsx:propose <what-you-want-to-build>`
+Now tell your AI: `/ansx:propose <what-you-want-to-build>`
 
-If you want the expanded workflow (`/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/opsx:verify`, `/opsx:sync`, `/opsx:bulk-archive`, `/opsx:onboard`), select it with `openspec config profile` and apply with `openspec update`.
+If you want the expanded workflow (`/ansx:new`, `/ansx:continue`, `/ansx:ff`, `/ansx:verify`, `/ansx:bulk-archive`, `/ansx:onboard`), select it with `anchorspec config profile` and apply with `anchorspec update`.
 
 > [!NOTE]
 > Not sure if your tool is supported? [View the full list](docs/supported-tools.md) – we support 25+ tools and growing.
@@ -145,9 +112,16 @@ If you want the expanded workflow (`/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/
 → **[Customization](docs/customization.md)**: make it yours
 
 
-## Why OpenSpec?
+## Community schemas
 
-AI coding assistants are powerful but unpredictable when requirements live only in chat history. OpenSpec adds a lightweight spec layer so you agree on what to build before any code is written.
+Third-party schema bundles distributed via standalone repositories — these provide opinionated workflows that integrate AnchorSpec with other tools, similar to how [github/spec-kit's community extension catalog](https://github.com/github/spec-kit/tree/main/extensions) handles tool integrations.
+
+→ **[Browse the catalog](docs/customization.md#community-schemas)** in the customization docs.
+
+
+## Why AnchorSpec?
+
+AI coding assistants are powerful but unpredictable when requirements live only in chat history. AnchorSpec adds a lightweight spec layer so you agree on what to build before any code is written.
 
 - **Agree before you build** — human and AI align on specs before code gets written
 - **Stay organized** — each change gets its own folder with proposal, specs, design, and tasks
@@ -156,18 +130,18 @@ AI coding assistants are powerful but unpredictable when requirements live only 
 
 ### How we compare
 
-**vs. [Spec Kit](https://github.com/github/spec-kit)** (GitHub) — Thorough but heavyweight. Rigid phase gates, lots of Markdown, Python setup. OpenSpec is lighter and lets you iterate freely.
+**vs. [Spec Kit](https://github.com/github/spec-kit)** (GitHub) — Thorough but heavyweight. Rigid phase gates, lots of Markdown, Python setup. AnchorSpec is lighter and lets you iterate freely.
 
-**vs. [Kiro](https://kiro.dev)** (AWS) — Powerful but you're locked into their IDE and limited to Claude models. OpenSpec works with the tools you already use.
+**vs. [Kiro](https://kiro.dev)** (AWS) — Powerful but you're locked into their IDE and limited to Claude models. AnchorSpec works with the tools you already use.
 
-**vs. nothing** — AI coding without specs means vague prompts and unpredictable results. OpenSpec brings predictability without the ceremony.
+**vs. nothing** — AI coding without specs means vague prompts and unpredictable results. AnchorSpec brings predictability without the ceremony.
 
-## Updating OpenSpec
+## Updating AnchorSpec
 
 **Upgrade the package**
 
 ```bash
-npm install -g @fission-ai/openspec@latest
+npm install -g anchorspec@latest
 ```
 
 **Refresh agent instructions**
@@ -175,22 +149,22 @@ npm install -g @fission-ai/openspec@latest
 Run this inside each project to regenerate AI guidance and ensure the latest slash commands are active:
 
 ```bash
-openspec update
+anchorspec update
 ```
 
 ## Usage Notes
 
-**Model selection**: OpenSpec works best with high-reasoning models. We recommend Opus 4.5 and GPT 5.2 for both planning and implementation.
+**Model selection**: AnchorSpec works best with high-reasoning models. We recommend claude-opus-4-7 and o3 for both planning and implementation.
 
-**Context hygiene**: OpenSpec benefits from a clean context window. Clear your context before starting implementation and maintain good context hygiene throughout your session.
+**Context hygiene**: AnchorSpec benefits from a clean context window. Clear your context before starting implementation and maintain good context hygiene throughout your session.
 
 ## Contributing
 
 **Small fixes** — Bug fixes, typo corrections, and minor improvements can be submitted directly as PRs.
 
-**Larger changes** — For new features, significant refactors, or architectural changes, please submit an OpenSpec change proposal first so we can align on intent and goals before implementation begins.
+**Larger changes** — For new features, significant refactors, or architectural changes, please submit an AnchorSpec change proposal first so we can align on intent and goals before implementation begins.
 
-When writing proposals, keep the OpenSpec philosophy in mind: we serve a wide variety of users across different coding agents, models, and use cases. Changes should work well for everyone.
+When writing proposals, keep the AnchorSpec philosophy in mind: we serve a wide variety of users across different coding agents, models, and use cases. Changes should work well for everyone.
 
 **AI-generated code is welcome** — as long as it's been tested and verified. PRs containing AI-generated code should mention the coding agent and model used (e.g., "Generated with Claude Code using claude-opus-4-5-20251101").
 
@@ -207,11 +181,7 @@ When writing proposals, keep the OpenSpec philosophy in mind: we serve a wide va
 <details>
 <summary><strong>Telemetry</strong></summary>
 
-OpenSpec collects anonymous usage stats.
-
-We collect only command names and version to understand usage patterns. No arguments, paths, content, or PII. Automatically disabled in CI.
-
-**Opt-out:** `export OPENSPEC_TELEMETRY=0` or `export DO_NOT_TRACK=1`
+AnchorSpec has no telemetry. It is an MIT-licensed fork of [OpenSpec](https://github.com/Fission-AI/OpenSpec) with all PostHog instrumentation removed.
 
 </details>
 
