@@ -16,7 +16,7 @@
     "url": "https://github.com/AnchorSpec/AnchorSpec"
   },
   "license": "MIT",
-  "author": "OpenSpec Contributors",
+  "author": "AnchorSpec Contributors",
   "type": "module",
   "exports": {
     ".": {
@@ -41,7 +41,7 @@
     "lint": "eslint src/",
     "build": "node build.js",
     "dev": "tsc --watch",
-    "dev:cli": "pnpm build && node bin/openspec.js",
+    "dev:cli": "pnpm build && node bin/anchorspec.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
