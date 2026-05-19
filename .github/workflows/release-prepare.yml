@@ -32,8 +32,12 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
-          # registry-url omitted: setting it causes setup-node to write _authToken=${NODE_AUTH_TOKEN}
-          # to .npmrc, which resolves to empty and blocks npm's OIDC trusted-publisher exchange.
+          registry-url: 'https://registry.npmjs.org'
+
+      # setup-node writes `_authToken=${NODE_AUTH_TOKEN}` to .npmrc; with no token set that
+      # resolves to empty and blocks npm from attempting the OIDC trusted-publisher exchange.
+      # Delete it so npm falls through to OIDC while keeping the registry URL.
+      - run: npm config delete //registry.npmjs.org/:_authToken
 
       - run: pnpm install --frozen-lockfile
 
