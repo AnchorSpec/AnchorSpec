@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write  # Required for OIDC
   contents: write
   pull-requests: write
+  id-token: write # Required for npm OIDC trusted publishing
 
 concurrency:
   group: release-${{ github.ref }}
@@ -30,27 +30,20 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # Node 24 includes npm 11.5.1+ required for OIDC
           cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
-
-      # setup-node writes `_authToken=${NODE_AUTH_TOKEN}` to .npmrc; with no token set that
-      # resolves to empty and blocks npm from attempting the OIDC trusted-publisher exchange.
-      # Delete it so npm falls through to OIDC while keeping the registry URL.
-      - run: npm config delete //registry.npmjs.org/:_authToken
 
       - run: pnpm install --frozen-lockfile
 
       # Opens/updates the Version Packages PR; publishes when the Version PR merges
-      # Auth: changesets/action detects no _authToken → does OIDC exchange → sets NODE_AUTH_TOKEN.
-      # The publish command re-adds the registry auth mapping before npm sees it.
       - name: Create/Update Version PR
         id: changesets
         uses: changesets/action@v1
         with:
           title: 'chore(release): version packages'
           createGithubReleases: true
-          publish: npm config set //registry.npmjs.org/:_authToken "$NODE_AUTH_TOKEN" && pnpm run release:ci
+          publish: pnpm run release:ci
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
-          NPM_CONFIG_PROVENANCE: 'true'
+          # npm authentication handled via OIDC trusted publishing (no token needed)
