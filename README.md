@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/AnchorSpec/AnchorSpec">
+  <a href="https://www.anchorspec.com/">
     <picture>
       <source srcset="assets/anchorspec_bg.png">
       <img src="assets/anchorspec_bg.png" alt="AnchorSpec logo">
@@ -35,7 +35,7 @@ Our philosophy:
 > [!TIP]
 > **New workflow now available!** We've rebuilt AnchorSpec with a new artifact-guided workflow.
 >
-> Run `/ansx:propose "your idea"` to get started. → [Learn more here](docs/ansx.md)
+> Run `/ansx:propose "your idea"` to get started. → [Learn more here](https://www.anchorspec.com/docs/v1.3.1/ansx/)
 
 
 
@@ -96,27 +96,27 @@ Now tell your AI: `/ansx:propose <what-you-want-to-build>`
 If you want the expanded workflow (`/ansx:new`, `/ansx:continue`, `/ansx:ff`, `/ansx:verify`, `/ansx:bulk-archive`, `/ansx:onboard`), select it with `anchorspec config profile` and apply with `anchorspec update`.
 
 > [!NOTE]
-> Not sure if your tool is supported? [View the full list](docs/supported-tools.md) – we support 25+ tools and growing.
+> Not sure if your tool is supported? [View the full list](https://www.anchorspec.com/docs/v1.3.1/supported-tools/) – we support 25+ tools and growing.
 >
-> Also works with pnpm, yarn, bun, and nix. [See installation options](docs/installation.md).
+> Also works with pnpm, yarn, bun, and nix. [See installation options](https://www.anchorspec.com/docs/v1.3.1/installation/).
 
 ## Docs
 
-→ **[Getting Started](docs/getting-started.md)**: first steps<br>
-→ **[Workflows](docs/workflows.md)**: combos and patterns<br>
-→ **[Commands](docs/commands.md)**: slash commands & skills<br>
-→ **[CLI](docs/cli.md)**: terminal reference<br>
-→ **[Supported Tools](docs/supported-tools.md)**: tool integrations & install paths<br>
-→ **[Concepts](docs/concepts.md)**: how it all fits<br>
-→ **[Multi-Language](docs/multi-language.md)**: multi-language support<br>
-→ **[Customization](docs/customization.md)**: make it yours
+→ **[Getting Started](https://www.anchorspec.com/docs/v1.3.1/getting-started/)**: first steps<br>
+→ **[Workflows](https://www.anchorspec.com/docs/v1.3.1/workflows/)**: combos and patterns<br>
+→ **[Commands](https://www.anchorspec.com/docs/v1.3.1/commands/)**: slash commands & skills<br>
+→ **[CLI](https://www.anchorspec.com/docs/v1.3.1/cli/)**: terminal reference<br>
+→ **[Supported Tools](https://www.anchorspec.com/docs/v1.3.1/supported-tools/)**: tool integrations & install paths<br>
+→ **[Concepts](https://www.anchorspec.com/docs/v1.3.1/concepts/)**: how it all fits<br>
+→ **[Multi-Language](https://www.anchorspec.com/docs/v1.3.1/multi-language/)**: multi-language support<br>
+→ **[Customization](https://www.anchorspec.com/docs/v1.3.1/customization/)**: make it yours
 
 
 ## Community schemas
 
 Third-party schema bundles distributed via standalone repositories — these provide opinionated workflows that integrate AnchorSpec with other tools, similar to how [github/spec-kit's community extension catalog](https://github.com/github/spec-kit/tree/main/extensions) handles tool integrations.
 
-→ **[Browse the catalog](docs/customization.md#community-schemas)** in the customization docs.
+→ **[Browse the catalog](https://www.anchorspec.com/docs/v1.3.1/customization/#community-schemas)** in the customization docs.
 
 
 ## Why AnchorSpec?
