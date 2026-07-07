@@ -82,6 +82,12 @@ pnpm vitest run -t "pattern"
 
 GitHub Actions runs on PRs and main pushes: lint, type-check (`tsc --noEmit`), tests on Linux/macOS/Windows, Nix flake validation, and changeset verification. PR merge requires all checks to pass.
 
+### Release token
+
+`release-prepare.yml` needs a token with more privilege than the default `GITHUB_TOKEN` (to push the Version Packages PR and let `changesets/action` create releases past branch protection). This is provided by the **AnchorSpec Release** GitHub App, minted per-run via `actions/create-github-app-token`, rather than a personal access token — PATs have an expiration date and silently break the release workflow when they lapse (happened 2026-07, ~7 weeks after the previous PAT was set). App-generated tokens are short-lived per run but the App installation itself doesn't expire, so there's nothing to rotate on a calendar.
+
+Org-level config (Settings → Secrets and variables → Actions, org scope, visible to `AnchorSpec/AnchorSpec`): variable `RELEASE_APP_ID` (app ID, not sensitive) and secret `RELEASE_APP_PRIVATE_KEY` (the App's private key). To manage the App itself: org/personal Developer settings → GitHub Apps → AnchorSpec Release — must be **installed** on `AnchorSpec/AnchorSpec` (Install App tab on the App's own settings page) in addition to existing. Permissions needed: Contents (read/write), Pull requests (read/write). Revoke access by uninstalling the App from the repo, not by deleting the secret/variable.
+
 ## Fork Strategy & Future Direction
 
 **Current priority: upstream mergeability.** This fork is in early evaluation. Minimize divergence from OpenSpec — telemetry removal only. Publishing to npm as `anchorspec` is acceptable if needed (just maintenance overhead). Do not introduce feature changes.

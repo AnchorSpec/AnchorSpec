@@ -19,10 +19,19 @@ jobs:
     if: github.repository == 'AnchorSpec/AnchorSpec'
     runs-on: ubuntu-latest
     steps:
+      # Mints a short-lived token from the AnchorSpec Release GitHub App.
+      # Replaces a PAT so there's nothing with an expiration date to rotate manually
+      # (see CLAUDE.md "Release token" section for why/how).
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.RELEASE_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: pnpm/action-setup@v4
         with:
@@ -45,5 +54,5 @@ jobs:
           createGithubReleases: true
           publish: pnpm run release:ci
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           # npm authentication handled via OIDC trusted publishing (no token needed)

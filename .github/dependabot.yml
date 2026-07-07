@@ -1,0 +1,23 @@
+version: 2
+updates:
+  # GitHub Actions — fork-owned workflows, safe to keep current independently of upstream.
+  # Groups all action bumps into one weekly PR to reduce noise.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # npm — version updates intentionally disabled (open-pull-requests-limit: 0).
+  # Dependency upgrades flow through upstream (git merge upstream/main) to avoid
+  # merge conflicts in package.json / pnpm-lock.yaml.
+  # Security updates are handled separately via the repo's Dependabot security
+  # updates setting and are not subject to this limit.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
