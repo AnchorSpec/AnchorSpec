@@ -1167,10 +1167,10 @@ anchorspec config path
 anchorspec config list
 
 # Get a specific value
-anchorspec config get telemetry.enabled
+anchorspec config get profile
 
 # Set a value
-anchorspec config set telemetry.enabled false
+anchorspec config set profile custom
 
 # Set a string value explicitly
 anchorspec config set user.name "My Name" --string
@@ -1300,8 +1300,6 @@ anchorspec completion uninstall
 
 | Variable | Description |
 |----------|-------------|
-| `ANCHORSPEC_TELEMETRY` | Set to `0` to disable telemetry |
-| `DO_NOT_TRACK` | Set to `1` to disable telemetry (standard DNT signal) |
 | `ANCHORSPEC_CONCURRENCY` | Default concurrency for bulk validation (default: 6) |
 | `EDITOR` or `VISUAL` | Editor for `anchorspec config edit` |
 | `NO_COLOR` | Disable color output when set |
