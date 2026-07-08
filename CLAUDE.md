@@ -96,7 +96,9 @@ Org-level config (Settings → Secrets and variables → Actions, org scope, vis
 
 ### Tracking new upstream releases
 
-`.github/workflows/upstream-release-watch.yml` runs on a schedule, compares AnchorSpec's `package.json` version against the latest [Fission-AI/OpenSpec release](https://github.com/Fission-AI/OpenSpec/releases), and opens a tracking Issue (labeled `upstream-release`) when AnchorSpec is behind and no open issue for that version already exists. The issue's checklist covers the merge, version bump, changeset, CI, npm publish, **and** copying rebranded docs into the [www repo](https://github.com/AnchorSpec/www) (see "Documentation" above) — the docs/www step is easy to forget since it's a separate repo. This is detection + tracking only; the merge and publish are still done by hand. Full automation (auto-merge, auto-publish) is a future step once the manual process is well-worn.
+`.github/workflows/upstream-release-watch.yml` runs on a schedule, compares AnchorSpec's `package.json` version against the latest [Fission-AI/OpenSpec release](https://github.com/Fission-AI/OpenSpec/releases), and opens a tracking Issue (labeled `upstream-release`) when AnchorSpec is behind and no open issue for that version already exists. This is detection + tracking only; the merge and publish are still done by hand. Full automation (auto-merge, auto-publish) is a future step once the manual process is well-worn.
+
+The issue body comes from `.github/ISSUE_TEMPLATE/release-checklist.md` — the single source of truth for the release checklist (merge, version bump, changeset, CI including the Nix hash-refresh gotcha, npm publish, **and** copying rebranded docs into the [www repo](https://github.com/AnchorSpec/www), which is easy to forget since it's a separate repo). The workflow substitutes its `{{VERSION}}`-style placeholders; the same template is also usable standalone via GitHub's "New Issue" picker for a manually-triggered release. Update the template, not the workflow, when the checklist itself needs to change.
 
 ## Fork Strategy & Future Direction
 

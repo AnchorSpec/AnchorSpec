@@ -46,20 +46,16 @@ jobs:
 
           release_url="https://github.com/Fission-AI/OpenSpec/releases/tag/${latest_tag}"
 
+          # Single source of truth for the checklist itself lives in the issue
+          # template; substitute placeholders and strip its front matter.
+          body=$(sed \
+            -e "s|{{VERSION_TAG}}|$latest_tag|g" \
+            -e "s|{{VERSION}}|$latest_version|g" \
+            -e "s|{{RELEASE_URL}}|$release_url|g" \
+            -e "s|{{CURRENT_VERSION}}|$current_version|g" \
+            .github/ISSUE_TEMPLATE/release-checklist.md | sed '1{/^---$/!q};1,/^---$/d')
+
           gh issue create --repo "$GITHUB_REPOSITORY" \
-            --title "Mirror upstream $latest_tag" \
+            --title "Release checklist: mirror upstream $latest_tag" \
             --label upstream-release \
-            --body "$(cat <<BODY
-          Upstream Fission-AI/OpenSpec published [$latest_tag]($release_url). AnchorSpec is currently at $current_version.
-
-          Per CLAUDE.md, every upstream release gets a corresponding AnchorSpec release published to npm, at minimum as a 1:1 mirror.
-
-          - [ ] Merge upstream $latest_tag into \`main\`
-          - [ ] Resolve conflicts / re-apply telemetry removal
-          - [ ] Bump \`package.json\` version to $latest_version
-          - [ ] Add a changeset
-          - [ ] Verify CI is green (lint, test, Nix flake validation)
-          - [ ] Publish to npm
-          - [ ] Copy rebranded \`docs/\` into the [www repo](https://github.com/AnchorSpec/www) at \`src/docs/v${latest_version}/\`, update the \`VERSIONS\` array and redirect
-          BODY
-          )"
+            --body "$body"
