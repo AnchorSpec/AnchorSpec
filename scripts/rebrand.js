@@ -5,6 +5,10 @@
  * Transforms upstream OpenSpec content into AnchorSpec-branded output:
  *   1. Text replacements  — across dist JS, docs Markdown, and README
  *   2. Structural patches — README-specific blocks (telemetry section, social link)
+ *      and docs-wide blocks (telemetry env vars / config example — text
+ *      replacement alone can't remove content, only rename it, so docs that
+ *      describe the telemetry we've actually deleted need an explicit patch
+ *      or they keep telling users to "opt out" of telemetry that doesn't exist)
  *   3. File ops           — rename docs/opsx.md → docs/ansx.md; sync branded images
  *
  * Idempotent: safe to run on already-branded files.
@@ -93,6 +97,42 @@ const README_PATCHES = [
   },
 ];
 
+// ─── Docs-wide structural patches ─────────────────────────────────────────────
+// Matched against post-text-replacement content. Unlike README_PATCHES, these
+// apply to every docs/**/*.md file (whichever ones happen to contain the
+// pattern) since upstream's telemetry references aren't confined to one file.
+
+const DOCS_PATCHES = [
+  // "Environment Variables" reference tables: drop the opt-out rows entirely
+  // rather than rebrand them — there's no telemetry to opt out of.
+  {
+    from: '| `ANCHORSPEC_TELEMETRY` | Set to `0` to disable telemetry |\n| `DO_NOT_TRACK` | Set to `1` to disable telemetry (standard DNT signal) |\n',
+    to: '',
+  },
+  // CLI example commands: swap the fictional telemetry.enabled key (rejected
+  // by config-schema.ts's validateConfigKeyPath — not a real config field)
+  // for a real one, so the docs stay runnable as well as accurate.
+  {
+    from: 'anchorspec config get telemetry.enabled',
+    to: 'anchorspec config get profile',
+  },
+  {
+    from: 'anchorspec config set telemetry.enabled false',
+    to: 'anchorspec config set profile custom',
+  },
+];
+
+function applyDocsPatches(content) {
+  for (const { from, to } of DOCS_PATCHES) {
+    content = content.replaceAll(from, to);
+  }
+  return content;
+}
+
+function processDocs(original) {
+  return applyDocsPatches(applyText(original));
+}
+
 function processReadme(original) {
   let content = original;
 
@@ -134,7 +174,7 @@ for (const file of await fg.glob('dist/**/*.js')) {
 
 // docs Markdown (rename opsx.md first so the glob catches it under the old name)
 for (const file of await fg.glob('docs/**/*.md')) {
-  processFile(file, applyText);
+  processFile(file, processDocs);
 }
 
 // README with structural patches + attribution protect/restore
