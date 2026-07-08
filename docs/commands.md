@@ -13,6 +13,7 @@ For workflow patterns and when to use each command, see [Workflows](workflows.md
 | `/ansx:propose` | Create a change and generate planning artifacts in one step |
 | `/ansx:explore` | Think through ideas before committing to a change |
 | `/ansx:apply` | Implement tasks from the change |
+| `/ansx:sync` | Merge delta specs into main specs |
 | `/ansx:archive` | Archive a completed change |
 
 ### Expanded Workflow Commands (custom workflow selection)
@@ -23,7 +24,6 @@ For workflow patterns and when to use each command, see [Workflows](workflows.md
 | `/ansx:continue` | Create the next artifact based on dependencies |
 | `/ansx:ff` | Fast-forward: create all planning artifacts at once |
 | `/ansx:verify` | Validate implementation matches artifacts |
-| `/ansx:sync` | Merge delta specs into main specs |
 | `/ansx:bulk-archive` | Archive multiple changes at once |
 | `/ansx:onboard` | Guided tutorial through the complete workflow |
 
@@ -618,6 +618,7 @@ Different AI tools use slightly different command syntax. Use the format that ma
 | Cursor | `/ansx-propose`, `/ansx-apply` |
 | Windsurf | `/ansx-propose`, `/ansx-apply` |
 | Copilot (IDE) | `/ansx-propose`, `/ansx-apply` |
+| Kimi CLI | Skill-based invocations such as `/skill:anchorspec-propose`, `/skill:anchorspec-apply-change` (no generated `ansx-*` command files) |
 | Trae | Skill-based invocations such as `/anchorspec-propose`, `/anchorspec-apply-change` (no generated `ansx-*` command files) |
 
 The intent is the same across tools, but how commands are surfaced can differ by integration.

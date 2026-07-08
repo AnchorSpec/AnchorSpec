@@ -7,10 +7,12 @@ The AnchorSpec CLI (`anchorspec`) provides terminal commands for project setup, 
 | Category | Commands | Purpose |
 |----------|----------|---------|
 | **Setup** | `init`, `update` | Initialize and update AnchorSpec in your project |
+| **Workspaces (beta)** | `workspace setup`, `workspace list`, `workspace ls`, `workspace link`, `workspace relink`, `workspace doctor`, `workspace update`, `workspace open` | Set up local views over linked repos or folders |
+| **Shared context (beta)** | `context-store setup`, `context-store register`, `context-store unregister`, `context-store remove`, `context-store list`, `context-store doctor`, `initiative create`, `initiative show`, `initiative list` | Manage local context-store registrations and durable initiative context |
 | **Browsing** | `list`, `view`, `show` | Explore changes and specs |
 | **Validation** | `validate` | Check changes and specs for issues |
 | **Lifecycle** | `archive` | Finalize completed changes |
-| **Workflow** | `status`, `instructions`, `templates`, `schemas` | Artifact-driven workflow support |
+| **Workflow** | `new change`, `set change`, `status`, `instructions`, `templates`, `schemas` | Artifact-driven workflow support |
 | **Schemas** | `schema init`, `schema fork`, `schema validate`, `schema which` | Create and manage custom workflows |
 | **Config** | `config` | View and modify settings |
 | **Utility** | `feedback`, `completion` | Feedback and shell integration |
@@ -46,6 +48,22 @@ These commands support `--json` output for programmatic use by AI agents and scr
 | `anchorspec instructions` | Get next steps | `--json` for agent instructions |
 | `anchorspec templates` | Find template paths | `--json` for path resolution |
 | `anchorspec schemas` | List available schemas | `--json` for schema discovery |
+| `anchorspec workspace setup --no-interactive` | Create a workspace with explicit inputs | `--json` for structured setup output |
+| `anchorspec workspace list` | Browse known workspaces | `--json` for typed workspace objects |
+| `anchorspec workspace link` | Link a repo or folder | `--json` for structured link output |
+| `anchorspec workspace relink` | Repair a linked path | `--json` for structured link output |
+| `anchorspec workspace doctor` | Check one workspace | `--json` for structured status output |
+| `anchorspec workspace update` | Refresh workspace-local guidance and agent skills | `--tools` selects agents; profile selects workflows |
+| `anchorspec context-store setup <id>` | Create a local context store | `--json` with explicit inputs for structured setup output |
+| `anchorspec context-store register <path>` | Register an existing context store | `--json` for structured registration output |
+| `anchorspec context-store unregister <id>` | Forget a local context-store registration | `--json` for structured cleanup output |
+| `anchorspec context-store remove <id>` | Delete a registered local context-store folder | `--yes --json` for non-interactive deletion |
+| `anchorspec context-store list` | Browse registered context stores | `--json` for structured registrations |
+| `anchorspec context-store doctor` | Check local store setup | `--json` for structured diagnostics |
+| `anchorspec initiative list` | Browse shared initiatives | `--json` for structured initiative records |
+| `anchorspec initiative show <id>` | Resolve an initiative | `--json` for canonical paths and metadata |
+| `anchorspec new change <id>` | Create repo-local change scaffolding | `--json`, plus `--initiative` for shared coordination links |
+| `anchorspec set change <id>` | Update checked-in change metadata | `--json`, plus `--initiative` for shared coordination links |
 
 ---
 
@@ -67,7 +85,7 @@ These options work with all commands:
 
 Initialize AnchorSpec in your project. Creates the folder structure and configures AI tool integrations.
 
-Default behavior uses global config defaults: profile `core`, delivery `both`, workflows `propose, explore, apply, archive`.
+Default behavior uses global config defaults: profile `core`, delivery `both`, workflows `propose, explore, apply, sync, archive`.
 
 ```
 anchorspec init [path] [options]
@@ -89,7 +107,7 @@ anchorspec init [path] [options]
 
 `--profile custom` uses whatever workflows are currently selected in global config (`anchorspec config profile`).
 
-**Supported tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `claude`, `cline`, `codex`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `kilocode`, `kiro`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `windsurf`
+**Supported tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `opencode`, `pi`, `qoder`, `lingma`, `qwen`, `roocode`, `trae`, `windsurf`
 
 **Examples:**
 
@@ -156,6 +174,321 @@ anchorspec update [path] [options]
 npm update anchorspec
 anchorspec update
 ```
+
+---
+
+## Workspace Commands
+
+Workspace commands are in beta. The local-view model below is the current direction, but external automation, integrations, and long-lived workflows should still treat command behavior, state files, and JSON output as evolving.
+
+Coordination workspaces are machine-local views over linked repos or folders. Workspace visibility is not change commitment: link the repos or folders AnchorSpec should know about, then create changes when you are ready to plan specific work.
+
+### `anchorspec workspace setup`
+
+Create a workspace in the standard AnchorSpec workspace location and link at least one existing repo or folder.
+
+```bash
+anchorspec workspace setup [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--name <name>` | Workspace name. Names must be kebab-case |
+| `--link <path>` | Link an existing repo or folder and infer the link name from the folder name |
+| `--link <name>=<path>` | Link an existing repo or folder with an explicit link name |
+| `--opener <id>` | Store a preferred opener during non-interactive setup: `codex-cli`, `claude`, `github-copilot`, or `editor` |
+| `--tools <tools>` | Install workspace-local AnchorSpec skills for agents. Use `all`, `none`, or comma-separated tool IDs |
+| `--no-interactive` | Disable prompts; requires `--name` and at least one `--link` |
+| `--json` | Output JSON; requires `--no-interactive` |
+
+**Examples:**
+
+```bash
+anchorspec workspace setup
+anchorspec workspace setup --no-interactive --name platform --link /repos/api --link web=/repos/web
+anchorspec workspace setup --no-interactive --name platform --link /repos/api --opener codex-cli
+anchorspec workspace setup --no-interactive --name platform --link /repos/api --tools codex,claude
+anchorspec workspace setup --no-interactive --json --name checkout --link /repos/platform/apps/checkout
+```
+
+Interactive setup asks for a preferred opener and can install workspace-local AnchorSpec skills for selected agents. Non-interactive setup stores a preferred opener only when `--opener` is provided; otherwise `workspace open` prompts later in interactive terminals when a supported opener is available, or asks scripts to pass `--agent <tool>` or `--editor`.
+
+Workspace skill installation is skills-only in this beta slice: even if global delivery is `commands` or `both`, workspace setup writes agent skill folders in the workspace root and does not create slash command files. The active global profile chooses which workflow skills are installed; `--tools` chooses which agents receive them. If `--tools` is omitted in non-interactive setup, no skills are installed and `workspace update --tools <ids>` can add them later.
+
+### `anchorspec workspace list`
+
+List known AnchorSpec workspaces from the local registry.
+
+```bash
+anchorspec workspace list [--json]
+anchorspec workspace ls [--json]
+```
+
+The list shows each workspace location and linked repos or folders. Stale registry records are reported but not changed.
+
+### `anchorspec workspace link`
+
+Record an existing repo or folder for one workspace.
+
+```bash
+anchorspec workspace link [name] <path> [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--workspace <name>` | Select a known workspace from the local registry |
+| `--json` | Output JSON |
+| `--no-interactive` | Disable workspace picker prompts |
+
+**Examples:**
+
+```bash
+anchorspec workspace link /repos/api
+anchorspec workspace link api-service /repos/api
+anchorspec workspace link --workspace platform /repos/platform/apps/checkout
+```
+
+The path must already exist. Relative paths are resolved against the command's current directory before AnchorSpec stores the verified absolute path in machine-local workspace state. Linked paths can be full repos, packages, services, apps, or folders without repo-local `anchorspec/` state.
+
+### `anchorspec workspace relink`
+
+Repair or change the local path for an existing link.
+
+```bash
+anchorspec workspace relink <name> <path> [options]
+```
+
+The path must already exist. Relink updates only the machine-local path for the stable link name.
+
+### `anchorspec workspace doctor`
+
+Check what one workspace can resolve on the current machine.
+
+```bash
+anchorspec workspace doctor [options]
+```
+
+Doctor shows the workspace location, linked repos or folders, missing paths, repo-local specs paths when present, and suggested fixes. JSON output also includes the workspace planning path for compatibility. It reports issues only; it does not repair them automatically.
+
+Commands that need one workspace use the current workspace when run from inside a workspace folder or subdirectory. From elsewhere, pass `--workspace <name>`, select from the picker in an interactive terminal, or rely on the only known workspace when exactly one exists. In `--json` or `--no-interactive` mode, ambiguous selection fails with a structured status error and suggests `--workspace <name>`.
+
+JSON responses use typed objects plus `status` arrays. Primary data lives in `workspace`, `workspaces`, or `link`; warnings and errors live in `status`.
+
+### `anchorspec workspace update`
+
+Refresh workspace-local AnchorSpec guidance and agent skills.
+
+```bash
+anchorspec workspace update [name] [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--workspace <name>` | Select a known workspace from the local registry |
+| `--tools <tools>` | Select agents for workspace skills. Use `all`, `none`, or comma-separated tool IDs |
+| `--json` | Output JSON |
+| `--no-interactive` | Disable workspace picker prompts |
+
+**Examples:**
+
+```bash
+anchorspec workspace update
+anchorspec workspace update platform
+anchorspec workspace update --workspace platform --tools codex,claude
+anchorspec workspace update --workspace platform --tools none
+```
+
+`workspace update` refreshes the generated workspace guidance block and local open surface. For agent skills, it reuses the stored workspace skill agent selection when `--tools` is omitted. Passing `--tools` replaces that stored selection. It refreshes only AnchorSpec-managed workflow skill directories in the workspace root, removes deselected managed workflow skills, and leaves linked repos and folders untouched.
+
+Running `anchorspec update` from inside a workspace redirects to `anchorspec workspace update`; run `anchorspec update` inside repo-local projects when you want repo-owned tool files updated.
+
+### `anchorspec workspace open`
+
+Open a workspace working set through the stored preferred opener, a one-session agent override, or VS Code editor mode.
+
+```bash
+anchorspec workspace open [name] [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--workspace <name>` | Alias for the positional workspace name |
+| `--initiative <id>` | Open an initiative as a local workspace view. Accepts `<id>` or `<store>/<id>` |
+| `--store <id>` | Registered context store id for `--initiative` |
+| `--store-path <path>` | Existing local context store root for `--initiative` |
+| `--agent <tool>` | One-session agent override: `codex-cli`, `claude`, or `github-copilot` |
+| `--editor` | Open the maintained VS Code workspace file as a normal editor workspace |
+| `--no-interactive` | Disable workspace and opener picker prompts |
+
+**Examples:**
+
+```bash
+anchorspec workspace open
+anchorspec workspace open platform
+anchorspec workspace open platform --agent github-copilot
+anchorspec workspace open --agent codex-cli
+anchorspec workspace open --editor
+anchorspec workspace open --initiative billing-launch --store platform
+anchorspec workspace open --initiative platform/billing-launch
+```
+
+`workspace open` uses the current workspace when run inside one, auto-selects the only known workspace when run elsewhere, and asks the user to choose when multiple workspaces are known. `--agent` and `--editor` do not change the stored preferred opener. Passing both opener overrides is an error; choose either `--agent <tool>` or `--editor`.
+
+When `--initiative` is used, AnchorSpec prepares or selects a private local workspace view for that initiative. Registry-selected stores are stored by id; `--store-path` stores a runtime-local path selector because workspace views are private local state.
+
+AnchorSpec maintains `<workspace-name>.code-workspace` at the workspace root for VS Code editor and GitHub Copilot-in-VS-Code opens. That file is machine-local workspace view state.
+
+The maintained VS Code workspace lists valid linked repos or folders first, then initiative context when attached, then the AnchorSpec workspace files. VS Code displays those entries as a multi-root workspace.
+
+Root workspace open makes linked repos or folders visible for exploration and context. Implementation edits should start only after an explicit user request and a normal AnchorSpec implementation workflow.
+
+---
+
+## Shared Context Commands
+
+Context stores and initiatives are beta coordination surfaces. A context store is a local registration for durable shared context, usually a Git-backed folder or clone. An initiative is shared coordination context inside a context store; repo-local changes can link to it without copying the shared plan into every repo.
+
+### `anchorspec context-store setup`
+
+Create and register a local context store. With no arguments in a terminal,
+AnchorSpec guides the user through setup. Agents and scripts should pass explicit
+inputs and use `--json`.
+
+```bash
+anchorspec context-store setup [id] [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--path <path>` | Context store folder path; defaults to AnchorSpec's managed local data directory |
+| `--init-git` | Initialize a Git repository in the context store |
+| `--no-init-git` | Do not initialize a Git repository |
+| `--json` | Output JSON |
+
+When `--path` is omitted, setup creates the store under `getGlobalDataDir()/context-stores/<id>`: `$XDG_DATA_HOME/anchorspec/context-stores/<id>` when `XDG_DATA_HOME` is set, or `~/.local/share/anchorspec/context-stores/<id>` on Unix-style fallbacks. Pass `--path` when you want the store in a visible clone or team-specific folder.
+
+Examples:
+
+```bash
+anchorspec context-store setup
+anchorspec context-store setup team-context
+anchorspec context-store setup team-context --path /repos/team-context --no-init-git
+anchorspec context-store setup team-context --json --no-init-git
+```
+
+### `anchorspec context-store register`
+
+Register an existing local context store folder.
+
+```bash
+anchorspec context-store register [path] [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--id <id>` | Context store id; defaults to store metadata or folder name |
+| `--json` | Output JSON |
+
+### `anchorspec context-store unregister`
+
+Forget a local context-store registration without deleting files.
+
+```bash
+anchorspec context-store unregister <id> [--json]
+```
+
+Use this when a store was moved, cloned somewhere else, or should no longer be
+shown by AnchorSpec on this machine.
+
+### `anchorspec context-store remove`
+
+Forget a local context-store registration and delete its local folder.
+
+```bash
+anchorspec context-store remove <id> [--yes] [--json]
+```
+
+`remove` shows the exact folder before deleting in an interactive terminal.
+Agents, scripts, and JSON callers must pass `--yes` to confirm deletion.
+AnchorSpec refuses to delete a folder that does not contain matching
+context-store metadata.
+
+### `anchorspec context-store list`
+
+List locally registered context stores.
+
+```bash
+anchorspec context-store list [--json]
+anchorspec context-store ls [--json]
+```
+
+### `anchorspec context-store doctor`
+
+Check local context-store registration, metadata, and Git presence.
+
+```bash
+anchorspec context-store doctor [id] [--json]
+```
+
+Doctor is diagnostic-only; it reports missing roots, metadata mismatches, and invalid local registry state without modifying the store.
+
+### `anchorspec initiative create`
+
+Create an initiative in a context store.
+
+```bash
+anchorspec initiative create <id> --title <title> --summary <summary> [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--store <id>` | Context store id from the local registry |
+| `--store-path <path>` | Existing local context store root |
+| `--title <title>` | Initiative title |
+| `--summary <summary>` | Initiative summary |
+| `--json` | Output JSON |
+
+### `anchorspec initiative list`
+
+List initiatives. Without a selector, this searches all registered context stores and reports partial-read warnings in `status`.
+
+```bash
+anchorspec initiative list [options]
+anchorspec initiative ls [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--store <id>` | List one registered context store |
+| `--store-path <path>` | List one existing local context store root |
+| `--json` | Output JSON |
+
+### `anchorspec initiative show`
+
+Resolve an initiative and print its canonical location.
+
+```bash
+anchorspec initiative show <id> [options]
+anchorspec initiative show <store>/<id> [options]
+```
+
+Without `--store`, AnchorSpec searches registered context stores. If the same initiative id exists in multiple stores, pass `--store <id>` or use the `<store>/<id>` form.
 
 ---
 
@@ -402,6 +735,53 @@ anchorspec archive update-ci-config --skip-specs
 ## Workflow Commands
 
 These commands support the artifact-driven ANSX workflow. They're useful for both humans checking progress and agents determining next steps.
+
+### `anchorspec new change`
+
+Create a repo-local change directory and optional checked-in metadata.
+
+```bash
+anchorspec new change <name> [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--description <text>` | Description to add to `README.md` |
+| `--goal <text>` | Workspace product goal to store with the change |
+| `--areas <names>` | Comma-separated affected workspace link names |
+| `--initiative <id>` | Link the repo-local change to an initiative |
+| `--store <id>` | Context store id for `--initiative` |
+| `--store-path <path>` | Existing local context store root for `--initiative` |
+| `--schema <name>` | Workflow schema to use |
+| `--json` | Output JSON |
+
+Examples:
+
+```bash
+anchorspec new change add-billing-api --initiative billing-launch --store platform
+anchorspec new change add-billing-api --initiative platform/billing-launch --json
+```
+
+### `anchorspec set change`
+
+Update checked-in repo-local change metadata without recreating the change.
+
+```bash
+anchorspec set change <name> [options]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--initiative <id>` | Link the repo-local change to an initiative |
+| `--store <id>` | Context store id for `--initiative` |
+| `--store-path <path>` | Existing local context store root for `--initiative` |
+| `--json` | Output JSON |
+
+`set change --initiative` is idempotent when the requested link already exists and refuses to replace a different existing initiative link.
 
 ### `anchorspec status`
 
@@ -818,9 +1198,9 @@ anchorspec config profile core
 - Keep current settings (exit)
 
 If you keep current settings, no changes are written and no update prompt is shown.
-If there are no config changes but the current project files are out of sync with your global profile/delivery, AnchorSpec will show a warning and suggest running `anchorspec update`.
+If there are no config changes but the current project or workspace files are out of sync with your global profile/delivery, AnchorSpec will show a warning and suggest `anchorspec update` for repo-local projects or `anchorspec workspace update` for workspace-local guidance and skills.
 Pressing `Ctrl+C` also cancels the flow cleanly (no stack trace) and exits with code `130`.
-In the workflow checklist, `[x]` means the workflow is selected in global config. To apply those selections to project files, run `anchorspec update` (or choose `Apply changes to this project now?` when prompted inside a project).
+In the workflow checklist, `[x]` means the workflow is selected in global config. To apply those selections to project files, run `anchorspec update` (or choose `Apply changes to this project now?` when prompted inside a project). From inside a workspace, use `anchorspec workspace update` to refresh workspace-local guidance and skills; this remains skills-only for generated agent workflow files and does not generate workspace slash commands.
 
 **Interactive examples:**
 

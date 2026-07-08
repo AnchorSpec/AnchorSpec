@@ -9,7 +9,7 @@ AnchorSpec helps you and your AI coding assistant agree on what to build before 
 **Default quick path (core profile):**
 
 ```text
-/ansx:propose ──► /ansx:apply ──► /ansx:archive
+/ansx:propose ──► /ansx:apply ──► /ansx:sync ──► /ansx:archive
 ```
 
 **Expanded path (custom workflow selection):**
@@ -18,7 +18,7 @@ AnchorSpec helps you and your AI coding assistant agree on what to build before 
 /ansx:new ──► /ansx:ff or /ansx:continue ──► /ansx:apply ──► /ansx:verify ──► /ansx:archive
 ```
 
-The default global profile is `core`, which includes `propose`, `explore`, `apply`, and `archive`. You can enable the expanded workflow commands with `anchorspec config profile` and then `anchorspec update`.
+The default global profile is `core`, which includes `propose`, `explore`, `apply`, `sync`, and `archive`. You can enable the expanded workflow commands with `anchorspec config profile` and then `anchorspec update`.
 
 ## What AnchorSpec Creates
 

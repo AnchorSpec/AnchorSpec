@@ -1,5 +1,7 @@
 # ANSX Workflow
 
+> Feedback welcome on [Discord](https://discord.gg/YctCnvvshC).
+
 ## What Is It?
 
 ANSX is now the standard workflow for AnchorSpec.
@@ -63,7 +65,7 @@ anchorspec init
 
 This creates skills in `.claude/skills/` (or equivalent) that AI coding assistants auto-detect.
 
-By default, AnchorSpec uses the `core` workflow profile (`propose`, `explore`, `apply`, `archive`). If you want the expanded workflow commands (`new`, `continue`, `ff`, `verify`, `sync`, `bulk-archive`, `onboard`), configure them with `anchorspec config profile` and apply with `anchorspec update`.
+By default, AnchorSpec uses the `core` workflow profile (`propose`, `explore`, `apply`, `sync`, `archive`). If you want the expanded workflow commands (`new`, `continue`, `ff`, `verify`, `bulk-archive`, `onboard`), configure them with `anchorspec config profile` and apply with `anchorspec update`.
 
 During setup, you'll be prompted to create a **project config** (`anchorspec/config.yaml`). This is optional but recommended.
 
@@ -162,7 +164,7 @@ rules:
 | `/ansx:ff` | Fast-forward planning artifacts (expanded workflow) |
 | `/ansx:apply` | Implement tasks, updating artifacts as needed |
 | `/ansx:verify` | Validate implementation against artifacts (expanded workflow) |
-| `/ansx:sync` | Sync delta specs to main (expanded workflow, optional) |
+| `/ansx:sync` | Sync delta specs to main (default workflow, optional) |
 | `/ansx:archive` | Archive when done |
 | `/ansx:bulk-archive` | Archive multiple completed changes (expanded workflow) |
 | `/ansx:onboard` | Guided walkthrough of an end-to-end change (expanded workflow) |
@@ -311,7 +313,7 @@ Think of it like git branches:
 ## Architecture Deep Dive
 
 This section explains how ANSX works under the hood and how it compares to the legacy workflow.
-Examples in this section use the expanded command set (`new`, `continue`, etc.); default `core` users can map the same flow to `propose → apply → archive`.
+Examples in this section use the expanded command set (`new`, `continue`, etc.); default `core` users can map the same flow to `propose → apply → sync → archive`.
 
 ### Philosophy: Phases vs Actions
 
@@ -654,4 +656,4 @@ anchorspec schema validate my-workflow
 
 This is rough. That's intentional — we're learning what works.
 
-Found a bug? Have ideas? Open an issue on [GitHub](https://github.com/AnchorSpec/AnchorSpec/issues).
+Found a bug? Have ideas? Join us on [Discord](https://discord.gg/YctCnvvshC) or open an issue on [GitHub](https://github.com/AnchorSpec/AnchorSpec/issues).

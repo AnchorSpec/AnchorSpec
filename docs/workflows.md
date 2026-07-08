@@ -36,17 +36,18 @@ New installs default to `core`, which provides:
 - `/ansx:propose`
 - `/ansx:explore`
 - `/ansx:apply`
+- `/ansx:sync`
 - `/ansx:archive`
 
 Typical flow:
 
 ```text
-/ansx:propose ──► /ansx:apply ──► /ansx:archive
+/ansx:propose ──► /ansx:apply ──► /ansx:sync ──► /ansx:archive
 ```
 
 ### Expanded/Full Workflow (custom selection)
 
-If you want explicit scaffold-and-build commands (`/ansx:new`, `/ansx:continue`, `/ansx:ff`, `/ansx:verify`, `/ansx:sync`, `/ansx:bulk-archive`, `/ansx:onboard`), enable them with:
+If you want explicit scaffold-and-build commands (`/ansx:new`, `/ansx:continue`, `/ansx:ff`, `/ansx:verify`, `/ansx:bulk-archive`, `/ansx:onboard`), enable them with:
 
 ```bash
 anchorspec config profile

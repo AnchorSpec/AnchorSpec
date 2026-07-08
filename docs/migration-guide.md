@@ -8,7 +8,7 @@ ANSX replaces the old phase-locked workflow with a fluid, action-based approach.
 
 | Aspect | Legacy | ANSX |
 |--------|--------|------|
-| **Commands** | `/anchorspec:proposal`, `/anchorspec:apply`, `/anchorspec:archive` | Default: `/ansx:propose`, `/ansx:apply`, `/ansx:archive` (expanded workflow commands optional) |
+| **Commands** | `/anchorspec:proposal`, `/anchorspec:apply`, `/anchorspec:archive` | Default: `/ansx:propose`, `/ansx:apply`, `/ansx:sync`, `/ansx:archive` (expanded workflow commands optional) |
 | **Workflow** | Create all artifacts at once | Create incrementally or all at once—your choice |
 | **Going back** | Awkward phase gates | Natural—update any artifact anytime |
 | **Customization** | Fixed structure | Schema-driven, fully hackable |
@@ -84,7 +84,7 @@ Don't worry about getting it perfect. We're still learning what works best here,
 
 Both `anchorspec init` and `anchorspec update` detect legacy files and guide you through the same cleanup process. Use whichever fits your situation:
 
-- New installs default to profile `core` (`propose`, `explore`, `apply`, `archive`).
+- New installs default to profile `core` (`propose`, `explore`, `apply`, `sync`, `archive`).
 - Migrated installs preserve your previously installed workflows by writing a `custom` profile when needed.
 
 ### Using `anchorspec init`
@@ -297,7 +297,7 @@ Command availability is profile-dependent:
 | `/ansx:continue` | Create the next artifact (one at a time) |
 | `/ansx:ff` | Fast-forward—create planning artifacts at once |
 | `/ansx:verify` | Validate implementation matches specs |
-| `/ansx:sync` | Preview/spec-merge without archiving |
+| `/ansx:sync` | Merge delta specs into main specs |
 | `/ansx:bulk-archive` | Archive multiple changes at once |
 | `/ansx:onboard` | Guided end-to-end onboarding workflow |
 
@@ -561,6 +561,7 @@ project/
 │       ├── anchorspec-propose/     # default core profile
 │       ├── anchorspec-explore/
 │       ├── anchorspec-apply-change/
+│       ├── anchorspec-sync-specs/
 │       └── ...                   # expanded profile adds new/continue/ff/etc.
 ├── CLAUDE.md                     # AnchorSpec markers removed, your content preserved
 └── AGENTS.md                     # AnchorSpec markers removed, your content preserved
@@ -590,5 +591,6 @@ project/
 
 ## Getting Help
 
+- **Discord**: [discord.gg/YctCnvvshC](https://discord.gg/YctCnvvshC)
 - **GitHub Issues**: [github.com/AnchorSpec/AnchorSpec/issues](https://github.com/AnchorSpec/AnchorSpec/issues)
 - **Documentation**: [docs/ansx.md](ansx.md) for the full ANSX reference

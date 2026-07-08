@@ -26,6 +26,9 @@ yarn global add anchorspec@latest
 
 ### bun
 
+Bun can install AnchorSpec globally, but AnchorSpec currently runs on Node.js.
+You still need Node.js 20.19.0 or higher available on `PATH`.
+
 ```bash
 bun add -g anchorspec@latest
 ```

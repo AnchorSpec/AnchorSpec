@@ -13,9 +13,10 @@ By default, AnchorSpec uses the `core` profile, which includes:
 - `propose`
 - `explore`
 - `apply`
+- `sync`
 - `archive`
 
-You can enable expanded workflows (`new`, `continue`, `ff`, `verify`, `sync`, `bulk-archive`, `onboard`) via `anchorspec config profile`, then run `anchorspec update`.
+You can enable expanded workflows (`new`, `continue`, `ff`, `verify`, `bulk-archive`, `onboard`) via `anchorspec config profile`, then run `anchorspec update`.
 
 ## Tool Directory Reference
 
@@ -40,7 +41,10 @@ You can enable expanded workflows (`new`, `continue`, `ff`, `verify`, `sync`, `b
 | iFlow (`iflow`) | `.iflow/skills/anchorspec-*/SKILL.md` | `.iflow/commands/ansx-<id>.md` |
 | Junie (`junie`) | `.junie/skills/anchorspec-*/SKILL.md` | `.junie/commands/ansx-<id>.md` |
 | Kilo Code (`kilocode`) | `.kilocode/skills/anchorspec-*/SKILL.md` | `.kilocode/workflows/ansx-<id>.md` |
+| Kimi CLI (`kimi`) | `.kimi/skills/anchorspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/skill:anchorspec-*` invocations) |
 | Kiro (`kiro`) | `.kiro/skills/anchorspec-*/SKILL.md` | `.kiro/prompts/ansx-<id>.prompt.md` |
+| Lingma (`lingma`) | `.lingma/skills/anchorspec-*/SKILL.md` | `.lingma/commands/ansx/<id>.md` |
+| Mistral Vibe (`vibe`) | `.vibe/skills/anchorspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/anchorspec-*` invocations) |
 | OpenCode (`opencode`) | `.opencode/skills/anchorspec-*/SKILL.md` | `.opencode/commands/ansx-<id>.md` |
 | Pi (`pi`) | `.pi/skills/anchorspec-*/SKILL.md` | `.pi/prompts/ansx-<id>.md` |
 | Qoder (`qoder`) | `.qoder/skills/anchorspec-*/SKILL.md` | `.qoder/commands/ansx/<id>.md` |
@@ -71,13 +75,13 @@ anchorspec init --tools none
 anchorspec init --profile core
 ```
 
-**Available tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `forgecode`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kiro`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `windsurf`
+**Available tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `lingma`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `vibe`, `windsurf`
 
 ## Workflow-Dependent Installation
 
 AnchorSpec installs workflow artifacts based on selected workflows:
 
-- **Core profile (default):** `propose`, `explore`, `apply`, `archive`
+- **Core profile (default):** `propose`, `explore`, `apply`, `sync`, `archive`
 - **Custom selection:** any subset of all workflow IDs:
   `propose`, `explore`, `new`, `continue`, `apply`, `ff`, `sync`, `archive`, `bulk-archive`, `verify`, `onboard`
 
