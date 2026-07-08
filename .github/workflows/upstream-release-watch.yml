@@ -1,0 +1,61 @@
+name: Upstream release watch
+
+on:
+  schedule:
+    - cron: '17 13 * * *' # daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    if: github.repository == 'AnchorSpec/AnchorSpec'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare against latest upstream release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          latest_tag=$(gh api repos/Fission-AI/OpenSpec/releases/latest --jq '.tag_name')
+          latest_version="${latest_tag#v}"
+          current_version=$(node -p "require('./package.json').version" | cut -d. -f1-3)
+
+          echo "Upstream latest: $latest_version"
+          echo "AnchorSpec current: $current_version"
+
+          if [ "$latest_version" = "$current_version" ]; then
+            echo "Up to date."
+            exit 0
+          fi
+
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all \
+            --search "\"Mirror upstream $latest_tag\" in:title" --json number --jq 'length')
+          if [ "$existing" -gt 0 ]; then
+            echo "Tracking issue for $latest_tag already exists."
+            exit 0
+          fi
+
+          gh label create upstream-release --repo "$GITHUB_REPOSITORY" \
+            --color 5319e7 --description "Tracks mirroring an upstream OpenSpec release" --force
+
+          release_url="https://github.com/Fission-AI/OpenSpec/releases/tag/${latest_tag}"
+
+          # Single source of truth for the checklist itself lives in the issue
+          # template; substitute placeholders and strip its front matter.
+          body=$(sed \
+            -e "s|{{VERSION_TAG}}|$latest_tag|g" \
+            -e "s|{{VERSION}}|$latest_version|g" \
+            -e "s|{{RELEASE_URL}}|$release_url|g" \
+            -e "s|{{CURRENT_VERSION}}|$current_version|g" \
+            .github/ISSUE_TEMPLATE/release-checklist.md | sed '1{/^---$/!q};1,/^---$/d')
+
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "Release checklist: mirror upstream $latest_tag" \
+            --label upstream-release \
+            --body "$body"
