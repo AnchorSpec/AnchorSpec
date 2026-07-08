@@ -55,7 +55,7 @@ Workspace support is in beta. The local-view model below is the current directio
 
 The commands below provide the first setup flow for opening local views over linked repos or folders.
 
-Repo-local OpenSpec projects are the right default when one repo owns the planning, implementation, and archive flow. Some work spans several repos or folders. For that case, an OpenSpec coordination workspace is a machine-local view that keeps linked paths, opener state, and agent setup together.
+Repo-local AnchorSpec projects are the right default when one repo owns the planning, implementation, and archive flow. Some work spans several repos or folders. For that case, an AnchorSpec coordination workspace is a machine-local view that keeps linked paths, opener state, and agent setup together.
 
 The workspace mental model is:
 
@@ -76,16 +76,16 @@ getGlobalDataDir()/workspaces/<workspace-name>/
 └── <workspace-name>.code-workspace # Generated editor workspace file
 ```
 
-Repo-local OpenSpec state keeps the existing shape:
+Repo-local AnchorSpec state keeps the existing shape:
 
 ```text
 repo-root/
-└── openspec/
+└── anchorspec/
     ├── specs/
     └── changes/
 ```
 
-That distinction matters. The workspace folder is a local coordination surface for opening and inspecting linked repos or folders. Each repo's `openspec/` directory remains the home for repo-owned specs, repo-local changes, and implementation planning. Users do not need to run repo-local `openspec init` inside a workspace folder.
+That distinction matters. The workspace folder is a local coordination surface for opening and inspecting linked repos or folders. Each repo's `anchorspec/` directory remains the home for repo-owned specs, repo-local changes, and implementation planning. Users do not need to run repo-local `anchorspec init` inside a workspace folder.
 
 Stable link names are how a workspace refers to repos and folders. The private workspace record keeps names such as `api`, `web`, or `checkout` and maps them to this runtime's local paths.
 
@@ -113,7 +113,7 @@ context:
     id: billing-launch
 ```
 
-Linked paths can be full repos, folders inside a large monorepo, or other existing folders. They do not need repo-local `openspec/` state before they can participate in workspace planning. Later implementation, verify, or archive workflows may require more repo readiness, but planning visibility starts with the link.
+Linked paths can be full repos, folders inside a large monorepo, or other existing folders. They do not need repo-local `anchorspec/` state before they can participate in workspace planning. Later implementation, verify, or archive workflows may require more repo readiness, but planning visibility starts with the link.
 
 ```text
 multi-repo:
@@ -125,68 +125,68 @@ large monorepo:
   checkout -> /repos/platform/apps/checkout
 ```
 
-Managed workspaces live under the standard OpenSpec data directory:
+Managed workspaces live under the standard AnchorSpec data directory:
 
 ```text
 getGlobalDataDir()/workspaces
 ```
 
-That means `$XDG_DATA_HOME/openspec/workspaces` when `XDG_DATA_HOME` is set, `~/.local/share/openspec/workspaces` on Unix-style fallback, and `%LOCALAPPDATA%\openspec\workspaces` on native Windows fallback. Native Windows shells, PowerShell, and WSL2 each keep the path strings for the runtime running OpenSpec. This foundation does not translate between `D:\repo`, `/mnt/d/repo`, and UNC WSL paths.
+That means `$XDG_DATA_HOME/anchorspec/workspaces` when `XDG_DATA_HOME` is set, `~/.local/share/anchorspec/workspaces` on Unix-style fallback, and `%LOCALAPPDATA%\anchorspec\workspaces` on native Windows fallback. Native Windows shells, PowerShell, and WSL2 each keep the path strings for the runtime running AnchorSpec. This foundation does not translate between `D:\repo`, `/mnt/d/repo`, and UNC WSL paths.
 
-OpenSpec can still read older beta workspace roots as compatibility inputs, but managed workspaces now use the root `workspace.yaml` record above. The workspace folder remains authoritative for its own private local view.
+AnchorSpec can still read older beta workspace roots as compatibility inputs, but managed workspaces now use the root `workspace.yaml` record above. The workspace folder remains authoritative for its own private local view.
 
-Workspace visibility is not change commitment. Set up a workspace when OpenSpec should know which repos or folders are relevant; create a change later when you are ready to plan a feature, fix, project, or other piece of work.
+Workspace visibility is not change commitment. Set up a workspace when AnchorSpec should know which repos or folders are relevant; create a change later when you are ready to plan a feature, fix, project, or other piece of work.
 
 Useful commands:
 
 ```bash
 # Guided setup
-openspec workspace setup
+anchorspec workspace setup
 
 # Automation-friendly setup
-openspec workspace setup --no-interactive --name platform --link /repos/api --link web=/repos/web
-openspec workspace setup --no-interactive --name platform --link /repos/api --opener codex-cli
+anchorspec workspace setup --no-interactive --name platform --link /repos/api --link web=/repos/web
+anchorspec workspace setup --no-interactive --name platform --link /repos/api --opener codex-cli
 
 # See known workspaces from the local registry
-openspec workspace list
-openspec workspace ls
+anchorspec workspace list
+anchorspec workspace ls
 
 # Add or repair links for the selected workspace
-openspec workspace link /repos/api
-openspec workspace link api-service /repos/api
-openspec workspace relink api-service /new/path/to/api
+anchorspec workspace link /repos/api
+anchorspec workspace link api-service /repos/api
+anchorspec workspace relink api-service /new/path/to/api
 
 # Check what this machine can resolve
-openspec workspace doctor
-openspec workspace doctor --workspace platform
+anchorspec workspace doctor
+anchorspec workspace doctor --workspace platform
 
 # Refresh workspace-local guidance and agent skills
-openspec workspace update
-openspec workspace update --workspace platform --tools codex,claude
+anchorspec workspace update
+anchorspec workspace update --workspace platform --tools codex,claude
 
 # Open the linked working set
-openspec workspace open
-openspec workspace open platform --agent github-copilot
-openspec workspace open --editor
+anchorspec workspace open
+anchorspec workspace open platform --agent github-copilot
+anchorspec workspace open --editor
 
 # Open an initiative as a local workspace view
-openspec workspace open --initiative billing-launch --store platform
-openspec workspace open --initiative billing-launch --store-path /repos/platform-context
+anchorspec workspace open --initiative billing-launch --store platform
+anchorspec workspace open --initiative billing-launch --store-path /repos/platform-context
 ```
 
-`workspace setup` always creates the workspace in the standard workspace location, records it in the local registry, shows the workspace location, and requires at least one linked repo or folder. Interactive setup asks for a preferred opener and can install OpenSpec skills for selected agents. Non-interactive setup stores one only when `--opener codex-cli`, `--opener claude`, `--opener github-copilot`, or `--opener editor` is provided.
+`workspace setup` always creates the workspace in the standard workspace location, records it in the local registry, shows the workspace location, and requires at least one linked repo or folder. Interactive setup asks for a preferred opener and can install AnchorSpec skills for selected agents. Non-interactive setup stores one only when `--opener codex-cli`, `--opener claude`, `--opener github-copilot`, or `--opener editor` is provided.
 
-Workspace skills are installed only in the workspace root. The active global profile selects which workflow skills are generated; `--tools` selects which agents receive them. Workspace setup and update do not create slash command files even when global delivery includes commands. Run `openspec workspace update` to refresh workspace-local guidance and add, refresh, or remove managed workspace-local skill directories without editing linked repos or folders.
+Workspace skills are installed only in the workspace root. The active global profile selects which workflow skills are generated; `--tools` selects which agents receive them. Workspace setup and update do not create slash command files even when global delivery includes commands. Run `anchorspec workspace update` to refresh workspace-local guidance and add, refresh, or remove managed workspace-local skill directories without editing linked repos or folders.
 
-OpenSpec also maintains root workspace open files: an OpenSpec-managed guidance block in `AGENTS.md` and a machine-local `<workspace-name>.code-workspace` file for VS Code and GitHub Copilot-in-VS-Code opens. A managed workspace is not a repo, so OpenSpec does not create a default workspace `.gitignore` or a default workspace-level `changes/` directory.
+AnchorSpec also maintains root workspace open files: an AnchorSpec-managed guidance block in `AGENTS.md` and a machine-local `<workspace-name>.code-workspace` file for VS Code and GitHub Copilot-in-VS-Code opens. A managed workspace is not a repo, so AnchorSpec does not create a default workspace `.gitignore` or a default workspace-level `changes/` directory.
 
-The maintained VS Code workspace lists valid linked repos or folders first, then initiative context when attached, then the OpenSpec workspace files. VS Code displays those entries as a multi-root workspace.
+The maintained VS Code workspace lists valid linked repos or folders first, then initiative context when attached, then the AnchorSpec workspace files. VS Code displays those entries as a multi-root workspace.
 
 `workspace open` opens the linked working set with the stored preferred opener unless `--agent <tool>` or `--editor` is passed for that one session. Passing both opener overrides is an error. Root workspace open makes linked repos and folders visible for exploration and context; implementation starts after the user explicitly asks for implementation work.
 
-`workspace link` and `workspace relink` record existing folders only; they do not create, copy, move, initialize, or edit the linked repo or folder. After a successful link or relink, OpenSpec refreshes the managed guidance and VS Code workspace file.
+`workspace link` and `workspace relink` record existing folders only; they do not create, copy, move, initialize, or edit the linked repo or folder. After a successful link or relink, AnchorSpec refreshes the managed guidance and VS Code workspace file.
 
-Workspace commands that need one workspace can run from anywhere with `--workspace <name>`. If you run them inside a workspace folder or subdirectory, OpenSpec uses that current workspace. If several known workspaces are available and you do not pass `--workspace <name>`, human commands show a picker; `--json` and `--no-interactive` fail with a structured status error instead of prompting.
+Workspace commands that need one workspace can run from anywhere with `--workspace <name>`. If you run them inside a workspace folder or subdirectory, AnchorSpec uses that current workspace. If several known workspaces are available and you do not pass `--workspace <name>`, human commands show a picker; `--json` and `--no-interactive` fail with a structured status error instead of prompting.
 
 Direct workspace commands support JSON output for scripts. JSON responses keep primary data in `workspace`, `workspaces`, or `link` objects and report warnings or errors in `status` arrays. Healthy objects use `status: []`.
 
