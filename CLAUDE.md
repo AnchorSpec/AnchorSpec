@@ -92,6 +92,12 @@ Org-level config (Settings → Secrets and variables → Actions, org scope, vis
 
 `major.minor.patch` **always** tracks the upstream OpenSpec version being merged — never bump these three segments independently of an upstream release. If AnchorSpec needs to publish or republish a version without a corresponding upstream bump (e.g. a fork-only CI/infra fix that needs a new npm release), use a fourth segment instead: `x.x.x.1`, `x.x.x.2`, etc. Drop the fourth segment again on the next upstream merge — it resets to plain `major.minor.patch` once upstream moves forward, since alignment with upstream numbering takes priority over a continuous 4th-segment counter.
 
+**Publish parity with upstream is mandatory, not opportunistic.** Every upstream OpenSpec release gets a corresponding AnchorSpec release published to npm, at minimum as a 1:1 mirror (merge + republish, even with zero AnchorSpec-specific changes beyond the standing telemetry removal). Don't let AnchorSpec's published version lag behind upstream indefinitely — an unmirrored upstream release is a gap to close, not a backlog item to defer.
+
+### Tracking new upstream releases
+
+`.github/workflows/upstream-release-watch.yml` runs on a schedule, compares AnchorSpec's `package.json` version against the latest [Fission-AI/OpenSpec release](https://github.com/Fission-AI/OpenSpec/releases), and opens a tracking Issue (labeled `upstream-release`) when AnchorSpec is behind and no open issue for that version already exists. The issue's checklist covers the merge, version bump, changeset, CI, npm publish, **and** copying rebranded docs into the [www repo](https://github.com/AnchorSpec/www) (see "Documentation" above) — the docs/www step is easy to forget since it's a separate repo. This is detection + tracking only; the merge and publish are still done by hand. Full automation (auto-merge, auto-publish) is a future step once the manual process is well-worn.
+
 ## Fork Strategy & Future Direction
 
 **Current priority: upstream mergeability.** This fork is in early evaluation. Minimize divergence from OpenSpec — telemetry removal only. Publishing to npm as `anchorspec` is acceptable if needed (just maintenance overhead). Do not introduce feature changes.

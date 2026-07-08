@@ -1,0 +1,65 @@
+name: Upstream release watch
+
+on:
+  schedule:
+    - cron: '17 13 * * *' # daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    if: github.repository == 'AnchorSpec/AnchorSpec'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare against latest upstream release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          latest_tag=$(gh api repos/Fission-AI/OpenSpec/releases/latest --jq '.tag_name')
+          latest_version="${latest_tag#v}"
+          current_version=$(node -p "require('./package.json').version" | cut -d. -f1-3)
+
+          echo "Upstream latest: $latest_version"
+          echo "AnchorSpec current: $current_version"
+
+          if [ "$latest_version" = "$current_version" ]; then
+            echo "Up to date."
+            exit 0
+          fi
+
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state all \
+            --search "\"Mirror upstream $latest_tag\" in:title" --json number --jq 'length')
+          if [ "$existing" -gt 0 ]; then
+            echo "Tracking issue for $latest_tag already exists."
+            exit 0
+          fi
+
+          gh label create upstream-release --repo "$GITHUB_REPOSITORY" \
+            --color 5319e7 --description "Tracks mirroring an upstream OpenSpec release" --force
+
+          release_url="https://github.com/Fission-AI/OpenSpec/releases/tag/${latest_tag}"
+
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --title "Mirror upstream $latest_tag" \
+            --label upstream-release \
+            --body "$(cat <<BODY
+          Upstream Fission-AI/OpenSpec published [$latest_tag]($release_url). AnchorSpec is currently at $current_version.
+
+          Per CLAUDE.md, every upstream release gets a corresponding AnchorSpec release published to npm, at minimum as a 1:1 mirror.
+
+          - [ ] Merge upstream $latest_tag into \`main\`
+          - [ ] Resolve conflicts / re-apply telemetry removal
+          - [ ] Bump \`package.json\` version to $latest_version
+          - [ ] Add a changeset
+          - [ ] Verify CI is green (lint, test, Nix flake validation)
+          - [ ] Publish to npm
+          - [ ] Copy rebranded \`docs/\` into the [www repo](https://github.com/AnchorSpec/www) at \`src/docs/v${latest_version}/\`, update the \`VERSIONS\` array and redirect
+          BODY
+          )"
