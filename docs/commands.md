@@ -1,6 +1,6 @@
 # Commands
 
-This is the reference for AnchorSpec's slash commands. These commands are invoked in your AI coding assistant's chat interface (e.g., Claude Code, Cursor, Windsurf).
+This is the reference for OpenSpec's slash commands. These commands are invoked in your AI coding assistant's chat interface (e.g., Claude Code, Cursor, Windsurf).
 
 For workflow patterns and when to use each command, see [Workflows](workflows.md). For CLI commands, see [CLI](cli.md).
 
@@ -10,36 +10,36 @@ For workflow patterns and when to use each command, see [Workflows](workflows.md
 
 | Command | Purpose |
 |---------|---------|
-| `/ansx:propose` | Create a change and generate planning artifacts in one step |
-| `/ansx:explore` | Think through ideas before committing to a change |
-| `/ansx:apply` | Implement tasks from the change |
-| `/ansx:archive` | Archive a completed change |
+| `/opsx:propose` | Create a change and generate planning artifacts in one step |
+| `/opsx:explore` | Think through ideas before committing to a change |
+| `/opsx:apply` | Implement tasks from the change |
+| `/opsx:sync` | Merge delta specs into main specs |
+| `/opsx:archive` | Archive a completed change |
 
 ### Expanded Workflow Commands (custom workflow selection)
 
 | Command | Purpose |
 |---------|---------|
-| `/ansx:new` | Start a new change scaffold |
-| `/ansx:continue` | Create the next artifact based on dependencies |
-| `/ansx:ff` | Fast-forward: create all planning artifacts at once |
-| `/ansx:verify` | Validate implementation matches artifacts |
-| `/ansx:sync` | Merge delta specs into main specs |
-| `/ansx:bulk-archive` | Archive multiple changes at once |
-| `/ansx:onboard` | Guided tutorial through the complete workflow |
+| `/opsx:new` | Start a new change scaffold |
+| `/opsx:continue` | Create the next artifact based on dependencies |
+| `/opsx:ff` | Fast-forward: create all planning artifacts at once |
+| `/opsx:verify` | Validate implementation matches artifacts |
+| `/opsx:bulk-archive` | Archive multiple changes at once |
+| `/opsx:onboard` | Guided tutorial through the complete workflow |
 
-The default global profile is `core`. To enable expanded workflow commands, run `anchorspec config profile`, select workflows, then run `anchorspec update` in your project.
+The default global profile is `core`. To enable expanded workflow commands, run `openspec config profile`, select workflows, then run `openspec update` in your project.
 
 ---
 
 ## Command Reference
 
-### `/ansx:propose`
+### `/opsx:propose`
 
 Create a new change and generate planning artifacts in one step. This is the default start command in the `core` profile.
 
 **Syntax:**
 ```text
-/ansx:propose [change-name-or-description]
+/opsx:propose [change-name-or-description]
 ```
 
 **Arguments:**
@@ -48,35 +48,35 @@ Create a new change and generate planning artifacts in one step. This is the def
 | `change-name-or-description` | No | Kebab-case name or plain-language change description |
 
 **What it does:**
-- Creates `anchorspec/changes/<change-name>/`
+- Creates `openspec/changes/<change-name>/`
 - Generates artifacts needed before implementation (for `spec-driven`: proposal, specs, design, tasks)
-- Stops when the change is ready for `/ansx:apply`
+- Stops when the change is ready for `/opsx:apply`
 
 **Example:**
 ```text
-You: /ansx:propose add-dark-mode
+You: /opsx:propose add-dark-mode
 
-AI:  Created anchorspec/changes/add-dark-mode/
+AI:  Created openspec/changes/add-dark-mode/
      ✓ proposal.md
      ✓ specs/ui/spec.md
      ✓ design.md
      ✓ tasks.md
-     Ready for implementation. Run /ansx:apply.
+     Ready for implementation. Run /opsx:apply.
 ```
 
 **Tips:**
 - Use this for the fastest end-to-end path
-- If you want step-by-step artifact control, enable expanded workflows and use `/ansx:new` + `/ansx:continue`
+- If you want step-by-step artifact control, enable expanded workflows and use `/opsx:new` + `/opsx:continue`
 
 ---
 
-### `/ansx:explore`
+### `/opsx:explore`
 
 Think through ideas, investigate problems, and clarify requirements before committing to a change.
 
 **Syntax:**
 ```
-/ansx:explore [topic]
+/opsx:explore [topic]
 ```
 
 **Arguments:**
@@ -89,11 +89,11 @@ Think through ideas, investigate problems, and clarify requirements before commi
 - Investigates the codebase to answer questions
 - Compares options and approaches
 - Creates visual diagrams to clarify thinking
-- Can transition to `/ansx:propose` (default) or `/ansx:new` (expanded workflow) when insights crystallize
+- Can transition to `/opsx:propose` (default) or `/opsx:new` (expanded workflow) when insights crystallize
 
 **Example:**
 ```text
-You: /ansx:explore
+You: /opsx:explore
 
 AI:  What would you like to explore?
 
@@ -113,7 +113,7 @@ AI:  Let me investigate your current auth setup...
 
 You: Let's go with JWT. Can we start a change for that?
 
-AI:  Ready when you are. Run /ansx:propose add-jwt-auth to begin.
+AI:  Ready when you are. Run /opsx:propose add-jwt-auth to begin.
 ```
 
 **Tips:**
@@ -124,15 +124,15 @@ AI:  Ready when you are. Run /ansx:propose add-jwt-auth to begin.
 
 ---
 
-### `/ansx:new`
+### `/opsx:new`
 
-Start a new change scaffold. Creates the change folder and waits for you to generate artifacts with `/ansx:continue` or `/ansx:ff`.
+Start a new change scaffold. Creates the change folder and waits for you to generate artifacts with `/opsx:continue` or `/opsx:ff`.
 
 This command is part of the expanded workflow set (not included in the default `core` profile).
 
 **Syntax:**
 ```
-/ansx:new [change-name] [--schema <schema-name>]
+/opsx:new [change-name] [--schema <schema-name>]
 ```
 
 **Arguments:**
@@ -142,42 +142,42 @@ This command is part of the expanded workflow set (not included in the default `
 | `--schema` | No | Workflow schema to use (default: from config or `spec-driven`) |
 
 **What it does:**
-- Creates `anchorspec/changes/<change-name>/` directory
-- Creates `.anchorspec.yaml` metadata file in the change folder
+- Creates `openspec/changes/<change-name>/` directory
+- Creates `.openspec.yaml` metadata file in the change folder
 - Shows the first artifact template ready for creation
 - Prompts for change name and schema if not provided
 
 **What it creates:**
 ```
-anchorspec/changes/<change-name>/
-└── .anchorspec.yaml    # Change metadata (schema, created date)
+openspec/changes/<change-name>/
+└── .openspec.yaml    # Change metadata (schema, created date)
 ```
 
 **Example:**
 ```
-You: /ansx:new add-dark-mode
+You: /opsx:new add-dark-mode
 
-AI:  Created anchorspec/changes/add-dark-mode/
+AI:  Created openspec/changes/add-dark-mode/
      Schema: spec-driven
 
      Ready to create: proposal
-     Use /ansx:continue to create it, or /ansx:ff to create all artifacts.
+     Use /opsx:continue to create it, or /opsx:ff to create all artifacts.
 ```
 
 **Tips:**
 - Use descriptive names: `add-feature`, `fix-bug`, `refactor-module`
 - Avoid generic names like `update`, `changes`, `wip`
-- Schema can also be set in project config (`anchorspec/config.yaml`)
+- Schema can also be set in project config (`openspec/config.yaml`)
 
 ---
 
-### `/ansx:continue`
+### `/opsx:continue`
 
 Create the next artifact in the dependency chain. Creates one artifact at a time for incremental progress.
 
 **Syntax:**
 ```
-/ansx:continue [change-name]
+/opsx:continue [change-name]
 ```
 
 **Arguments:**
@@ -194,7 +194,7 @@ Create the next artifact in the dependency chain. Creates one artifact at a time
 
 **Example:**
 ```
-You: /ansx:continue
+You: /opsx:continue
 
 AI:  Change: add-dark-mode
 
@@ -208,10 +208,10 @@ AI:  Change: add-dark-mode
 
      [Reads proposal.md, creates specs based on requirements]
 
-     ✓ Created anchorspec/changes/add-dark-mode/specs/ui/spec.md
+     ✓ Created openspec/changes/add-dark-mode/specs/ui/spec.md
 
      Now available: tasks
-     Run /ansx:continue to create the next artifact.
+     Run /opsx:continue to create the next artifact.
 ```
 
 **Tips:**
@@ -222,13 +222,13 @@ AI:  Change: add-dark-mode
 
 ---
 
-### `/ansx:ff`
+### `/opsx:ff`
 
 Fast-forward through artifact creation. Creates all planning artifacts at once.
 
 **Syntax:**
 ```
-/ansx:ff [change-name]
+/opsx:ff [change-name]
 ```
 
 **Arguments:**
@@ -244,7 +244,7 @@ Fast-forward through artifact creation. Creates all planning artifacts at once.
 
 **Example:**
 ```
-You: /ansx:ff add-dark-mode
+You: /opsx:ff add-dark-mode
 
 AI:  Fast-forwarding add-dark-mode...
 
@@ -254,24 +254,24 @@ AI:  Fast-forwarding add-dark-mode...
      ✓ Creating tasks.md
 
      All planning artifacts complete!
-     Ready for implementation. Run /ansx:apply to begin.
+     Ready for implementation. Run /opsx:apply to begin.
 ```
 
 **Tips:**
 - Use when you have a clear picture of what you're building
-- Faster than `/ansx:continue` for straightforward changes
+- Faster than `/opsx:continue` for straightforward changes
 - You can still edit artifacts afterward
 - Good for small to medium features
 
 ---
 
-### `/ansx:apply`
+### `/opsx:apply`
 
 Implement tasks from the change. Works through the task list, writing code and checking off items.
 
 **Syntax:**
 ```
-/ansx:apply [change-name]
+/opsx:apply [change-name]
 ```
 
 **Arguments:**
@@ -287,7 +287,7 @@ Implement tasks from the change. Works through the task list, writing code and c
 
 **Example:**
 ```
-You: /ansx:apply
+You: /opsx:apply
 
 AI:  Implementing add-dark-mode...
 
@@ -315,13 +315,13 @@ AI:  Implementing add-dark-mode...
 
 ---
 
-### `/ansx:verify`
+### `/opsx:verify`
 
 Validate that implementation matches your change artifacts. Checks completeness, correctness, and coherence.
 
 **Syntax:**
 ```
-/ansx:verify [change-name]
+/opsx:verify [change-name]
 ```
 
 **Arguments:**
@@ -345,7 +345,7 @@ Validate that implementation matches your change artifacts. Checks completeness,
 
 **Example:**
 ```
-You: /ansx:verify
+You: /opsx:verify
 
 AI:  Verifying add-dark-mode...
 
@@ -383,13 +383,13 @@ AI:  Verifying add-dark-mode...
 
 ---
 
-### `/ansx:sync`
+### `/opsx:sync`
 
 **Optional command.** Merge delta specs from a change into main specs. Archive will prompt to sync if needed, so you typically don't need to run this manually.
 
 **Syntax:**
 ```
-/ansx:sync [change-name]
+/opsx:sync [change-name]
 ```
 
 **Arguments:**
@@ -400,27 +400,27 @@ AI:  Verifying add-dark-mode...
 **What it does:**
 - Reads delta specs from change folder
 - Parses ADDED/MODIFIED/REMOVED/RENAMED sections
-- Merges changes into main `anchorspec/specs/` directory
+- Merges changes into main `openspec/specs/` directory
 - Preserves existing content not mentioned in delta
 - Does not archive the change (remains active)
 
 **Example:**
 ```text
-You: /ansx:sync
+You: /opsx:sync
 
 AI:  Syncing add-dark-mode delta specs...
 
-     Reading: anchorspec/changes/add-dark-mode/specs/ui/spec.md
-     Target:  anchorspec/specs/ui/spec.md
+     Reading: openspec/changes/add-dark-mode/specs/ui/spec.md
+     Target:  openspec/specs/ui/spec.md
 
      Changes to apply:
      ✓ ADDED: Theme Selection requirement (2 scenarios)
      ✓ ADDED: Accessibility requirement (1 scenario)
 
      Merging...
-     ✓ anchorspec/specs/ui/spec.md updated
+     ✓ openspec/specs/ui/spec.md updated
 
-     Change remains active. Run /ansx:archive when ready to complete.
+     Change remains active. Run /opsx:archive when ready to complete.
 ```
 
 **When to use manually:**
@@ -440,13 +440,13 @@ AI:  Syncing add-dark-mode delta specs...
 
 ---
 
-### `/ansx:archive`
+### `/opsx:archive`
 
 Archive a completed change. Finalizes the change and moves it to the archive folder.
 
 **Syntax:**
 ```
-/ansx:archive [change-name]
+/opsx:archive [change-name]
 ```
 
 **Arguments:**
@@ -458,12 +458,12 @@ Archive a completed change. Finalizes the change and moves it to the archive fol
 - Checks artifact completion status
 - Checks task completion (warns if incomplete)
 - Offers to sync delta specs if not already synced
-- Moves change folder to `anchorspec/changes/archive/YYYY-MM-DD-<name>/`
+- Moves change folder to `openspec/changes/archive/YYYY-MM-DD-<name>/`
 - Preserves all artifacts for audit trail
 
 **Example:**
 ```text
-You: /ansx:archive
+You: /opsx:archive
 
 AI:  Archiving add-dark-mode...
 
@@ -478,8 +478,8 @@ AI:  Archiving add-dark-mode...
 
 You: Yes
 
-AI:  ✓ Synced specs to anchorspec/specs/ui/spec.md
-     ✓ Moved to anchorspec/changes/archive/2025-01-24-add-dark-mode/
+AI:  ✓ Synced specs to openspec/specs/ui/spec.md
+     ✓ Moved to openspec/changes/archive/2025-01-24-add-dark-mode/
 
      Change archived successfully.
 ```
@@ -488,17 +488,17 @@ AI:  ✓ Synced specs to anchorspec/specs/ui/spec.md
 - Archive won't block on incomplete tasks, but will warn
 - Delta specs can be synced during archive or beforehand
 - Archived changes are preserved for history
-- Use `/ansx:verify` first to catch issues
+- Use `/opsx:verify` first to catch issues
 
 ---
 
-### `/ansx:bulk-archive`
+### `/opsx:bulk-archive`
 
 Archive multiple completed changes at once. Handles spec conflicts between changes.
 
 **Syntax:**
 ```
-/ansx:bulk-archive [change-names...]
+/opsx:bulk-archive [change-names...]
 ```
 
 **Arguments:**
@@ -515,7 +515,7 @@ Archive multiple completed changes at once. Handles spec conflicts between chang
 
 **Example:**
 ```
-You: /ansx:bulk-archive
+You: /opsx:bulk-archive
 
 AI:  Found 3 completed changes:
      - add-dark-mode (8/8 tasks complete)
@@ -548,13 +548,13 @@ AI:  ✓ Archived add-dark-mode
 
 ---
 
-### `/ansx:onboard`
+### `/opsx:onboard`
 
-Guided onboarding through the complete AnchorSpec workflow. An interactive tutorial using your actual codebase.
+Guided onboarding through the complete OpenSpec workflow. An interactive tutorial using your actual codebase.
 
 **Syntax:**
 ```
-/ansx:onboard
+/opsx:onboard
 ```
 
 **What it does:**
@@ -568,21 +568,21 @@ Guided onboarding through the complete AnchorSpec workflow. An interactive tutor
 **Phases:**
 1. Welcome and codebase analysis
 2. Finding an improvement opportunity
-3. Creating a change (`/ansx:new`)
+3. Creating a change (`/opsx:new`)
 4. Writing the proposal
 5. Creating specs
 6. Writing the design
 7. Creating tasks
-8. Implementing tasks (`/ansx:apply`)
+8. Implementing tasks (`/opsx:apply`)
 9. Verifying implementation
 10. Archiving the change
 11. Summary and next steps
 
 **Example:**
 ```
-You: /ansx:onboard
+You: /opsx:onboard
 
-AI:  Welcome to AnchorSpec!
+AI:  Welcome to OpenSpec!
 
      I'll walk you through the complete workflow using your actual codebase.
      We'll find something small to improve, create a proper change for it,
@@ -614,11 +614,12 @@ Different AI tools use slightly different command syntax. Use the format that ma
 
 | Tool | Syntax Example |
 |------|----------------|
-| Claude Code | `/ansx:propose`, `/ansx:apply` |
-| Cursor | `/ansx-propose`, `/ansx-apply` |
-| Windsurf | `/ansx-propose`, `/ansx-apply` |
-| Copilot (IDE) | `/ansx-propose`, `/ansx-apply` |
-| Trae | Skill-based invocations such as `/anchorspec-propose`, `/anchorspec-apply-change` (no generated `ansx-*` command files) |
+| Claude Code | `/opsx:propose`, `/opsx:apply` |
+| Cursor | `/opsx-propose`, `/opsx-apply` |
+| Windsurf | `/opsx-propose`, `/opsx-apply` |
+| Copilot (IDE) | `/opsx-propose`, `/opsx-apply` |
+| Kimi CLI | Skill-based invocations such as `/skill:openspec-propose`, `/skill:openspec-apply-change` (no generated `opsx-*` command files) |
+| Trae | Skill-based invocations such as `/openspec-propose`, `/openspec-apply-change` (no generated `opsx-*` command files) |
 
 The intent is the same across tools, but how commands are surfaced can differ by integration.
 
@@ -628,21 +629,21 @@ The intent is the same across tools, but how commands are surfaced can differ by
 
 ## Legacy Commands
 
-These commands use the older "all-at-once" workflow. They still work but ANSX commands are recommended.
+These commands use the older "all-at-once" workflow. They still work but OPSX commands are recommended.
 
 | Command | What it does |
 |---------|--------------|
-| `/anchorspec:proposal` | Create all artifacts at once (proposal, specs, design, tasks) |
-| `/anchorspec:apply` | Implement the change |
-| `/anchorspec:archive` | Archive the change |
+| `/openspec:proposal` | Create all artifacts at once (proposal, specs, design, tasks) |
+| `/openspec:apply` | Implement the change |
+| `/openspec:archive` | Archive the change |
 
 **When to use legacy commands:**
 - Existing projects using the old workflow
 - Simple changes where you don't need incremental artifact creation
 - Preference for the all-or-nothing approach
 
-**Migrating to ANSX:**
-Legacy changes can be continued with ANSX commands. The artifact structure is compatible.
+**Migrating to OPSX:**
+Legacy changes can be continued with OPSX commands. The artifact structure is compatible.
 
 ---
 
@@ -653,8 +654,8 @@ Legacy changes can be continued with ANSX commands. The artifact structure is co
 The command couldn't identify which change to work on.
 
 **Solutions:**
-- Specify the change name explicitly: `/ansx:apply add-dark-mode`
-- Check that the change folder exists: `anchorspec list`
+- Specify the change name explicitly: `/opsx:apply add-dark-mode`
+- Check that the change folder exists: `openspec list`
 - Verify you're in the right project directory
 
 ### "No artifacts ready"
@@ -662,7 +663,7 @@ The command couldn't identify which change to work on.
 All artifacts are either complete or blocked by missing dependencies.
 
 **Solutions:**
-- Run `anchorspec status --change <name>` to see what's blocking
+- Run `openspec status --change <name>` to see what's blocking
 - Check if required artifacts exist
 - Create missing dependency artifacts first
 
@@ -671,17 +672,17 @@ All artifacts are either complete or blocked by missing dependencies.
 The specified schema doesn't exist.
 
 **Solutions:**
-- List available schemas: `anchorspec schemas`
+- List available schemas: `openspec schemas`
 - Check spelling of schema name
-- Create the schema if it's custom: `anchorspec schema init <name>`
+- Create the schema if it's custom: `openspec schema init <name>`
 
 ### Commands not recognized
 
-The AI tool doesn't recognize AnchorSpec commands.
+The AI tool doesn't recognize OpenSpec commands.
 
 **Solutions:**
-- Ensure AnchorSpec is initialized: `anchorspec init`
-- Regenerate skills: `anchorspec update`
+- Ensure OpenSpec is initialized: `openspec init`
+- Regenerate skills: `openspec update`
 - Check that `.claude/skills/` directory exists (for Claude Code)
 - Restart your AI tool to pick up new skills
 
@@ -690,10 +691,10 @@ The AI tool doesn't recognize AnchorSpec commands.
 The AI creates incomplete or incorrect artifacts.
 
 **Solutions:**
-- Add project context in `anchorspec/config.yaml`
+- Add project context in `openspec/config.yaml`
 - Add per-artifact rules for specific guidance
 - Provide more detail in your change description
-- Use `/ansx:continue` instead of `/ansx:ff` for more control
+- Use `/opsx:continue` instead of `/opsx:ff` for more control
 
 ---
 

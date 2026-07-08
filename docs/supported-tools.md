@@ -1,53 +1,57 @@
 # Supported Tools
 
-AnchorSpec works with many AI coding assistants. When you run `anchorspec init`, AnchorSpec configures selected tools using your active profile/workflow selection and delivery mode.
+OpenSpec works with many AI coding assistants. When you run `openspec init`, OpenSpec configures selected tools using your active profile/workflow selection and delivery mode.
 
 ## How It Works
 
-For each selected tool, AnchorSpec can install:
+For each selected tool, OpenSpec can install:
 
-1. **Skills** (if delivery includes skills): `.../skills/anchorspec-*/SKILL.md`
-2. **Commands** (if delivery includes commands): tool-specific `ansx-*` command files
+1. **Skills** (if delivery includes skills): `.../skills/openspec-*/SKILL.md`
+2. **Commands** (if delivery includes commands): tool-specific `opsx-*` command files
 
-By default, AnchorSpec uses the `core` profile, which includes:
+By default, OpenSpec uses the `core` profile, which includes:
 - `propose`
 - `explore`
 - `apply`
+- `sync`
 - `archive`
 
-You can enable expanded workflows (`new`, `continue`, `ff`, `verify`, `sync`, `bulk-archive`, `onboard`) via `anchorspec config profile`, then run `anchorspec update`.
+You can enable expanded workflows (`new`, `continue`, `ff`, `verify`, `bulk-archive`, `onboard`) via `openspec config profile`, then run `openspec update`.
 
 ## Tool Directory Reference
 
 | Tool (ID) | Skills path pattern | Command path pattern |
 |-----------|---------------------|----------------------|
-| Amazon Q Developer (`amazon-q`) | `.amazonq/skills/anchorspec-*/SKILL.md` | `.amazonq/prompts/ansx-<id>.md` |
-| Antigravity (`antigravity`) | `.agent/skills/anchorspec-*/SKILL.md` | `.agent/workflows/ansx-<id>.md` |
-| Auggie (`auggie`) | `.augment/skills/anchorspec-*/SKILL.md` | `.augment/commands/ansx-<id>.md` |
-| IBM Bob Shell (`bob`) | `.bob/skills/anchorspec-*/SKILL.md` | `.bob/commands/ansx-<id>.md` |
-| Claude Code (`claude`) | `.claude/skills/anchorspec-*/SKILL.md` | `.claude/commands/ansx/<id>.md` |
-| Cline (`cline`) | `.cline/skills/anchorspec-*/SKILL.md` | `.clinerules/workflows/ansx-<id>.md` |
-| CodeBuddy (`codebuddy`) | `.codebuddy/skills/anchorspec-*/SKILL.md` | `.codebuddy/commands/ansx/<id>.md` |
-| Codex (`codex`) | `.codex/skills/anchorspec-*/SKILL.md` | `$CODEX_HOME/prompts/ansx-<id>.md`\* |
-| ForgeCode (`forgecode`) | `.forge/skills/anchorspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/anchorspec-*` invocations) |
-| Continue (`continue`) | `.continue/skills/anchorspec-*/SKILL.md` | `.continue/prompts/ansx-<id>.prompt` |
-| CoStrict (`costrict`) | `.cospec/skills/anchorspec-*/SKILL.md` | `.cospec/anchorspec/commands/ansx-<id>.md` |
-| Crush (`crush`) | `.crush/skills/anchorspec-*/SKILL.md` | `.crush/commands/ansx/<id>.md` |
-| Cursor (`cursor`) | `.cursor/skills/anchorspec-*/SKILL.md` | `.cursor/commands/ansx-<id>.md` |
-| Factory Droid (`factory`) | `.factory/skills/anchorspec-*/SKILL.md` | `.factory/commands/ansx-<id>.md` |
-| Gemini CLI (`gemini`) | `.gemini/skills/anchorspec-*/SKILL.md` | `.gemini/commands/ansx/<id>.toml` |
-| GitHub Copilot (`github-copilot`) | `.github/skills/anchorspec-*/SKILL.md` | `.github/prompts/ansx-<id>.prompt.md`\*\* |
-| iFlow (`iflow`) | `.iflow/skills/anchorspec-*/SKILL.md` | `.iflow/commands/ansx-<id>.md` |
-| Junie (`junie`) | `.junie/skills/anchorspec-*/SKILL.md` | `.junie/commands/ansx-<id>.md` |
-| Kilo Code (`kilocode`) | `.kilocode/skills/anchorspec-*/SKILL.md` | `.kilocode/workflows/ansx-<id>.md` |
-| Kiro (`kiro`) | `.kiro/skills/anchorspec-*/SKILL.md` | `.kiro/prompts/ansx-<id>.prompt.md` |
-| OpenCode (`opencode`) | `.opencode/skills/anchorspec-*/SKILL.md` | `.opencode/commands/ansx-<id>.md` |
-| Pi (`pi`) | `.pi/skills/anchorspec-*/SKILL.md` | `.pi/prompts/ansx-<id>.md` |
-| Qoder (`qoder`) | `.qoder/skills/anchorspec-*/SKILL.md` | `.qoder/commands/ansx/<id>.md` |
-| Qwen Code (`qwen`) | `.qwen/skills/anchorspec-*/SKILL.md` | `.qwen/commands/ansx-<id>.toml` |
-| RooCode (`roocode`) | `.roo/skills/anchorspec-*/SKILL.md` | `.roo/commands/ansx-<id>.md` |
-| Trae (`trae`) | `.trae/skills/anchorspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/anchorspec-*` invocations) |
-| Windsurf (`windsurf`) | `.windsurf/skills/anchorspec-*/SKILL.md` | `.windsurf/workflows/ansx-<id>.md` |
+| Amazon Q Developer (`amazon-q`) | `.amazonq/skills/openspec-*/SKILL.md` | `.amazonq/prompts/opsx-<id>.md` |
+| Antigravity (`antigravity`) | `.agent/skills/openspec-*/SKILL.md` | `.agent/workflows/opsx-<id>.md` |
+| Auggie (`auggie`) | `.augment/skills/openspec-*/SKILL.md` | `.augment/commands/opsx-<id>.md` |
+| IBM Bob Shell (`bob`) | `.bob/skills/openspec-*/SKILL.md` | `.bob/commands/opsx-<id>.md` |
+| Claude Code (`claude`) | `.claude/skills/openspec-*/SKILL.md` | `.claude/commands/opsx/<id>.md` |
+| Cline (`cline`) | `.cline/skills/openspec-*/SKILL.md` | `.clinerules/workflows/opsx-<id>.md` |
+| CodeBuddy (`codebuddy`) | `.codebuddy/skills/openspec-*/SKILL.md` | `.codebuddy/commands/opsx/<id>.md` |
+| Codex (`codex`) | `.codex/skills/openspec-*/SKILL.md` | `$CODEX_HOME/prompts/opsx-<id>.md`\* |
+| ForgeCode (`forgecode`) | `.forge/skills/openspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/openspec-*` invocations) |
+| Continue (`continue`) | `.continue/skills/openspec-*/SKILL.md` | `.continue/prompts/opsx-<id>.prompt` |
+| CoStrict (`costrict`) | `.cospec/skills/openspec-*/SKILL.md` | `.cospec/openspec/commands/opsx-<id>.md` |
+| Crush (`crush`) | `.crush/skills/openspec-*/SKILL.md` | `.crush/commands/opsx/<id>.md` |
+| Cursor (`cursor`) | `.cursor/skills/openspec-*/SKILL.md` | `.cursor/commands/opsx-<id>.md` |
+| Factory Droid (`factory`) | `.factory/skills/openspec-*/SKILL.md` | `.factory/commands/opsx-<id>.md` |
+| Gemini CLI (`gemini`) | `.gemini/skills/openspec-*/SKILL.md` | `.gemini/commands/opsx/<id>.toml` |
+| GitHub Copilot (`github-copilot`) | `.github/skills/openspec-*/SKILL.md` | `.github/prompts/opsx-<id>.prompt.md`\*\* |
+| iFlow (`iflow`) | `.iflow/skills/openspec-*/SKILL.md` | `.iflow/commands/opsx-<id>.md` |
+| Junie (`junie`) | `.junie/skills/openspec-*/SKILL.md` | `.junie/commands/opsx-<id>.md` |
+| Kilo Code (`kilocode`) | `.kilocode/skills/openspec-*/SKILL.md` | `.kilocode/workflows/opsx-<id>.md` |
+| Kimi CLI (`kimi`) | `.kimi/skills/openspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/skill:openspec-*` invocations) |
+| Kiro (`kiro`) | `.kiro/skills/openspec-*/SKILL.md` | `.kiro/prompts/opsx-<id>.prompt.md` |
+| Lingma (`lingma`) | `.lingma/skills/openspec-*/SKILL.md` | `.lingma/commands/opsx/<id>.md` |
+| Mistral Vibe (`vibe`) | `.vibe/skills/openspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/openspec-*` invocations) |
+| OpenCode (`opencode`) | `.opencode/skills/openspec-*/SKILL.md` | `.opencode/commands/opsx-<id>.md` |
+| Pi (`pi`) | `.pi/skills/openspec-*/SKILL.md` | `.pi/prompts/opsx-<id>.md` |
+| Qoder (`qoder`) | `.qoder/skills/openspec-*/SKILL.md` | `.qoder/commands/opsx/<id>.md` |
+| Qwen Code (`qwen`) | `.qwen/skills/openspec-*/SKILL.md` | `.qwen/commands/opsx-<id>.toml` |
+| RooCode (`roocode`) | `.roo/skills/openspec-*/SKILL.md` | `.roo/commands/opsx-<id>.md` |
+| Trae (`trae`) | `.trae/skills/openspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/openspec-*` invocations) |
+| Windsurf (`windsurf`) | `.windsurf/skills/openspec-*/SKILL.md` | `.windsurf/workflows/opsx-<id>.md` |
 
 \* Codex commands are installed in the global Codex home (`$CODEX_HOME/prompts/` if set, otherwise `~/.codex/prompts/`), not your project directory.
 
@@ -59,25 +63,25 @@ For CI/CD or scripted setup, use `--tools` (and optionally `--profile`):
 
 ```bash
 # Configure specific tools
-anchorspec init --tools claude,cursor
+openspec init --tools claude,cursor
 
 # Configure all supported tools
-anchorspec init --tools all
+openspec init --tools all
 
 # Skip tool configuration
-anchorspec init --tools none
+openspec init --tools none
 
 # Override profile for this init run
-anchorspec init --profile core
+openspec init --profile core
 ```
 
-**Available tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `forgecode`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kiro`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `windsurf`
+**Available tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `lingma`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `vibe`, `windsurf`
 
 ## Workflow-Dependent Installation
 
-AnchorSpec installs workflow artifacts based on selected workflows:
+OpenSpec installs workflow artifacts based on selected workflows:
 
-- **Core profile (default):** `propose`, `explore`, `apply`, `archive`
+- **Core profile (default):** `propose`, `explore`, `apply`, `sync`, `archive`
 - **Custom selection:** any subset of all workflow IDs:
   `propose`, `explore`, `new`, `continue`, `apply`, `ff`, `sync`, `archive`, `bulk-archive`, `verify`, `onboard`
 
@@ -85,19 +89,19 @@ In other words, skill/command counts are profile-dependent and delivery-dependen
 
 ## Generated Skill Names
 
-When selected by profile/workflow config, AnchorSpec generates these skills:
+When selected by profile/workflow config, OpenSpec generates these skills:
 
-- `anchorspec-propose`
-- `anchorspec-explore`
-- `anchorspec-new-change`
-- `anchorspec-continue-change`
-- `anchorspec-apply-change`
-- `anchorspec-ff-change`
-- `anchorspec-sync-specs`
-- `anchorspec-archive-change`
-- `anchorspec-bulk-archive-change`
-- `anchorspec-verify-change`
-- `anchorspec-onboard`
+- `openspec-propose`
+- `openspec-explore`
+- `openspec-new-change`
+- `openspec-continue-change`
+- `openspec-apply-change`
+- `openspec-ff-change`
+- `openspec-sync-specs`
+- `openspec-archive-change`
+- `openspec-bulk-archive-change`
+- `openspec-verify-change`
+- `openspec-onboard`
 
 See [Commands](commands.md) for command behavior and [CLI](cli.md) for `init`/`update` options.
 
