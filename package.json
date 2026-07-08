@@ -1,6 +1,6 @@
 {
   "name": "anchorspec",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "AI-native system for spec-driven development, minimally forked from OpenSpec",
   "keywords": [
     "anchorspec",
