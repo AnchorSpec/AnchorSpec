@@ -309,11 +309,11 @@ tells you which case you're in.
   A stale checkout shows stale specs until *you* pull; references are
   indexed live from whatever is on disk.
 - **Empty planning folders can be absent.** A new store may not have
-  `openspec/changes/`, `openspec/specs/`, or `openspec/changes/archive/` in Git
+  `anchorspec/changes/`, `anchorspec/specs/`, or `anchorspec/changes/archive/` in Git
   yet. That is accepted during the beta; those folders appear once normal
   commands create files for them.
 - **Pointer repos stay pointers.** A config-only repo whose
-  `openspec/config.yaml` declares `store: <id>` is treated as externalized
+  `anchorspec/config.yaml` declares `store: <id>` is treated as externalized
   planning, not as a store checkout to register. Remove the `store:` line first
   if you intentionally want to convert that repo into a local store root.
 - **Some commands stay where they are.** `view`, `templates`, `schemas`,
