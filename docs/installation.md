@@ -70,6 +70,39 @@ Or add to your development environment in `flake.nix`:
 anchorspec --version
 ```
 
+## Updating
+
+Upgrade the package, then refresh each project's generated files:
+
+```bash
+npm install -g anchorspec@latest   # or pnpm/yarn/bun equivalent
+anchorspec update                              # run inside each project
+```
+
+`anchorspec update` regenerates the skill and command files for the tools you've configured, so your slash commands stay current with the installed version.
+
+## Uninstalling
+
+There's no `anchorspec uninstall` command, because AnchorSpec is just a global package plus some files in your project. Removing it is a few manual steps, and nothing here touches your source code.
+
+**1. Remove the global package:**
+
+```bash
+npm uninstall -g anchorspec   # or: pnpm rm -g / yarn global remove / bun rm -g
+```
+
+**2. Remove AnchorSpec from a project (optional).** Delete the `anchorspec/` directory if you no longer want its specs and changes:
+
+```bash
+rm -rf anchorspec/
+```
+
+Think before you do this: `anchorspec/specs/` and `anchorspec/changes/archive/` are your record of how the system behaves and why it changed. If you might want that history, keep the folder (or keep it in git) even after uninstalling.
+
+**3. Remove generated AI tool files (optional).** AnchorSpec writes skill and command files into per-tool directories like `.claude/skills/anchorspec-*/`, `.cursor/commands/ansx-*`, and so on. Delete the `anchorspec-*` skills and `ansx-*` commands for whichever tools you configured. The exact paths per tool are listed in [Supported Tools](supported-tools.md).
+
+If you also have AnchorSpec marker blocks in files like `CLAUDE.md` or `AGENTS.md`, remove those blocks by hand; your own content in those files is yours to keep.
+
 ## Next Steps
 
 After installing, initialize AnchorSpec in your project:

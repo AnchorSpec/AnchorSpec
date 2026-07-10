@@ -65,6 +65,20 @@ const UPSTREAM_ATTRIBUTION =
 // Null-byte sentinel: passes through text replacement unchanged.
 const ATTRIBUTION_SENTINEL = '\x00UPSTREAM_ATTR\x00';
 
+// Shared by every patch (README or docs) that injects UPSTREAM_ATTRIBUTION's
+// literal "OpenSpec"/"Fission-AI" text: protect before applyText, restore
+// after, or a second rebrand pass mangles the URL into a self-reference
+// (AnchorSpec/AnchorSpec) since applyText doesn't know the text is intentional.
+function protectAttribution(content) {
+  return content.includes(UPSTREAM_ATTRIBUTION)
+    ? content.replaceAll(UPSTREAM_ATTRIBUTION, ATTRIBUTION_SENTINEL)
+    : content;
+}
+
+function restoreAttribution(content) {
+  return content.replaceAll(ATTRIBUTION_SENTINEL, UPSTREAM_ATTRIBUTION);
+}
+
 const README_PATCHES = [
   // Remove upstream maintainer social link (not relevant to the fork)
   {
@@ -120,6 +134,14 @@ const DOCS_PATCHES = [
     from: 'anchorspec config set telemetry.enabled false',
     to: 'anchorspec config set profile custom',
   },
+  // FAQ-style "does it collect data" answers: don't rebrand a description of
+  // telemetry that doesn't exist — replace with the actual answer. Caught in
+  // docs/faq.md (new in v1.5.0), but not keyed to that filename since the
+  // same upstream answer could resurface in any doc.
+  {
+    from: "It collects anonymous usage stats: command names and version only. No arguments, paths, content, or personal data, and it's off automatically in CI. Opt out with `export ANCHORSPEC_TELEMETRY=0` or `export DO_NOT_TRACK=1`.",
+    to: ATTRIBUTION_SENTINEL,
+  },
 ];
 
 function applyDocsPatches(content) {
@@ -130,17 +152,13 @@ function applyDocsPatches(content) {
 }
 
 function processDocs(original) {
-  return applyDocsPatches(applyText(original));
+  const protectedContent = protectAttribution(original);
+  const branded = applyDocsPatches(applyText(protectedContent));
+  return restoreAttribution(branded);
 }
 
 function processReadme(original) {
-  let content = original;
-
-  // Protect any already-present attribution from the text-replacement pass.
-  // On first run this is a no-op (attribution not yet injected).
-  // On subsequent runs it prevents [OpenSpec]/Fission-AI from being re-replaced.
-  const hasAttr = content.includes(UPSTREAM_ATTRIBUTION);
-  if (hasAttr) content = content.replace(UPSTREAM_ATTRIBUTION, ATTRIBUTION_SENTINEL);
+  let content = protectAttribution(original);
 
   content = applyText(content);
 
@@ -148,10 +166,7 @@ function processReadme(original) {
     content = content.replaceAll(from, to);
   }
 
-  // Resolve sentinel → final attribution (both for first-run injection and restore).
-  content = content.replace(ATTRIBUTION_SENTINEL, UPSTREAM_ATTRIBUTION);
-
-  return content;
+  return restoreAttribution(content);
 }
 
 // ─── File processing ──────────────────────────────────────────────────────────
@@ -186,6 +201,21 @@ if (existsSync('README.md')) {
 if (existsSync('docs/opsx.md')) {
   renameSync('docs/opsx.md', 'docs/ansx.md');
   console.log('Renamed docs/opsx.md → docs/ansx.md');
+}
+
+// Rename any dist file whose *name* contains "openspec" (e.g. openspec-root.ts
+// compiling to openspec-root.js/.d.ts/.js.map/.d.ts.map). Text replacement above
+// already rewrote the string inside every relative import that references such
+// a file, but it can't rename the file on disk — so without this, a compiled
+// module ends up importing a filename that no longer exists on disk (caught by
+// scripts/pack-version-check.mjs the hard way once already; this makes it
+// self-healing on future merges instead of a one-off fix).
+for (const file of await fg.glob('dist/**/*openspec*')) {
+  const renamed = file.replace(/openspec/g, 'anchorspec');
+  if (renamed !== file) {
+    renameSync(file, renamed);
+    console.log(`Renamed ${file} → ${renamed}`);
+  }
 }
 
 // Sync branded image copies (text replacement turns openspec_*.png → anchorspec_*.png)
