@@ -188,6 +188,21 @@ if (existsSync('docs/opsx.md')) {
   console.log('Renamed docs/opsx.md → docs/ansx.md');
 }
 
+// Rename any dist file whose *name* contains "openspec" (e.g. openspec-root.ts
+// compiling to openspec-root.js/.d.ts/.js.map/.d.ts.map). Text replacement above
+// already rewrote the string inside every relative import that references such
+// a file, but it can't rename the file on disk — so without this, a compiled
+// module ends up importing a filename that no longer exists on disk (caught by
+// scripts/pack-version-check.mjs the hard way once already; this makes it
+// self-healing on future merges instead of a one-off fix).
+for (const file of await fg.glob('dist/**/*openspec*')) {
+  const renamed = file.replace(/openspec/g, 'anchorspec');
+  if (renamed !== file) {
+    renameSync(file, renamed);
+    console.log(`Renamed ${file} → ${renamed}`);
+  }
+}
+
 // Sync branded image copies (text replacement turns openspec_*.png → anchorspec_*.png)
 const IMAGE_PAIRS = [
   ['assets/openspec_bg.png',        'assets/anchorspec_bg.png'],
