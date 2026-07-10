@@ -38,10 +38,11 @@ Per CLAUDE.md, every upstream release gets a corresponding AnchorSpec release pu
 
 ## Docs / www
 
-- [ ] Copy the rebranded `docs/` into the [www repo](https://github.com/AnchorSpec/www) at `src/docs/v{{VERSION}}/`
-- [ ] Update the `VERSIONS` array and redirect in `src/pages/docs/` (www repo)
-- [ ] Push to `www`'s `main` branch — GitHub Pages deploy (`pages.yml`) is automatic from there
+The npm publish above triggers a `repository_dispatch` to the [www repo](https://github.com/AnchorSpec/www), which opens a docs PR there automatically (see `sync-docs.yml` and CLAUDE.md "Documentation"). You still need to:
+
+- [ ] Merge the auto-opened `docs: add v{{VERSION}}` PR in `www` — GitHub Pages deploy (`pages.yml`) is automatic from there
 - [ ] Spot-check the deployed docs page
+- [ ] If no PR appeared within a few minutes of the npm publish, the dispatch likely failed silently (check the `release-prepare.yml` run's "Notify www of published release" step) — fall back to running `www`'s `sync-docs.yml` manually via `workflow_dispatch` with the version, or copying `docs/` by hand into `src/docs/v{{VERSION}}/` and updating the `VERSIONS` array/redirect yourself
 
 ## Close out
 
