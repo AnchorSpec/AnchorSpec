@@ -56,3 +56,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           # npm authentication handled via OIDC trusted publishing (no token needed)
+
+      # Only fires on the run that actually publishes (i.e. the Version Packages
+      # PR merge), not on the run that just opens/updates that PR.
+      - name: Mint token scoped to www
+        if: steps.changesets.outputs.published == 'true'
+        uses: actions/create-github-app-token@v3
+        id: www-token
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          repositories: www
+
+      # Tells the www repo's sync-docs workflow a new version is ready to mirror.
+      # See CLAUDE.md "Documentation" — this replaces the manual "copy docs/ into
+      # www" step of the release checklist.
+      - name: Notify www of published release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ steps.www-token.outputs.token }}
+        run: |
+          set -euo pipefail
+          version=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[0].version')
+          gh api repos/AnchorSpec/www/dispatches \
+            -f event_type=anchorspec-release \
+            -f "client_payload[version]=$version"

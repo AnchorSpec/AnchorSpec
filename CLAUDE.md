@@ -10,7 +10,7 @@ OpenSpec itself is an AI-native CLI tool for spec-driven development. It maintai
 
 ### Documentation
 
-Docs live in `docs/` and are rebranded at build time by `scripts/rebrand.js` (runs automatically via `pnpm build`). After tagging a release, copy the rebranded `docs/` folder into the [www repo](https://github.com/AnchorSpec/www) at `src/docs/v{version}/` and update the `VERSIONS` array and redirect in `src/pages/docs/`. The www repo is deployed separately via GH Pages.
+Docs live in `docs/` and are rebranded at build time by `scripts/rebrand.js` (runs automatically via `pnpm build`). Mirroring the rebranded `docs/` folder into the [www repo](https://github.com/AnchorSpec/www) (`src/docs/v{version}/`, plus the `VERSIONS` array and redirect in `src/pages/docs/`) is automated: the `Notify www of published release` step in `release-prepare.yml` fires a `repository_dispatch` (`anchorspec-release`) to `AnchorSpec/www` whenever `changesets/action` actually publishes, which triggers that repo's `sync-docs.yml` to open a PR there. You still merge that PR by hand — it's PR-opening automation, not auto-deploy. The www repo is built/deployed separately via GH Pages once merged.
 
 ## Build & Development Commands
 
@@ -98,7 +98,9 @@ Org-level config (Settings → Secrets and variables → Actions, org scope, vis
 
 `.github/workflows/upstream-release-watch.yml` runs on a schedule, compares AnchorSpec's `package.json` version against the latest [Fission-AI/OpenSpec release](https://github.com/Fission-AI/OpenSpec/releases), and opens a tracking Issue (labeled `upstream-release`) when AnchorSpec is behind and no open issue for that version already exists. This is detection + tracking only; the merge and publish are still done by hand. Full automation (auto-merge, auto-publish) is a future step once the manual process is well-worn.
 
-The issue body comes from `.github/ISSUE_TEMPLATE/release-checklist.md` — the single source of truth for the release checklist (merge, version bump, changeset, CI including the Nix hash-refresh gotcha, npm publish, **and** copying rebranded docs into the [www repo](https://github.com/AnchorSpec/www), which is easy to forget since it's a separate repo). The workflow substitutes its `{{VERSION}}`-style placeholders; the same template is also usable standalone via GitHub's "New Issue" picker for a manually-triggered release. Update the template, not the workflow, when the checklist itself needs to change.
+The issue body comes from `.github/ISSUE_TEMPLATE/release-checklist.md` — the single source of truth for the release checklist (merge, version bump, changeset, CI including the Nix hash-refresh gotcha, npm publish, **and** merging the auto-opened docs PR in the [www repo](https://github.com/AnchorSpec/www), which is easy to forget since it's a separate repo). The workflow substitutes its `{{VERSION}}`-style placeholders; the same template is also usable standalone via GitHub's "New Issue" picker for a manually-triggered release. Update the template, not the workflow, when the checklist itself needs to change.
+
+Both this repo and `www` share the "AnchorSpec Release" GitHub App (see "Release token" above) — it's installed on both, and `RELEASE_APP_ID`/`RELEASE_APP_PRIVATE_KEY` are org secrets visible to both repos. `www`'s `sync-docs.yml` uses it to push a branch and open its docs PR; this repo's release workflow uses it (scoped via `repositories: www` on a second `create-github-app-token` step) to fire the dispatch. If the dispatch stops working, check the App is still installed on `www` and the org secrets are still shared with it before assuming the workflow logic is broken.
 
 ## Fork Strategy & Future Direction
 
