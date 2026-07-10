@@ -1,23 +1,23 @@
-# ANSX Workflow
+# OPSX Workflow
 
 > Feedback welcome on [Discord](https://discord.gg/YctCnvvshC).
 
 ## What Is It?
 
-ANSX is now the standard workflow for AnchorSpec.
+OPSX is now the standard workflow for OpenSpec.
 
-It's a **fluid, iterative workflow** for AnchorSpec changes. No more rigid phases — just actions you can take anytime.
+It's a **fluid, iterative workflow** for OpenSpec changes. No more rigid phases — just actions you can take anytime.
 
 ## Why This Exists
 
-The legacy AnchorSpec workflow works, but it's **locked down**:
+The legacy OpenSpec workflow works, but it's **locked down**:
 
 - **Instructions are hardcoded** — buried in TypeScript, you can't change them
 - **All-or-nothing** — one big command creates everything, can't test individual pieces
 - **Fixed structure** — same workflow for everyone, no customization
 - **Black box** — when AI output is bad, you can't tweak the prompts
 
-**ANSX opens it up.** Now anyone can:
+**OPSX opens it up.** Now anyone can:
 
 1. **Experiment with instructions** — edit a template, see if the AI does better
 2. **Test granularly** — validate each artifact's instructions independently
@@ -25,7 +25,7 @@ The legacy AnchorSpec workflow works, but it's **locked down**:
 4. **Iterate quickly** — change a template, test immediately, no rebuild
 
 ```
-Legacy workflow:                      ANSX:
+Legacy workflow:                      OPSX:
 ┌────────────────────────┐           ┌────────────────────────┐
 │  Hardcoded in package  │           │  schema.yaml           │◄── You edit this
 │  (can't change)        │           │  templates/*.md        │◄── Or this
@@ -39,16 +39,16 @@ Legacy workflow:                      ANSX:
 **This is for everyone:**
 - **Teams** — create workflows that match how you actually work
 - **Power users** — tweak prompts to get better AI outputs for your codebase
-- **AnchorSpec contributors** — experiment with new approaches without releases
+- **OpenSpec contributors** — experiment with new approaches without releases
 
-We're all still learning what works best. ANSX lets us learn together.
+We're all still learning what works best. OPSX lets us learn together.
 
 ## The User Experience
 
 **The problem with linear workflows:**
 You're "in planning phase", then "in implementation phase", then "done". But real work doesn't work that way. You implement something, realize your design was wrong, need to update specs, continue implementing. Linear phases fight against how work actually happens.
 
-**ANSX approach:**
+**OPSX approach:**
 - **Actions, not phases** — create, implement, update, archive — do any of them anytime
 - **Dependencies are enablers** — they show what's possible, not what's required next
 
@@ -59,15 +59,15 @@ You're "in planning phase", then "in implementation phase", then "done". But rea
 ## Setup
 
 ```bash
-# Make sure you have anchorspec installed — skills are automatically generated
-anchorspec init
+# Make sure you have openspec installed — skills are automatically generated
+openspec init
 ```
 
 This creates skills in `.claude/skills/` (or equivalent) that AI coding assistants auto-detect.
 
-By default, AnchorSpec uses the `core` workflow profile (`propose`, `explore`, `apply`, `sync`, `archive`). If you want the expanded workflow commands (`new`, `continue`, `ff`, `verify`, `bulk-archive`, `onboard`), configure them with `anchorspec config profile` and apply with `anchorspec update`.
+By default, OpenSpec uses the `core` workflow profile (`propose`, `explore`, `apply`, `sync`, `archive`). If you want the expanded workflow commands (`new`, `continue`, `ff`, `verify`, `bulk-archive`, `onboard`), configure them with `openspec config profile` and apply with `openspec update`.
 
-During setup, you'll be prompted to create a **project config** (`anchorspec/config.yaml`). This is optional but recommended.
+During setup, you'll be prompted to create a **project config** (`openspec/config.yaml`). This is optional but recommended.
 
 ## Project Configuration
 
@@ -75,10 +75,10 @@ Project config lets you set defaults and inject project-specific context into al
 
 ### Creating Config
 
-Config is created during `anchorspec init`, or manually:
+Config is created during `openspec init`, or manually:
 
 ```yaml
-# anchorspec/config.yaml
+# openspec/config.yaml
 schema: spec-driven
 
 context: |
@@ -109,8 +109,8 @@ rules:
 
 **Schema precedence** (highest to lowest):
 1. CLI flag (`--schema <name>`)
-2. Change metadata (`.anchorspec.yaml` in change directory)
-3. Project config (`anchorspec/config.yaml`)
+2. Change metadata (`.openspec.yaml` in change directory)
+3. Project config (`openspec/config.yaml`)
 4. Default (`spec-driven`)
 
 **Context injection:**
@@ -142,10 +142,10 @@ rules:
 
 **"Unknown artifact ID in rules: X"**
 - Check artifact IDs match your schema (see list above)
-- Run `anchorspec schemas --json` to see artifact IDs for each schema
+- Run `openspec schemas --json` to see artifact IDs for each schema
 
 **Config not being applied:**
-- Ensure file is at `anchorspec/config.yaml` (not `.yml`)
+- Ensure file is at `openspec/config.yaml` (not `.yml`)
 - Check YAML syntax with a validator
 - Config changes take effect immediately (no restart needed)
 
@@ -157,60 +157,67 @@ rules:
 
 | Command | What it does |
 |---------|--------------|
-| `/ansx:propose` | Create a change and generate planning artifacts in one step (default quick path) |
-| `/ansx:explore` | Think through ideas, investigate problems, clarify requirements |
-| `/ansx:new` | Start a new change scaffold (expanded workflow) |
-| `/ansx:continue` | Create the next artifact (expanded workflow) |
-| `/ansx:ff` | Fast-forward planning artifacts (expanded workflow) |
-| `/ansx:apply` | Implement tasks, updating artifacts as needed |
-| `/ansx:verify` | Validate implementation against artifacts (expanded workflow) |
-| `/ansx:sync` | Sync delta specs to main (default workflow, optional) |
-| `/ansx:archive` | Archive when done |
-| `/ansx:bulk-archive` | Archive multiple completed changes (expanded workflow) |
-| `/ansx:onboard` | Guided walkthrough of an end-to-end change (expanded workflow) |
+| `/opsx:propose` | Create a change and generate planning artifacts in one step (default quick path) |
+| `/opsx:explore` | Think through ideas, investigate problems, clarify requirements |
+| `/opsx:new` | Start a new change scaffold (expanded workflow) |
+| `/opsx:continue` | Create the next artifact (expanded workflow) |
+| `/opsx:ff` | Fast-forward planning artifacts (expanded workflow) |
+| `/opsx:apply` | Implement tasks, updating artifacts as needed |
+| `/opsx:update` | Revise a change's planning artifacts and keep them coherent |
+| `/opsx:verify` | Validate implementation against artifacts (expanded workflow) |
+| `/opsx:sync` | Sync delta specs to main (default workflow, optional) |
+| `/opsx:archive` | Archive when done |
+| `/opsx:bulk-archive` | Archive multiple completed changes (expanded workflow) |
+| `/opsx:onboard` | Guided walkthrough of an end-to-end change (expanded workflow) |
 
 ## Usage
 
 ### Explore an idea
 ```
-/ansx:explore
+/opsx:explore
 ```
-Think through ideas, investigate problems, compare options. No structure required - just a thinking partner. When insights crystallize, transition to `/ansx:propose` (default) or `/ansx:new`/`/ansx:ff` (expanded).
+Think through ideas, investigate problems, compare options. No structure required - just a thinking partner. When insights crystallize, transition to `/opsx:propose` (default) or `/opsx:new`/`/opsx:ff` (expanded).
 
 ### Start a new change
 ```
-/ansx:propose
+/opsx:propose
 ```
 Creates the change and generates planning artifacts needed before implementation.
 
 If you've enabled expanded workflows, you can instead use:
 
 ```text
-/ansx:new        # scaffold only
-/ansx:continue   # create one artifact at a time
-/ansx:ff         # create all planning artifacts at once
+/opsx:new        # scaffold only
+/opsx:continue   # create one artifact at a time
+/opsx:ff         # create all planning artifacts at once
 ```
 
 ### Create artifacts
 ```
-/ansx:continue
+/opsx:continue
 ```
 Shows what's ready to create based on dependencies, then creates one artifact. Use repeatedly to build up your change incrementally.
 
 ```
-/ansx:ff add-dark-mode
+/opsx:ff add-dark-mode
 ```
 Creates all planning artifacts at once. Use when you have a clear picture of what you're building.
 
 ### Implement (the fluid part)
 ```
-/ansx:apply
+/opsx:apply
 ```
-Works through tasks, checking them off as you go. If you're juggling multiple changes, you can run `/ansx:apply <name>`; otherwise it should infer from the conversation and prompt you to choose if it can't tell.
+Works through tasks, checking them off as you go. If you're juggling multiple changes, you can run `/opsx:apply <name>`; otherwise it should infer from the conversation and prompt you to choose if it can't tell.
+
+### Updating a change
+```
+/opsx:update add-dark-mode - we're storing the theme in a cookie now
+```
+Revises the change's existing planning artifacts and keeps them coherent - in any direction (a design edit may ripple back to the proposal). Planning artifacts only: it never edits code, and it never creates missing artifacts (that's `/opsx:continue`). Every edit is confirmed with you first. If the change was already implemented, it recommends `/opsx:apply` so the code catches up with the revised plan. If your revision changes the change's *intent*, start fresh instead - see [When to Update vs. Start Fresh](#when-to-update-vs-start-fresh).
 
 ### Finish up
 ```
-/ansx:archive   # Move to archive when done (prompts to sync specs if needed)
+/opsx:archive   # Move to archive when done (prompts to sync specs if needed)
 ```
 
 ## When to Update vs. Start Fresh
@@ -301,18 +308,18 @@ Think of it like git branches:
 
 ## What's Different?
 
-| | Legacy (`/anchorspec:proposal`) | ANSX (`/ansx:*`) |
+| | Legacy (`/openspec:proposal`) | OPSX (`/opsx:*`) |
 |---|---|---|
 | **Structure** | One big proposal document | Discrete artifacts with dependencies |
 | **Workflow** | Linear phases: plan → implement → archive | Fluid actions — do anything anytime |
 | **Iteration** | Awkward to go back | Update artifacts as you learn |
 | **Customization** | Fixed structure | Schema-driven (define your own artifacts) |
 
-**The key insight:** work isn't linear. ANSX stops pretending it is.
+**The key insight:** work isn't linear. OPSX stops pretending it is.
 
 ## Architecture Deep Dive
 
-This section explains how ANSX works under the hood and how it compares to the legacy workflow.
+This section explains how OPSX works under the hood and how it compares to the legacy workflow.
 Examples in this section use the expanded command set (`new`, `continue`, etc.); default `core` users can map the same flow to `propose → apply → sync → archive`.
 
 ### Philosophy: Phases vs Actions
@@ -329,7 +336,7 @@ Examples in this section use the expanded command set (`new`, `continue`, etc.);
 │   └──────────────┘      └──────────────┘      └──────────────┘             │
 │         │                     │                     │                       │
 │         ▼                     ▼                     ▼                       │
-│   /anchorspec:proposal   /anchorspec:apply      /anchorspec:archive              │
+│   /openspec:proposal   /openspec:apply      /openspec:archive              │
 │                                                                             │
 │   • Creates ALL artifacts at once                                          │
 │   • Can't go back to update specs during implementation                    │
@@ -339,7 +346,7 @@ Examples in this section use the expanded command set (`new`, `continue`, etc.);
 
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                            ANSX WORKFLOW                                     │
+│                            OPSX WORKFLOW                                     │
 │                      (Fluid Actions, Iterative)                             │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
@@ -374,7 +381,7 @@ Examples in this section use the expanded command set (`new`, `continue`, etc.);
 │   Tool-specific configurators/adapters                                      │
 │                    │                                                        │
 │                    ▼                                                        │
-│   Generated Command Files (.claude/commands/anchorspec/*.md)                  │
+│   Generated Command Files (.claude/commands/openspec/*.md)                  │
 │                                                                             │
 │   • Fixed structure, no artifact awareness                                  │
 │   • Change requires code modification + rebuild                             │
@@ -382,11 +389,11 @@ Examples in this section use the expanded command set (`new`, `continue`, etc.);
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**ANSX** uses external schemas and a dependency graph engine:
+**OPSX** uses external schemas and a dependency graph engine:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         ANSX COMPONENTS                                      │
+│                         OPSX COMPONENTS                                      │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │   Schema Definitions (YAML)                                                 │
@@ -410,7 +417,7 @@ Examples in this section use the expanded command set (`new`, `continue`, etc.);
 │   └─────────────────────────────────────────────────────────────────────┘   │
 │                    │                                                        │
 │                    ▼                                                        │
-│   Skill Files (.claude/skills/anchorspec-*/SKILL.md)                          │
+│   Skill Files (.claude/skills/openspec-*/SKILL.md)                          │
 │                                                                             │
 │   • Cross-editor compatible (Claude Code, Cursor, Windsurf)                 │
 │   • Skills query CLI for structured data                                    │
@@ -463,7 +470,7 @@ Artifacts form a directed acyclic graph (DAG). Dependencies are **enablers**, no
 **Legacy workflow** — agent receives static instructions:
 
 ```
-  User: "/anchorspec:proposal"
+  User: "/openspec:proposal"
            │
            ▼
   ┌─────────────────────────────────────────┐
@@ -481,16 +488,16 @@ Artifacts form a directed acyclic graph (DAG). Dependencies are **enablers**, no
   Agent creates ALL artifacts in one go
 ```
 
-**ANSX** — agent queries for rich context:
+**OPSX** — agent queries for rich context:
 
 ```
-  User: "/ansx:continue"
+  User: "/opsx:continue"
            │
            ▼
   ┌──────────────────────────────────────────────────────────────────────────┐
   │  Step 1: Query current state                                             │
   │  ┌────────────────────────────────────────────────────────────────────┐  │
-  │  │  $ anchorspec status --change "add-auth" --json                      │  │
+  │  │  $ openspec status --change "add-auth" --json                      │  │
   │  │                                                                    │  │
   │  │  {                                                                 │  │
   │  │    "artifacts": [                                                  │  │
@@ -504,7 +511,7 @@ Artifacts form a directed acyclic graph (DAG). Dependencies are **enablers**, no
   │                                                                          │
   │  Step 2: Get rich instructions for ready artifact                        │
   │  ┌────────────────────────────────────────────────────────────────────┐  │
-  │  │  $ anchorspec instructions specs --change "add-auth" --json          │  │
+  │  │  $ openspec instructions specs --change "add-auth" --json          │  │
   │  │                                                                    │  │
   │  │  {                                                                 │  │
   │  │    "template": "# Specification\n\n## ADDED Requirements...",      │  │
@@ -538,10 +545,10 @@ Artifacts form a directed acyclic graph (DAG). Dependencies are **enablers**, no
        └── Creates ALL artifacts at once
 ```
 
-**ANSX** — natural iteration:
+**OPSX** — natural iteration:
 
 ```
-  /ansx:new ───► /ansx:continue ───► /ansx:apply ───► /ansx:archive
+  /opsx:new ───► /opsx:continue ───► /opsx:apply ───► /opsx:archive
       │                │                  │
       │                │                  ├── "The design is wrong"
       │                │                  │
@@ -550,7 +557,7 @@ Artifacts form a directed acyclic graph (DAG). Dependencies are **enablers**, no
       │                │            and continue!
       │                │                  │
       │                │                  ▼
-      │                │         /ansx:apply picks up
+      │                │         /opsx:apply picks up
       │                │         where you left off
       │                │
       │                └── Creates ONE artifact, shows what's unlocked
@@ -564,23 +571,23 @@ Create custom workflows using the schema management commands:
 
 ```bash
 # Create a new schema from scratch (interactive)
-anchorspec schema init my-workflow
+openspec schema init my-workflow
 
 # Or fork an existing schema as a starting point
-anchorspec schema fork spec-driven my-workflow
+openspec schema fork spec-driven my-workflow
 
 # Validate your schema structure
-anchorspec schema validate my-workflow
+openspec schema validate my-workflow
 
 # See where a schema resolves from (useful for debugging)
-anchorspec schema which my-workflow
+openspec schema which my-workflow
 ```
 
-Schemas are stored in `anchorspec/schemas/` (project-local, version controlled) or `~/.local/share/anchorspec/schemas/` (user global).
+Schemas are stored in `openspec/schemas/` (project-local, version controlled) or `~/.local/share/openspec/schemas/` (user global).
 
 **Schema structure:**
 ```
-anchorspec/schemas/research-first/
+openspec/schemas/research-first/
 ├── schema.yaml
 └── templates/
     ├── research.md
@@ -612,7 +619,7 @@ artifacts:
 
 ### Summary
 
-| Aspect | Legacy | ANSX |
+| Aspect | Legacy | OPSX |
 |--------|----------|------|
 | **Templates** | Hardcoded TypeScript | External YAML + Markdown |
 | **Dependencies** | None (all at once) | DAG with topological sort |
@@ -629,31 +636,31 @@ Schemas define what artifacts exist and their dependencies. Currently available:
 
 ```bash
 # List available schemas
-anchorspec schemas
+openspec schemas
 
 # See all schemas with their resolution sources
-anchorspec schema which --all
+openspec schema which --all
 
 # Create a new schema interactively
-anchorspec schema init my-workflow
+openspec schema init my-workflow
 
 # Fork an existing schema for customization
-anchorspec schema fork spec-driven my-workflow
+openspec schema fork spec-driven my-workflow
 
 # Validate schema structure before use
-anchorspec schema validate my-workflow
+openspec schema validate my-workflow
 ```
 
 ## Tips
 
-- Use `/ansx:explore` to think through an idea before committing to a change
-- `/ansx:ff` when you know what you want, `/ansx:continue` when exploring
-- During `/ansx:apply`, if something's wrong — fix the artifact, then continue
+- Use `/opsx:explore` to think through an idea before committing to a change
+- `/opsx:ff` when you know what you want, `/opsx:continue` when exploring
+- During `/opsx:apply`, if something's wrong — fix the artifact, then continue
 - Tasks track progress via checkboxes in `tasks.md`
-- Check status anytime: `anchorspec status --change "name"`
+- Check status anytime: `openspec status --change "name"`
 
 ## Feedback
 
 This is rough. That's intentional — we're learning what works.
 
-Found a bug? Have ideas? Join us on [Discord](https://discord.gg/YctCnvvshC) or open an issue on [GitHub](https://github.com/AnchorSpec/AnchorSpec/issues).
+Found a bug? Have ideas? Join us on [Discord](https://discord.gg/YctCnvvshC) or open an issue on [GitHub](https://github.com/Fission-AI/openspec/issues).
