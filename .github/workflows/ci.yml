@@ -87,12 +87,17 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          VITEST: '1'
 
       - name: Build project
         run: pnpm run build
+        env:
+          VITEST: '1'
 
       - name: Run tests
         env:
+          VITEST: '1'
           VITEST_MAX_WORKERS: ${{ matrix.vitest_workers }}
         run: pnpm test
 
