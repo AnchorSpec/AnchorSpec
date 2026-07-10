@@ -163,6 +163,7 @@ rules:
 | `/ansx:continue` | Create the next artifact (expanded workflow) |
 | `/ansx:ff` | Fast-forward planning artifacts (expanded workflow) |
 | `/ansx:apply` | Implement tasks, updating artifacts as needed |
+| `/ansx:update` | Revise a change's planning artifacts and keep them coherent |
 | `/ansx:verify` | Validate implementation against artifacts (expanded workflow) |
 | `/ansx:sync` | Sync delta specs to main (default workflow, optional) |
 | `/ansx:archive` | Archive when done |
@@ -207,6 +208,12 @@ Creates all planning artifacts at once. Use when you have a clear picture of wha
 /ansx:apply
 ```
 Works through tasks, checking them off as you go. If you're juggling multiple changes, you can run `/ansx:apply <name>`; otherwise it should infer from the conversation and prompt you to choose if it can't tell.
+
+### Updating a change
+```
+/ansx:update add-dark-mode - we're storing the theme in a cookie now
+```
+Revises the change's existing planning artifacts and keeps them coherent - in any direction (a design edit may ripple back to the proposal). Planning artifacts only: it never edits code, and it never creates missing artifacts (that's `/ansx:continue`). Every edit is confirmed with you first. If the change was already implemented, it recommends `/ansx:apply` so the code catches up with the revised plan. If your revision changes the change's *intent*, start fresh instead - see [When to Update vs. Start Fresh](#when-to-update-vs-start-fresh).
 
 ### Finish up
 ```

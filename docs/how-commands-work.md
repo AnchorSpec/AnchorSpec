@@ -79,8 +79,9 @@ The intent is identical everywhere. The punctuation differs. Use the form that m
 | Cursor | `/ansx-propose`, `/ansx-apply` |
 | Windsurf | `/ansx-propose`, `/ansx-apply` |
 | GitHub Copilot (IDE) | `/ansx-propose`, `/ansx-apply` |
+| Oh My Pi | `/ansx-propose`, `/ansx-apply` |
 | Kimi CLI | skill-style, e.g. `/skill:anchorspec-propose` |
-| Trae | skill-style, e.g. `/anchorspec-propose` |
+| Trae | `/ansx-propose`, `/ansx-apply` |
 
 Most tools use either the colon form (`/ansx:propose`) or the dash form (`/ansx-propose`). A few tools surface AnchorSpec as named skills instead of slash commands; for those you invoke the skill by name. The full per-tool list, including exactly which files get written where, lives in [Supported Tools](supported-tools.md).
 

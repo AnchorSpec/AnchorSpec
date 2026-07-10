@@ -45,12 +45,13 @@ You can enable expanded workflows (`new`, `continue`, `ff`, `verify`, `bulk-arch
 | Kiro (`kiro`) | `.kiro/skills/anchorspec-*/SKILL.md` | `.kiro/prompts/ansx-<id>.prompt.md` |
 | Lingma (`lingma`) | `.lingma/skills/anchorspec-*/SKILL.md` | `.lingma/commands/ansx/<id>.md` |
 | Mistral Vibe (`vibe`) | `.vibe/skills/anchorspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/anchorspec-*` invocations) |
+| Oh My Pi (`oh-my-pi`) | `.omp/skills/anchorspec-*/SKILL.md` | `.omp/commands/ansx-<id>.md` |
 | OpenCode (`opencode`) | `.opencode/skills/anchorspec-*/SKILL.md` | `.opencode/commands/ansx-<id>.md` |
 | Pi (`pi`) | `.pi/skills/anchorspec-*/SKILL.md` | `.pi/prompts/ansx-<id>.md` |
 | Qoder (`qoder`) | `.qoder/skills/anchorspec-*/SKILL.md` | `.qoder/commands/ansx/<id>.md` |
 | Qwen Code (`qwen`) | `.qwen/skills/anchorspec-*/SKILL.md` | `.qwen/commands/ansx-<id>.toml` |
 | RooCode (`roocode`) | `.roo/skills/anchorspec-*/SKILL.md` | `.roo/commands/ansx-<id>.md` |
-| Trae (`trae`) | `.trae/skills/anchorspec-*/SKILL.md` | Not generated (no command adapter; use skill-based `/anchorspec-*` invocations) |
+| Trae (`trae`) | `.trae/skills/anchorspec-*/SKILL.md` | `.trae/commands/ansx-<id>.md` |
 | Windsurf (`windsurf`) | `.windsurf/skills/anchorspec-*/SKILL.md` | `.windsurf/workflows/ansx-<id>.md` |
 
 \* Codex commands are installed in the global Codex home (`$CODEX_HOME/prompts/` if set, otherwise `~/.codex/prompts/`), not your project directory.
@@ -75,7 +76,7 @@ anchorspec init --tools none
 anchorspec init --profile core
 ```
 
-**Available tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `lingma`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `vibe`, `windsurf`
+**Available tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `lingma`, `vibe`, `oh-my-pi`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `windsurf`
 
 ## Workflow-Dependent Installation
 
@@ -96,6 +97,7 @@ When selected by profile/workflow config, AnchorSpec generates these skills:
 - `anchorspec-new-change`
 - `anchorspec-continue-change`
 - `anchorspec-apply-change`
+- `anchorspec-update-change`
 - `anchorspec-ff-change`
 - `anchorspec-sync-specs`
 - `anchorspec-archive-change`

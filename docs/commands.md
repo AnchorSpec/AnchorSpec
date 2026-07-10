@@ -13,6 +13,7 @@ For workflow patterns and when to use each command, see [Workflows](workflows.md
 | `/ansx:propose` | Create a change and generate planning artifacts in one step |
 | `/ansx:explore` | Think through ideas before committing to a change |
 | `/ansx:apply` | Implement tasks from the change |
+| `/ansx:update` | Revise a change's planning artifacts and keep them coherent |
 | `/ansx:sync` | Merge delta specs into main specs |
 | `/ansx:archive` | Archive a completed change |
 
@@ -314,6 +315,55 @@ AI:  Implementing add-dark-mode...
 - Can resume where you left off if interrupted
 - Use for parallel changes by specifying the change name
 - Completion state is tracked in `tasks.md` checkboxes
+
+---
+
+### `/ansx:update`
+
+Revise a change's existing planning artifacts and keep them coherent with one another. Planning artifacts only - it never edits code.
+
+**Syntax:**
+
+```text
+/ansx:update [change-name]
+```
+
+**Arguments:**
+
+| Argument | Required | Description |
+|----------|----------|-------------|
+| `change-name` | No | Which change to update (inferred from context if not provided) |
+
+**What it does:**
+
+- Reads the change's artifacts via `anchorspec status --change <name> --json`
+- Applies your requested revision, or reviews the artifacts for contradictions if you didn't name one
+- Reconciles the other existing artifacts in any direction (a design edit may ripple back to the proposal)
+- Confirms every edit with you before writing, one artifact at a time
+- Ends by recommending the next step: `/ansx:continue` (artifacts missing), `/ansx:apply` (carry a revised plan into code), or `/ansx:archive` (all done)
+
+**Example:**
+
+```text
+You: /ansx:update add-dark-mode - we're storing the theme in a cookie now, not localStorage
+
+AI:  Reading add-dark-mode artifacts...
+
+     The design references localStorage in two places; tasks 1.3 covers
+     localStorage persistence; the proposal doesn't mention storage.
+
+     Proposed revisions:
+     1. design.md - swap localStorage decision for cookie storage
+     2. tasks.md - reword task 1.3 to cookie persistence
+
+     Apply revision 1? (design.md)
+```
+
+**Tips:**
+
+- It won't create missing artifacts - that's `/ansx:continue`
+- If the change was already implemented, follow up with `/ansx:apply` so the code matches the revised plan
+- If your revision changes the *intent* of the change, start fresh with a new change instead (see [When to Update vs. Start Fresh](ansx.md#when-to-update-vs-start-fresh))
 
 ---
 
@@ -620,8 +670,9 @@ Different AI tools use slightly different command syntax. Use the format that ma
 | Cursor | `/ansx-propose`, `/ansx-apply` |
 | Windsurf | `/ansx-propose`, `/ansx-apply` |
 | Copilot (IDE) | `/ansx-propose`, `/ansx-apply` |
+| Oh My Pi | `/ansx-propose`, `/ansx-apply` |
 | Kimi CLI | Skill-based invocations such as `/skill:anchorspec-propose`, `/skill:anchorspec-apply-change` (no generated `ansx-*` command files) |
-| Trae | Skill-based invocations such as `/anchorspec-propose`, `/anchorspec-apply-change` (no generated `ansx-*` command files) |
+| Trae | `/ansx-propose`, `/ansx-apply` |
 
 The intent is the same across tools, but how commands are surfaced can differ by integration.
 
