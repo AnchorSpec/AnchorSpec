@@ -306,7 +306,7 @@ anchorspec workspace update --workspace platform --tools none
 
 `workspace update` refreshes the generated workspace guidance block and local open surface. For agent skills, it reuses the stored workspace skill agent selection when `--tools` is omitted. Passing `--tools` replaces that stored selection. It refreshes only AnchorSpec-managed workflow skill directories in the workspace root, removes deselected managed workflow skills, and leaves linked repos and folders untouched.
 
-Running `anchorspec update` from inside a workspace redirects to `anchorspec workspace update`; run `anchorspec update` inside repo-local projects when you want repo-owned tool files updated.
+Running `anchorspec update` from inside a workspace does not update workspace-local files. Use `anchorspec workspace update` when you want workspace-local guidance and skills refreshed, and run `anchorspec update` inside repo-local projects when you want repo-owned tool files updated.
 
 ### `anchorspec workspace open`
 

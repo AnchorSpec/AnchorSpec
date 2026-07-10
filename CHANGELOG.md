@@ -6,6 +6,12 @@
 
 - [#3](https://github.com/AnchorSpec/AnchorSpec/pull/3) [`1bbf06b`](https://github.com/AnchorSpec/AnchorSpec/commit/1bbf06b8d9f2ad3547e7dc122668f04a2d2b25f2) Thanks [@StevenWolfe](https://github.com/StevenWolfe)! - Fix npm publish auth and CI pipeline for initial AnchorSpec release
 
+## 1.4.1
+
+### Patch Changes
+
+- [#1165](https://github.com/Fission-AI/OpenSpec/pull/1165) [`0a01146`](https://github.com/Fission-AI/OpenSpec/commit/0a01146c181a3af8dbf645547bcbe20c0d48d615) Thanks [@TabishB](https://github.com/TabishB)! - Move beta workspace view state to `.openspec-workspace/view.yaml`, stop top-level `openspec update` from routing into workspace updates, and ignore foreign root `workspace.yaml` files so Dagster projects keep updating normally.
+
 ## 1.4.0
 
 ### Minor Changes
