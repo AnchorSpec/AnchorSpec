@@ -1,18 +1,20 @@
 # CLI Reference
 
-The AnchorSpec CLI (`anchorspec`) provides terminal commands for project setup, validation, status inspection, and management. These commands complement the AI slash commands (like `/ansx:propose`) documented in [Commands](commands.md).
+The OpenSpec CLI (`openspec`) provides terminal commands for project setup, validation, status inspection, and management. These commands complement the AI slash commands (like `/opsx:propose`) documented in [Commands](commands.md).
 
 ## Summary
 
 | Category | Commands | Purpose |
 |----------|----------|---------|
-| **Setup** | `init`, `update` | Initialize and update AnchorSpec in your project |
-| **Workspaces (beta)** | `workspace setup`, `workspace list`, `workspace ls`, `workspace link`, `workspace relink`, `workspace doctor`, `workspace update`, `workspace open` | Set up local views over linked repos or folders |
-| **Shared context (beta)** | `context-store setup`, `context-store register`, `context-store unregister`, `context-store remove`, `context-store list`, `context-store doctor`, `initiative create`, `initiative show`, `initiative list` | Manage local context-store registrations and durable initiative context |
+| **Setup** | `init`, `update` | Initialize and update OpenSpec in your project |
+| **Stores (standalone OpenSpec repos)** | `store setup`, `store register`, `store unregister`, `store remove`, `store list`, `store doctor` | Manage stores — standalone OpenSpec repos you've registered |
+| **Health** | `doctor` | Report relationship health for the resolved root |
+| **Working context** | `context` | Assemble the working set (root + referenced stores) |
+| **Personal worksets** | `workset create`, `workset list`, `workset open`, `workset remove` | Keep and open personal, local working views in your tool |
 | **Browsing** | `list`, `view`, `show` | Explore changes and specs |
 | **Validation** | `validate` | Check changes and specs for issues |
 | **Lifecycle** | `archive` | Finalize completed changes |
-| **Workflow** | `new change`, `set change`, `status`, `instructions`, `templates`, `schemas` | Artifact-driven workflow support |
+| **Workflow** | `new change`, `status`, `instructions`, `templates`, `schemas` | Artifact-driven workflow support |
 | **Schemas** | `schema init`, `schema fork`, `schema validate`, `schema which` | Create and manage custom workflows |
 | **Config** | `config` | View and modify settings |
 | **Utility** | `feedback`, `completion` | Feedback and shell integration |
@@ -29,11 +31,12 @@ These commands are interactive and designed for terminal use:
 
 | Command | Purpose |
 |---------|---------|
-| `anchorspec init` | Initialize project (interactive prompts) |
-| `anchorspec view` | Interactive dashboard |
-| `anchorspec config edit` | Open config in editor |
-| `anchorspec feedback` | Submit feedback via GitHub |
-| `anchorspec completion install` | Install shell completions |
+| `openspec init` | Initialize project (interactive prompts) |
+| `openspec view` | Interactive dashboard |
+| `openspec workset open <name>` | Open a saved workset (editor window or terminal agent session) |
+| `openspec config edit` | Open config in editor |
+| `openspec feedback` | Submit feedback via GitHub |
+| `openspec completion install` | Install shell completions |
 
 ### Agent-Compatible Commands
 
@@ -41,29 +44,23 @@ These commands support `--json` output for programmatic use by AI agents and scr
 
 | Command | Human Use | Agent Use |
 |---------|-----------|-----------|
-| `anchorspec list` | Browse changes/specs | `--json` for structured data |
-| `anchorspec show <item>` | Read content | `--json` for parsing |
-| `anchorspec validate` | Check for issues | `--all --json` for bulk validation |
-| `anchorspec status` | See artifact progress | `--json` for structured status |
-| `anchorspec instructions` | Get next steps | `--json` for agent instructions |
-| `anchorspec templates` | Find template paths | `--json` for path resolution |
-| `anchorspec schemas` | List available schemas | `--json` for schema discovery |
-| `anchorspec workspace setup --no-interactive` | Create a workspace with explicit inputs | `--json` for structured setup output |
-| `anchorspec workspace list` | Browse known workspaces | `--json` for typed workspace objects |
-| `anchorspec workspace link` | Link a repo or folder | `--json` for structured link output |
-| `anchorspec workspace relink` | Repair a linked path | `--json` for structured link output |
-| `anchorspec workspace doctor` | Check one workspace | `--json` for structured status output |
-| `anchorspec workspace update` | Refresh workspace-local guidance and agent skills | `--tools` selects agents; profile selects workflows |
-| `anchorspec context-store setup <id>` | Create a local context store | `--json` with explicit inputs for structured setup output |
-| `anchorspec context-store register <path>` | Register an existing context store | `--json` for structured registration output |
-| `anchorspec context-store unregister <id>` | Forget a local context-store registration | `--json` for structured cleanup output |
-| `anchorspec context-store remove <id>` | Delete a registered local context-store folder | `--yes --json` for non-interactive deletion |
-| `anchorspec context-store list` | Browse registered context stores | `--json` for structured registrations |
-| `anchorspec context-store doctor` | Check local store setup | `--json` for structured diagnostics |
-| `anchorspec initiative list` | Browse shared initiatives | `--json` for structured initiative records |
-| `anchorspec initiative show <id>` | Resolve an initiative | `--json` for canonical paths and metadata |
-| `anchorspec new change <id>` | Create repo-local change scaffolding | `--json`, plus `--initiative` for shared coordination links |
-| `anchorspec set change <id>` | Update checked-in change metadata | `--json`, plus `--initiative` for shared coordination links |
+| `openspec list` | Browse changes/specs | `--json` for structured data |
+| `openspec show <item>` | Read content | `--json` for parsing |
+| `openspec validate` | Check for issues | `--all --json` for bulk validation |
+| `openspec status` | See artifact progress | `--json` for structured status |
+| `openspec instructions` | Get next steps | `--json` for agent instructions |
+| `openspec templates` | Find template paths | `--json` for path resolution |
+| `openspec schemas` | List available schemas | `--json` for schema discovery |
+| `openspec store setup <id>` | Create and register a local store | `--json` with explicit inputs for structured setup output |
+| `openspec store register <path>` | Register an existing store | `--json` for structured registration output |
+| `openspec store unregister <id>` | Forget a local store registration | `--json` for structured cleanup output |
+| `openspec store remove <id>` | Delete a registered local store folder | `--yes --json` for non-interactive deletion |
+| `openspec store list` | Browse registered stores | `--json` for structured registrations |
+| `openspec store doctor` | Check local store setup | `--json` for structured diagnostics |
+| `openspec new change <id>` | Create repo-local change scaffolding | `--json`, plus `--store <id>` to use a registered store as the OpenSpec root |
+| `openspec workset create [name]` | Compose a personal working view | `--member <path> --json` for non-interactive composition |
+| `openspec workset list` | Browse saved worksets | `--json` for structured views |
+| `openspec workset remove <name>` | Delete a saved view | `--yes --json` for non-interactive removal |
 
 ---
 
@@ -81,14 +78,14 @@ These options work with all commands:
 
 ## Setup Commands
 
-### `anchorspec init`
+### `openspec init`
 
-Initialize AnchorSpec in your project. Creates the folder structure and configures AI tool integrations.
+Initialize OpenSpec in your project. Creates the folder structure and configures AI tool integrations.
 
 Default behavior uses global config defaults: profile `core`, delivery `both`, workflows `propose, explore, apply, sync, archive`.
 
 ```
-anchorspec init [path] [options]
+openspec init [path] [options]
 ```
 
 **Arguments:**
@@ -105,54 +102,56 @@ anchorspec init [path] [options]
 | `--force` | Auto-cleanup legacy files without prompting |
 | `--profile <profile>` | Override global profile for this init run (`core` or `custom`) |
 
-`--profile custom` uses whatever workflows are currently selected in global config (`anchorspec config profile`).
+`--profile custom` uses whatever workflows are currently selected in global config (`openspec config profile`).
 
-**Supported tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `opencode`, `pi`, `qoder`, `lingma`, `qwen`, `roocode`, `trae`, `windsurf`
+**Supported tool IDs (`--tools`):** `amazon-q`, `antigravity`, `auggie`, `bob`, `claude`, `cline`, `codex`, `forgecode`, `codebuddy`, `continue`, `costrict`, `crush`, `cursor`, `factory`, `gemini`, `github-copilot`, `iflow`, `junie`, `kilocode`, `kimi`, `kiro`, `lingma`, `vibe`, `opencode`, `pi`, `qoder`, `qwen`, `roocode`, `trae`, `windsurf`
+
+> This list mirrors `AI_TOOLS` in `src/core/config.ts`. See [Supported Tools](supported-tools.md) for each tool's skill and command paths.
 
 **Examples:**
 
 ```bash
 # Interactive initialization
-anchorspec init
+openspec init
 
 # Initialize in a specific directory
-anchorspec init ./my-project
+openspec init ./my-project
 
 # Non-interactive: configure for Claude and Cursor
-anchorspec init --tools claude,cursor
+openspec init --tools claude,cursor
 
 # Configure for all supported tools
-anchorspec init --tools all
+openspec init --tools all
 
 # Override profile for this run
-anchorspec init --profile core
+openspec init --profile core
 
 # Skip prompts and auto-cleanup legacy files
-anchorspec init --force
+openspec init --force
 ```
 
 **What it creates:**
 
 ```
-anchorspec/
+openspec/
 ├── specs/              # Your specifications (source of truth)
 ├── changes/            # Proposed changes
 └── config.yaml         # Project configuration
 
 .claude/skills/         # Claude Code skills (if claude selected)
 .cursor/skills/         # Cursor skills (if cursor selected)
-.cursor/commands/       # Cursor ANSX commands (if delivery includes commands)
+.cursor/commands/       # Cursor OPSX commands (if delivery includes commands)
 ... (other tool configs)
 ```
 
 ---
 
-### `anchorspec update`
+### `openspec update`
 
-Update AnchorSpec instruction files after upgrading the CLI. Re-generates AI tool configuration files using your current global profile, selected workflows, and delivery mode.
+Update OpenSpec instruction files after upgrading the CLI. Re-generates AI tool configuration files using your current global profile, selected workflows, and delivery mode.
 
 ```
-anchorspec update [path] [options]
+openspec update [path] [options]
 ```
 
 **Arguments:**
@@ -171,335 +170,213 @@ anchorspec update [path] [options]
 
 ```bash
 # Update instruction files after npm upgrade
-npm update anchorspec
-anchorspec update
+npm update @fission-ai/openspec
+openspec update
 ```
 
 ---
 
-## Workspace Commands
+## Stores (standalone OpenSpec repos)
 
-Workspace commands are in beta. The local-view model below is the current direction, but external automation, integrations, and long-lived workflows should still treat command behavior, state files, and JSON output as evolving.
+> **Beta.** Stores and the features built on them (references, working context, worksets) are new; command names, flags, file formats, and JSON output may change shape between releases. For the problem-first walkthrough, see the [stores guide](stores-beta/user-guide.md).
 
-Coordination workspaces are machine-local views over linked repos or folders. Workspace visibility is not change commitment: link the repos or folders AnchorSpec should know about, then create changes when you are ready to plan specific work.
+A store is a standalone OpenSpec repo you've registered on this machine — for example a planning repo or a contracts repo. Registering a store lets normal commands (`list`, `show`, `status`, `validate`, `new change`, `archive`, ...) act in it from anywhere by passing `--store <id>`.
 
-### `anchorspec workspace setup`
+### `openspec store setup`
 
-Create a workspace in the standard AnchorSpec workspace location and link at least one existing repo or folder.
-
-```bash
-anchorspec workspace setup [options]
-```
-
-**Options:**
-
-| Option | Description |
-|--------|-------------|
-| `--name <name>` | Workspace name. Names must be kebab-case |
-| `--link <path>` | Link an existing repo or folder and infer the link name from the folder name |
-| `--link <name>=<path>` | Link an existing repo or folder with an explicit link name |
-| `--opener <id>` | Store a preferred opener during non-interactive setup: `codex-cli`, `claude`, `github-copilot`, or `editor` |
-| `--tools <tools>` | Install workspace-local AnchorSpec skills for agents. Use `all`, `none`, or comma-separated tool IDs |
-| `--no-interactive` | Disable prompts; requires `--name` and at least one `--link` |
-| `--json` | Output JSON; requires `--no-interactive` |
-
-**Examples:**
-
-```bash
-anchorspec workspace setup
-anchorspec workspace setup --no-interactive --name platform --link /repos/api --link web=/repos/web
-anchorspec workspace setup --no-interactive --name platform --link /repos/api --opener codex-cli
-anchorspec workspace setup --no-interactive --name platform --link /repos/api --tools codex,claude
-anchorspec workspace setup --no-interactive --json --name checkout --link /repos/platform/apps/checkout
-```
-
-Interactive setup asks for a preferred opener and can install workspace-local AnchorSpec skills for selected agents. Non-interactive setup stores a preferred opener only when `--opener` is provided; otherwise `workspace open` prompts later in interactive terminals when a supported opener is available, or asks scripts to pass `--agent <tool>` or `--editor`.
-
-Workspace skill installation is skills-only in this beta slice: even if global delivery is `commands` or `both`, workspace setup writes agent skill folders in the workspace root and does not create slash command files. The active global profile chooses which workflow skills are installed; `--tools` chooses which agents receive them. If `--tools` is omitted in non-interactive setup, no skills are installed and `workspace update --tools <ids>` can add them later.
-
-### `anchorspec workspace list`
-
-List known AnchorSpec workspaces from the local registry.
-
-```bash
-anchorspec workspace list [--json]
-anchorspec workspace ls [--json]
-```
-
-The list shows each workspace location and linked repos or folders. Stale registry records are reported but not changed.
-
-### `anchorspec workspace link`
-
-Record an existing repo or folder for one workspace.
-
-```bash
-anchorspec workspace link [name] <path> [options]
-```
-
-**Options:**
-
-| Option | Description |
-|--------|-------------|
-| `--workspace <name>` | Select a known workspace from the local registry |
-| `--json` | Output JSON |
-| `--no-interactive` | Disable workspace picker prompts |
-
-**Examples:**
-
-```bash
-anchorspec workspace link /repos/api
-anchorspec workspace link api-service /repos/api
-anchorspec workspace link --workspace platform /repos/platform/apps/checkout
-```
-
-The path must already exist. Relative paths are resolved against the command's current directory before AnchorSpec stores the verified absolute path in machine-local workspace state. Linked paths can be full repos, packages, services, apps, or folders without repo-local `anchorspec/` state.
-
-### `anchorspec workspace relink`
-
-Repair or change the local path for an existing link.
-
-```bash
-anchorspec workspace relink <name> <path> [options]
-```
-
-The path must already exist. Relink updates only the machine-local path for the stable link name.
-
-### `anchorspec workspace doctor`
-
-Check what one workspace can resolve on the current machine.
-
-```bash
-anchorspec workspace doctor [options]
-```
-
-Doctor shows the workspace location, linked repos or folders, missing paths, repo-local specs paths when present, and suggested fixes. JSON output also includes the workspace planning path for compatibility. It reports issues only; it does not repair them automatically.
-
-Commands that need one workspace use the current workspace when run from inside a workspace folder or subdirectory. From elsewhere, pass `--workspace <name>`, select from the picker in an interactive terminal, or rely on the only known workspace when exactly one exists. In `--json` or `--no-interactive` mode, ambiguous selection fails with a structured status error and suggests `--workspace <name>`.
-
-JSON responses use typed objects plus `status` arrays. Primary data lives in `workspace`, `workspaces`, or `link`; warnings and errors live in `status`.
-
-### `anchorspec workspace update`
-
-Refresh workspace-local AnchorSpec guidance and agent skills.
-
-```bash
-anchorspec workspace update [name] [options]
-```
-
-**Options:**
-
-| Option | Description |
-|--------|-------------|
-| `--workspace <name>` | Select a known workspace from the local registry |
-| `--tools <tools>` | Select agents for workspace skills. Use `all`, `none`, or comma-separated tool IDs |
-| `--json` | Output JSON |
-| `--no-interactive` | Disable workspace picker prompts |
-
-**Examples:**
-
-```bash
-anchorspec workspace update
-anchorspec workspace update platform
-anchorspec workspace update --workspace platform --tools codex,claude
-anchorspec workspace update --workspace platform --tools none
-```
-
-`workspace update` refreshes the generated workspace guidance block and local open surface. For agent skills, it reuses the stored workspace skill agent selection when `--tools` is omitted. Passing `--tools` replaces that stored selection. It refreshes only AnchorSpec-managed workflow skill directories in the workspace root, removes deselected managed workflow skills, and leaves linked repos and folders untouched.
-
-Running `anchorspec update` from inside a workspace does not update workspace-local files. Use `anchorspec workspace update` when you want workspace-local guidance and skills refreshed, and run `anchorspec update` inside repo-local projects when you want repo-owned tool files updated.
-
-### `anchorspec workspace open`
-
-Open a workspace working set through the stored preferred opener, a one-session agent override, or VS Code editor mode.
-
-```bash
-anchorspec workspace open [name] [options]
-```
-
-**Options:**
-
-| Option | Description |
-|--------|-------------|
-| `--workspace <name>` | Alias for the positional workspace name |
-| `--initiative <id>` | Open an initiative as a local workspace view. Accepts `<id>` or `<store>/<id>` |
-| `--store <id>` | Registered context store id for `--initiative` |
-| `--store-path <path>` | Existing local context store root for `--initiative` |
-| `--agent <tool>` | One-session agent override: `codex-cli`, `claude`, or `github-copilot` |
-| `--editor` | Open the maintained VS Code workspace file as a normal editor workspace |
-| `--no-interactive` | Disable workspace and opener picker prompts |
-
-**Examples:**
-
-```bash
-anchorspec workspace open
-anchorspec workspace open platform
-anchorspec workspace open platform --agent github-copilot
-anchorspec workspace open --agent codex-cli
-anchorspec workspace open --editor
-anchorspec workspace open --initiative billing-launch --store platform
-anchorspec workspace open --initiative platform/billing-launch
-```
-
-`workspace open` uses the current workspace when run inside one, auto-selects the only known workspace when run elsewhere, and asks the user to choose when multiple workspaces are known. `--agent` and `--editor` do not change the stored preferred opener. Passing both opener overrides is an error; choose either `--agent <tool>` or `--editor`.
-
-When `--initiative` is used, AnchorSpec prepares or selects a private local workspace view for that initiative. Registry-selected stores are stored by id; `--store-path` stores a runtime-local path selector because workspace views are private local state.
-
-AnchorSpec maintains `<workspace-name>.code-workspace` at the workspace root for VS Code editor and GitHub Copilot-in-VS-Code opens. That file is machine-local workspace view state.
-
-The maintained VS Code workspace lists valid linked repos or folders first, then initiative context when attached, then the AnchorSpec workspace files. VS Code displays those entries as a multi-root workspace.
-
-Root workspace open makes linked repos or folders visible for exploration and context. Implementation edits should start only after an explicit user request and a normal AnchorSpec implementation workflow.
-
----
-
-## Shared Context Commands
-
-Context stores and initiatives are beta coordination surfaces. A context store is a local registration for durable shared context, usually a Git-backed folder or clone. An initiative is shared coordination context inside a context store; repo-local changes can link to it without copying the shared plan into every repo.
-
-### `anchorspec context-store setup`
-
-Create and register a local context store. With no arguments in a terminal,
-AnchorSpec guides the user through setup. Agents and scripts should pass explicit
+Create and register a local store. With no arguments in a terminal,
+OpenSpec guides the user through setup. Agents and scripts should pass explicit
 inputs and use `--json`.
 
 ```bash
-anchorspec context-store setup [id] [options]
+openspec store setup [id] [options]
 ```
 
 **Options:**
 
 | Option | Description |
 |--------|-------------|
-| `--path <path>` | Context store folder path; defaults to AnchorSpec's managed local data directory |
-| `--init-git` | Initialize a Git repository in the context store |
-| `--no-init-git` | Do not initialize a Git repository |
+| `--path <path>` | Folder where the store should live (for example `~/openspec/<id>`) |
+| `--remote <url>` | Record the canonical remote in the new store's `store.yaml` |
+| `--init-git` | Initialize a Git repository with an initial commit (default) |
+| `--no-init-git` | Skip every Git action: no init, no initial commit |
 | `--json` | Output JSON |
 
-When `--path` is omitted, setup creates the store under `getGlobalDataDir()/context-stores/<id>`: `$XDG_DATA_HOME/anchorspec/context-stores/<id>` when `XDG_DATA_HOME` is set, or `~/.local/share/anchorspec/context-stores/<id>` on Unix-style fallbacks. Pass `--path` when you want the store in a visible clone or team-specific folder.
+Non-interactive runs (`--json`, scripts, agents) must pass both the store id and `--path`. In an interactive terminal, setup prompts for the location with an editable suggestion in a visible, user-owned place (for example `~/openspec/<id>`); it never defaults to OpenSpec's managed data directory.
 
 Examples:
 
 ```bash
-anchorspec context-store setup
-anchorspec context-store setup team-context
-anchorspec context-store setup team-context --path /repos/team-context --no-init-git
-anchorspec context-store setup team-context --json --no-init-git
+openspec store setup
+openspec store setup team-context
+openspec store setup team-context --path ~/openspec/team-context --no-init-git
+openspec store setup team-context --path ~/openspec/team-context --no-init-git --json
 ```
 
-### `anchorspec context-store register`
+### `openspec store register`
 
-Register an existing local context store folder.
+Register an existing local store folder.
 
 ```bash
-anchorspec context-store register [path] [options]
+openspec store register [path] [options]
 ```
 
 **Options:**
 
 | Option | Description |
 |--------|-------------|
-| `--id <id>` | Context store id; defaults to store metadata or folder name |
+| `--id <id>` | Store id; defaults to store metadata or folder name |
+| `--yes` | Confirm creating store identity metadata for a healthy OpenSpec root |
 | `--json` | Output JSON |
 
-### `anchorspec context-store unregister`
+### `openspec store unregister`
 
-Forget a local context-store registration without deleting files.
+Forget a local store registration without deleting files.
 
 ```bash
-anchorspec context-store unregister <id> [--json]
+openspec store unregister <id> [--json]
 ```
 
 Use this when a store was moved, cloned somewhere else, or should no longer be
-shown by AnchorSpec on this machine.
+shown by OpenSpec on this machine.
 
-### `anchorspec context-store remove`
+### `openspec store remove`
 
-Forget a local context-store registration and delete its local folder.
+Forget a local store registration and delete its local folder.
 
 ```bash
-anchorspec context-store remove <id> [--yes] [--json]
+openspec store remove <id> [--yes] [--json]
 ```
 
 `remove` shows the exact folder before deleting in an interactive terminal.
 Agents, scripts, and JSON callers must pass `--yes` to confirm deletion.
-AnchorSpec refuses to delete a folder that does not contain matching
-context-store metadata.
+OpenSpec refuses to delete a folder that does not contain matching
+store metadata.
 
-### `anchorspec context-store list`
+### `openspec store list`
 
-List locally registered context stores.
+List locally registered stores.
 
 ```bash
-anchorspec context-store list [--json]
-anchorspec context-store ls [--json]
+openspec store list [--json]
+openspec store ls [--json]
 ```
 
-### `anchorspec context-store doctor`
+### `openspec store doctor`
 
-Check local context-store registration, metadata, and Git presence.
+Check local store registration, metadata, and Git presence.
 
 ```bash
-anchorspec context-store doctor [id] [--json]
+openspec store doctor [id] [--json]
 ```
 
 Doctor is diagnostic-only; it reports missing roots, metadata mismatches, and invalid local registry state without modifying the store.
 
-### `anchorspec initiative create`
+### Referencing stores from a project
 
-Create an initiative in a context store.
+A project repo can declare which stores its work draws on in `openspec/config.yaml`:
 
-```bash
-anchorspec initiative create <id> --title <title> --summary <summary> [options]
+```yaml
+schema: spec-driven
+references:
+  - team-context
 ```
 
-**Options:**
+From then on, `openspec instructions` output in that repo (both the per-artifact and `apply` surfaces, JSON and human modes) carries an index of each referenced store's specs — spec ids, a one-line summary from each spec's Purpose section, and the fetch command (`openspec show <spec-id> --type spec --store <id>`). The index is built live from the registered checkout on every run; spec content is never copied into the output.
 
-| Option | Description |
-|--------|-------------|
-| `--store <id>` | Context store id from the local registry |
-| `--store-path <path>` | Existing local context store root |
-| `--title <title>` | Initiative title |
-| `--summary <summary>` | Initiative summary |
-| `--json` | Output JSON |
+References are read-only context. They never change where commands act: work stays in the repo's own root, and writing to a referenced store remains an explicit `--store` action. A reference that cannot be resolved (for example, a store not registered on this machine) degrades to a warning in the index with the exact fix, and instructions still generate. `openspec doctor` reports reference health in one place.
 
-### `anchorspec initiative list`
+### Recording where a store is cloned from
 
-List initiatives. Without a selector, this searches all registered context stores and reports partial-read warnings in `status`.
+A store can record its canonical clone source in its committed identity file, so onboarding never dead-ends at "register the store":
 
 ```bash
-anchorspec initiative list [options]
-anchorspec initiative ls [options]
+openspec store setup team-context --path ~/openspec/team-context \
+  --remote git@github.com:acme/team-context.git
 ```
 
-**Options:**
+The remote lands in `.openspec-store/store.yaml` inside the initial commit, so every clone is born knowing it. For an existing store, edit `store.yaml` by hand and commit. `store doctor` shows the recorded remote (and the checkout's observed Git origin); setup/register sharing guidance names it; and register records the checkout's origin in the machine-local registry.
 
-| Option | Description |
-|--------|-------------|
-| `--store <id>` | List one registered context store |
-| `--store-path <path>` | List one existing local context store root |
-| `--json` | Output JSON |
+A reference declaration can carry the clone source too, so a teammate who doesn't have the store yet gets a complete, pasteable fix (`git clone <remote> <path> && openspec store register <path> --id <id>`):
 
-### `anchorspec initiative show`
+```yaml
+references:
+  - { id: team-context, remote: "git@github.com:acme/team-context.git" }
+```
 
-Resolve an initiative and print its canonical location.
+Recording a remote is not sync: OpenSpec never clones, pulls, or pushes on its own.
+
+### Declaring a default store
+
+A repo whose planning is fully externalized — no local `openspec/specs/` or `openspec/changes/` — can declare its store once instead of passing `--store` on every command:
+
+```yaml
+# openspec/config.yaml (the only file under openspec/)
+store: team-context
+```
+
+Normal commands then resolve to the declared store automatically; the root banner and JSON `root` block report `source: "declared"` with the store id, and printed hints still carry `--store <id>`. The declaration is a fallback, never an override: explicit `--store` always wins, and a directory with real planning folders ignores the pointer (with a warning). To convert a pointer repo into a local OpenSpec root, remove the `store:` line and run `openspec init` — init refuses to scaffold while the declaration is present.
+
+## Doctor (relationship health)
+
+One read-only question, one place: is the OpenSpec root healthy, and are the stores it references available on this machine?
 
 ```bash
-anchorspec initiative show <id> [options]
-anchorspec initiative show <store>/<id> [options]
+openspec doctor [--store <id>] [--json]
 ```
 
-Without `--store`, AnchorSpec searches registered context stores. If the same initiative id exists in multiple stores, pass `--store <id>` or use the `<store>/<id>` form.
+The report separates root health, store metadata health (including a note when the recorded remote and the checkout's origin diverge), and reference health (the same diagnostics instructions show, with clone fixes for unresolved references). Health findings of any severity exit 0 — agents read the `status` arrays; only command failures (no root, unknown store) exit 1. Doctor never clones, syncs, or repairs. To get the assembled set itself rather than its health, use `openspec context`.
+
+## Working context (the assembled set)
+
+Everything this work relates to through OpenSpec declarations, in one working set: the OpenSpec root and the stores it references.
+
+```bash
+openspec context [--store <id>] [--json] [--code-workspace <path> [--force]]
+```
+
+The JSON brief is agent-consumable (each available referenced store carries its fetch recipe; unresolved members carry the same fixes instructions and doctor show). `--code-workspace` additionally writes a VS Code workspace file containing the root plus the available referenced stores (`ref:<id>` folders) — the one write this command performs, refused without `--force` if the file exists. Unavailable members are reported, never guessed at.
+
+"Working context" is the assembled set; the `context:` field in `openspec/config.yaml` is project background injected into instructions — two different things. `openspec doctor` answers whether the set is healthy; `openspec context` answers what the set is.
+
+## Personal worksets
+
+> **Beta.** Worksets are part of the new beta surface; commands, flags, and file formats may change shape between releases. For the walkthrough, see the [stores guide](stores-beta/user-guide.md#worksets-reopen-the-folders-you-work-on-together).
+
+A workset is a personal, named view of the folders you work on together — a planning root plus whatever else you choose — kept on your machine and reopened by name in your tool. It is purely local: never committed, never shared, never derived from declarations, and removing one never touches a member folder.
+
+```bash
+openspec workset create [name] [--member <path> | --member <name>=<path>]... [--tool <id>] [--json]
+openspec workset list [--json]
+openspec workset open <name> [--tool <id>]
+openspec workset remove <name> [--yes] [--json]
+```
+
+`create` runs a short guided flow (or takes `--member` flags non-interactively; the first member is the primary — sessions start there). `open` launches the chosen tool: editors (VS Code, Cursor) open a window with every member and return; CLI agents (Claude Code, codex) take over this terminal as a session with every member attached and no prompt pre-filled, ending when you exit. A member folder missing at open time is skipped with a note; the rest opens. The saved tool preference is overridable per open with `--tool`.
+
+Supporting a new tool is configuration, not code. Every tool is one of two launch styles — `workspace-file` (launched with the generated `.code-workspace`) or `attach-dirs` (one attach flag per member) — and the `openers` key in the global `config.json` (open it with `openspec config edit`) adds tools or adjusts built-ins per field:
+
+```json
+{
+  "openers": {
+    "zed": { "style": "workspace-file" },
+    "claude": { "attach_flag": "--dir" }
+  }
+}
+```
+
+All workset state lives under the global data dir's `worksets/` folder (the saved views plus the generated `<name>.code-workspace` files, regenerated on every open); deleting that folder removes every trace.
 
 ---
 
 ## Browsing Commands
 
-### `anchorspec list`
+### `openspec list`
 
 List changes or specs in your project.
 
 ```
-anchorspec list [options]
+openspec list [options]
 ```
 
 **Options:**
@@ -515,43 +392,42 @@ anchorspec list [options]
 
 ```bash
 # List all active changes
-anchorspec list
+openspec list
 
 # List all specs
-anchorspec list --specs
+openspec list --specs
 
 # JSON output for scripts
-anchorspec list --json
+openspec list --json
 ```
 
 **Output (text):**
 
 ```
-Active changes:
-  add-dark-mode     UI theme switching support
-  fix-login-bug     Session timeout handling
+Changes:
+  add-dark-mode     No tasks      just now
 ```
 
 ---
 
-### `anchorspec view`
+### `openspec view`
 
 Display an interactive dashboard for exploring specs and changes.
 
 ```
-anchorspec view
+openspec view
 ```
 
 Opens a terminal-based interface for navigating your project's specifications and changes.
 
 ---
 
-### `anchorspec show`
+### `openspec show`
 
 Display details of a change or spec.
 
 ```
-anchorspec show [item-name] [options]
+openspec show [item-name] [options]
 ```
 
 **Arguments:**
@@ -586,28 +462,28 @@ anchorspec show [item-name] [options]
 
 ```bash
 # Interactive selection
-anchorspec show
+openspec show
 
 # Show a specific change
-anchorspec show add-dark-mode
+openspec show add-dark-mode
 
 # Show a specific spec
-anchorspec show auth --type spec
+openspec show auth --type spec
 
 # JSON output for parsing
-anchorspec show add-dark-mode --json
+openspec show add-dark-mode --json
 ```
 
 ---
 
 ## Validation Commands
 
-### `anchorspec validate`
+### `openspec validate`
 
 Validate changes and specs for structural issues.
 
 ```
-anchorspec validate [item-name] [options]
+openspec validate [item-name] [options]
 ```
 
 **Arguments:**
@@ -626,26 +502,26 @@ anchorspec validate [item-name] [options]
 | `--type <type>` | Specify type when name is ambiguous: `change` or `spec` |
 | `--strict` | Enable strict validation mode |
 | `--json` | Output as JSON |
-| `--concurrency <n>` | Max parallel validations (default: 6, or `ANCHORSPEC_CONCURRENCY` env) |
+| `--concurrency <n>` | Max parallel validations (default: 6, or `OPENSPEC_CONCURRENCY` env) |
 | `--no-interactive` | Disable prompts |
 
 **Examples:**
 
 ```bash
 # Interactive validation
-anchorspec validate
+openspec validate
 
 # Validate a specific change
-anchorspec validate add-dark-mode
+openspec validate add-dark-mode
 
 # Validate all changes
-anchorspec validate --changes
+openspec validate --changes
 
 # Validate everything with JSON output (for CI/scripts)
-anchorspec validate --all --json
+openspec validate --all --json
 
 # Strict validation with increased parallelism
-anchorspec validate --all --strict --concurrency 12
+openspec validate --all --strict --concurrency 12
 ```
 
 **Output (text):**
@@ -685,12 +561,12 @@ Validating add-dark-mode...
 
 ## Lifecycle Commands
 
-### `anchorspec archive`
+### `openspec archive`
 
 Archive a completed change and merge delta specs into main specs.
 
 ```
-anchorspec archive [change-name] [options]
+openspec archive [change-name] [options]
 ```
 
 **Arguments:**
@@ -711,37 +587,37 @@ anchorspec archive [change-name] [options]
 
 ```bash
 # Interactive archive
-anchorspec archive
+openspec archive
 
 # Archive specific change
-anchorspec archive add-dark-mode
+openspec archive add-dark-mode
 
 # Archive without prompts (CI/scripts)
-anchorspec archive add-dark-mode --yes
+openspec archive add-dark-mode --yes
 
 # Archive a tooling change that doesn't affect specs
-anchorspec archive update-ci-config --skip-specs
+openspec archive update-ci-config --skip-specs
 ```
 
 **What it does:**
 
 1. Validates the change (unless `--no-validate`)
 2. Prompts for confirmation (unless `--yes`)
-3. Merges delta specs into `anchorspec/specs/`
-4. Moves change folder to `anchorspec/changes/archive/YYYY-MM-DD-<name>/`
+3. Merges delta specs into `openspec/specs/`
+4. Moves change folder to `openspec/changes/archive/YYYY-MM-DD-<name>/`
 
 ---
 
 ## Workflow Commands
 
-These commands support the artifact-driven ANSX workflow. They're useful for both humans checking progress and agents determining next steps.
+These commands support the artifact-driven OPSX workflow. They're useful for both humans checking progress and agents determining next steps.
 
-### `anchorspec new change`
+### `openspec new change`
 
-Create a repo-local change directory and optional checked-in metadata.
+Create a change directory and optional checked-in metadata in the resolved OpenSpec root.
 
 ```bash
-anchorspec new change <name> [options]
+openspec new change <name> [options]
 ```
 
 **Options:**
@@ -749,46 +625,24 @@ anchorspec new change <name> [options]
 | Option | Description |
 |--------|-------------|
 | `--description <text>` | Description to add to `README.md` |
-| `--goal <text>` | Workspace product goal to store with the change |
-| `--areas <names>` | Comma-separated affected workspace link names |
-| `--initiative <id>` | Link the repo-local change to an initiative |
-| `--store <id>` | Context store id for `--initiative` |
-| `--store-path <path>` | Existing local context store root for `--initiative` |
+| `--goal <text>` | Optional goal metadata to store with the change |
 | `--schema <name>` | Workflow schema to use |
+| `--store <id>` | Store id to use as the OpenSpec root (a store is a standalone OpenSpec repo you've registered) |
 | `--json` | Output JSON |
 
 Examples:
 
 ```bash
-anchorspec new change add-billing-api --initiative billing-launch --store platform
-anchorspec new change add-billing-api --initiative platform/billing-launch --json
+openspec new change add-billing-api
+openspec new change add-billing-api --store team-context --json
 ```
 
-### `anchorspec set change`
-
-Update checked-in repo-local change metadata without recreating the change.
-
-```bash
-anchorspec set change <name> [options]
-```
-
-**Options:**
-
-| Option | Description |
-|--------|-------------|
-| `--initiative <id>` | Link the repo-local change to an initiative |
-| `--store <id>` | Context store id for `--initiative` |
-| `--store-path <path>` | Existing local context store root for `--initiative` |
-| `--json` | Output JSON |
-
-`set change --initiative` is idempotent when the requested link already exists and refuses to replace a different existing initiative link.
-
-### `anchorspec status`
+### `openspec status`
 
 Display artifact completion status for a change.
 
 ```
-anchorspec status [options]
+openspec status [options]
 ```
 
 **Options:**
@@ -803,13 +657,13 @@ anchorspec status [options]
 
 ```bash
 # Interactive status check
-anchorspec status
+openspec status
 
 # Status for specific change
-anchorspec status --change add-dark-mode
+openspec status --change add-dark-mode
 
 # JSON for agent use
-anchorspec status --change add-dark-mode --json
+openspec status --change add-dark-mode --json
 ```
 
 **Output (text):**
@@ -844,12 +698,12 @@ Progress: 2/4 artifacts complete
 
 ---
 
-### `anchorspec instructions`
+### `openspec instructions`
 
 Get enriched instructions for creating an artifact or applying tasks. Used by AI agents to understand what to create next.
 
 ```
-anchorspec instructions [artifact] [options]
+openspec instructions [artifact] [options]
 ```
 
 **Arguments:**
@@ -872,16 +726,16 @@ anchorspec instructions [artifact] [options]
 
 ```bash
 # Get instructions for next artifact
-anchorspec instructions --change add-dark-mode
+openspec instructions --change add-dark-mode
 
 # Get specific artifact instructions
-anchorspec instructions design --change add-dark-mode
+openspec instructions design --change add-dark-mode
 
 # Get apply/implementation instructions
-anchorspec instructions apply --change add-dark-mode
+openspec instructions apply --change add-dark-mode
 
 # JSON for agent consumption
-anchorspec instructions design --change add-dark-mode --json
+openspec instructions design --change add-dark-mode --json
 ```
 
 **Output includes:**
@@ -893,12 +747,12 @@ anchorspec instructions design --change add-dark-mode --json
 
 ---
 
-### `anchorspec templates`
+### `openspec templates`
 
 Show resolved template paths for all artifacts in a schema.
 
 ```
-anchorspec templates [options]
+openspec templates [options]
 ```
 
 **Options:**
@@ -912,13 +766,13 @@ anchorspec templates [options]
 
 ```bash
 # Show template paths for default schema
-anchorspec templates
+openspec templates
 
 # Show templates for custom schema
-anchorspec templates --schema my-workflow
+openspec templates --schema my-workflow
 
 # JSON for programmatic use
-anchorspec templates --json
+openspec templates --json
 ```
 
 **Output (text):**
@@ -927,20 +781,20 @@ anchorspec templates --json
 Schema: spec-driven
 
 Templates:
-  proposal  → ~/.anchorspec/schemas/spec-driven/templates/proposal.md
-  specs     → ~/.anchorspec/schemas/spec-driven/templates/specs.md
-  design    → ~/.anchorspec/schemas/spec-driven/templates/design.md
-  tasks     → ~/.anchorspec/schemas/spec-driven/templates/tasks.md
+  proposal  → ~/.openspec/schemas/spec-driven/templates/proposal.md
+  specs     → ~/.openspec/schemas/spec-driven/templates/specs.md
+  design    → ~/.openspec/schemas/spec-driven/templates/design.md
+  tasks     → ~/.openspec/schemas/spec-driven/templates/tasks.md
 ```
 
 ---
 
-### `anchorspec schemas`
+### `openspec schemas`
 
 List available workflow schemas with their descriptions and artifact flows.
 
 ```
-anchorspec schemas [options]
+openspec schemas [options]
 ```
 
 **Options:**
@@ -952,7 +806,7 @@ anchorspec schemas [options]
 **Example:**
 
 ```bash
-anchorspec schemas
+openspec schemas
 ```
 
 **Output:**
@@ -975,12 +829,12 @@ Available schemas:
 
 Commands for creating and managing custom workflow schemas.
 
-### `anchorspec schema init`
+### `openspec schema init`
 
 Create a new project-local schema.
 
 ```
-anchorspec schema init <name> [options]
+openspec schema init <name> [options]
 ```
 
 **Arguments:**
@@ -1004,10 +858,10 @@ anchorspec schema init <name> [options]
 
 ```bash
 # Interactive schema creation
-anchorspec schema init research-first
+openspec schema init research-first
 
 # Non-interactive with specific artifacts
-anchorspec schema init rapid \
+openspec schema init rapid \
   --description "Rapid iteration workflow" \
   --artifacts "proposal,tasks" \
   --default
@@ -1016,7 +870,7 @@ anchorspec schema init rapid \
 **What it creates:**
 
 ```
-anchorspec/schemas/<name>/
+openspec/schemas/<name>/
 ├── schema.yaml           # Schema definition
 └── templates/
     ├── proposal.md       # Template for each artifact
@@ -1027,12 +881,12 @@ anchorspec/schemas/<name>/
 
 ---
 
-### `anchorspec schema fork`
+### `openspec schema fork`
 
 Copy an existing schema to your project for customization.
 
 ```
-anchorspec schema fork <source> [name] [options]
+openspec schema fork <source> [name] [options]
 ```
 
 **Arguments:**
@@ -1053,17 +907,17 @@ anchorspec schema fork <source> [name] [options]
 
 ```bash
 # Fork the built-in spec-driven schema
-anchorspec schema fork spec-driven my-workflow
+openspec schema fork spec-driven my-workflow
 ```
 
 ---
 
-### `anchorspec schema validate`
+### `openspec schema validate`
 
 Validate a schema's structure and templates.
 
 ```
-anchorspec schema validate [name] [options]
+openspec schema validate [name] [options]
 ```
 
 **Arguments:**
@@ -1083,20 +937,20 @@ anchorspec schema validate [name] [options]
 
 ```bash
 # Validate a specific schema
-anchorspec schema validate my-workflow
+openspec schema validate my-workflow
 
 # Validate all schemas
-anchorspec schema validate
+openspec schema validate
 ```
 
 ---
 
-### `anchorspec schema which`
+### `openspec schema which`
 
 Show where a schema resolves from (useful for debugging precedence).
 
 ```
-anchorspec schema which [name] [options]
+openspec schema which [name] [options]
 ```
 
 **Arguments:**
@@ -1116,32 +970,32 @@ anchorspec schema which [name] [options]
 
 ```bash
 # Check where a schema comes from
-anchorspec schema which spec-driven
+openspec schema which spec-driven
 ```
 
 **Output:**
 
 ```
 spec-driven resolves from: package
-  Source: /usr/local/lib/node_modules/anchorspec/schemas/spec-driven
+  Source: /usr/local/lib/node_modules/@fission-ai/openspec/schemas/spec-driven
 ```
 
 **Schema precedence:**
 
-1. Project: `anchorspec/schemas/<name>/`
-2. User: `~/.local/share/anchorspec/schemas/<name>/`
+1. Project: `openspec/schemas/<name>/`
+2. User: `~/.local/share/openspec/schemas/<name>/`
 3. Package: Built-in schemas
 
 ---
 
 ## Configuration Commands
 
-### `anchorspec config`
+### `openspec config`
 
-View and modify global AnchorSpec configuration.
+View and modify global OpenSpec configuration.
 
 ```
-anchorspec config <subcommand> [options]
+openspec config <subcommand> [options]
 ```
 
 **Subcommands:**
@@ -1161,57 +1015,57 @@ anchorspec config <subcommand> [options]
 
 ```bash
 # Show config file path
-anchorspec config path
+openspec config path
 
 # List all settings
-anchorspec config list
+openspec config list
 
 # Get a specific value
-anchorspec config get profile
+openspec config get telemetry.enabled
 
 # Set a value
-anchorspec config set profile custom
+openspec config set telemetry.enabled false
 
 # Set a string value explicitly
-anchorspec config set user.name "My Name" --string
+openspec config set user.name "My Name" --string
 
 # Remove a custom setting
-anchorspec config unset user.name
+openspec config unset user.name
 
 # Reset all configuration
-anchorspec config reset --all --yes
+openspec config reset --all --yes
 
 # Edit config in your editor
-anchorspec config edit
+openspec config edit
 
 # Configure profile with action-based wizard
-anchorspec config profile
+openspec config profile
 
 # Fast preset: switch workflows to core (keeps delivery mode)
-anchorspec config profile core
+openspec config profile core
 ```
 
-`anchorspec config profile` starts with a current-state summary, then lets you choose:
+`openspec config profile` starts with a current-state summary, then lets you choose:
 - Change delivery + workflows
 - Change delivery only
 - Change workflows only
 - Keep current settings (exit)
 
 If you keep current settings, no changes are written and no update prompt is shown.
-If there are no config changes but the current project or workspace files are out of sync with your global profile/delivery, AnchorSpec will show a warning and suggest `anchorspec update` for repo-local projects or `anchorspec workspace update` for workspace-local guidance and skills.
+If there are no config changes but the current project files are out of sync with your global profile/delivery, OpenSpec will show a warning and suggest `openspec update`.
 Pressing `Ctrl+C` also cancels the flow cleanly (no stack trace) and exits with code `130`.
-In the workflow checklist, `[x]` means the workflow is selected in global config. To apply those selections to project files, run `anchorspec update` (or choose `Apply changes to this project now?` when prompted inside a project). From inside a workspace, use `anchorspec workspace update` to refresh workspace-local guidance and skills; this remains skills-only for generated agent workflow files and does not generate workspace slash commands.
+In the workflow checklist, `[x]` means the workflow is selected in global config. To apply those selections to project files, run `openspec update` (or choose `Apply changes to this project now?` when prompted inside a project).
 
 **Interactive examples:**
 
 ```bash
 # Delivery-only update
-anchorspec config profile
+openspec config profile
 # choose: Change delivery only
 # choose delivery: Skills only
 
 # Workflows-only update
-anchorspec config profile
+openspec config profile
 # choose: Change workflows only
 # toggle workflows in the checklist, then confirm
 ```
@@ -1220,12 +1074,12 @@ anchorspec config profile
 
 ## Utility Commands
 
-### `anchorspec feedback`
+### `openspec feedback`
 
-Submit feedback about AnchorSpec. Creates a GitHub issue.
+Submit feedback about OpenSpec. Creates a GitHub issue.
 
 ```
-anchorspec feedback <message> [options]
+openspec feedback <message> [options]
 ```
 
 **Arguments:**
@@ -1245,18 +1099,18 @@ anchorspec feedback <message> [options]
 **Example:**
 
 ```bash
-anchorspec feedback "Add support for custom artifact types" \
+openspec feedback "Add support for custom artifact types" \
   --body "I'd like to define my own artifact types beyond the built-in ones."
 ```
 
 ---
 
-### `anchorspec completion`
+### `openspec completion`
 
-Manage shell completions for the AnchorSpec CLI.
+Manage shell completions for the OpenSpec CLI.
 
 ```
-anchorspec completion <subcommand> [shell]
+openspec completion <subcommand> [shell]
 ```
 
 **Subcommands:**
@@ -1273,16 +1127,16 @@ anchorspec completion <subcommand> [shell]
 
 ```bash
 # Install completions (auto-detects shell)
-anchorspec completion install
+openspec completion install
 
 # Install for specific shell
-anchorspec completion install zsh
+openspec completion install zsh
 
 # Generate script for manual installation
-anchorspec completion generate bash > ~/.bash_completion.d/anchorspec
+openspec completion generate bash > ~/.bash_completion.d/openspec
 
 # Uninstall
-anchorspec completion uninstall
+openspec completion uninstall
 ```
 
 ---
@@ -1300,15 +1154,17 @@ anchorspec completion uninstall
 
 | Variable | Description |
 |----------|-------------|
-| `ANCHORSPEC_CONCURRENCY` | Default concurrency for bulk validation (default: 6) |
-| `EDITOR` or `VISUAL` | Editor for `anchorspec config edit` |
+| `OPENSPEC_TELEMETRY` | Set to `0` to disable telemetry |
+| `DO_NOT_TRACK` | Set to `1` to disable telemetry (standard DNT signal) |
+| `OPENSPEC_CONCURRENCY` | Default concurrency for bulk validation (default: 6) |
+| `EDITOR` or `VISUAL` | Editor for `openspec config edit` |
 | `NO_COLOR` | Disable color output when set |
 
 ---
 
 ## Related Documentation
 
-- [Commands](commands.md) - AI slash commands (`/ansx:propose`, `/ansx:apply`, etc.)
+- [Commands](commands.md) - AI slash commands (`/opsx:propose`, `/opsx:apply`, etc.)
 - [Workflows](workflows.md) - Common patterns and when to use each command
 - [Customization](customization.md) - Create custom schemas and templates
 - [Getting Started](getting-started.md) - First-time setup guide
