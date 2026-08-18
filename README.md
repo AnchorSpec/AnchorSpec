@@ -75,6 +75,29 @@ AI:  Archived to anchorspec/changes/archive/2025-01-23-add-dark-mode/
 ```
 
 <details>
+<summary><strong>What do the specs actually look like?</strong></summary>
+
+Plain Markdown — requirements with concrete scenarios, no special syntax to learn. Here's what goes in the `specs/` folder created above:
+
+```markdown
+## ADDED Requirements
+
+### Requirement: Theme selection
+The app SHALL let users switch between light and dark themes,
+defaulting to the system preference.
+
+#### Scenario: User toggles dark mode
+- **WHEN** the user clicks the theme toggle
+- **THEN** the app switches to dark mode and persists the choice
+```
+
+Your AI writes these; you review the plan before any code is written.
+
+AnchorSpec is built with AnchorSpec — browse this repo's live [specs](anchorspec/specs) and in-flight [changes](anchorspec/changes) for real examples at scale.
+
+</details>
+
+<details>
 <summary><strong>AnchorSpec Dashboard</strong></summary>
 
 <p align="center">
@@ -112,6 +135,8 @@ cd your-project
 anchorspec init
 ```
 
+> **Want your AI to do it?** Paste the [setup prompt](docs/installation.md#install-with-your-ai-assistant) into your coding assistant — it installs the CLI, runs `anchorspec init`, and verifies the result.
+
 Now talk to your AI:
 
 - **Not sure what to build yet?** Start with `/ansx:explore`, a no-stakes thinking partner that reads your code, weighs options, and shapes a plan before anything is written. ([Explore guide](docs/explore.md))
@@ -119,8 +144,10 @@ Now talk to your AI:
 
 Both are in the default profile. If you want the expanded workflow (`/ansx:new`, `/ansx:continue`, `/ansx:ff`, `/ansx:verify`, `/ansx:bulk-archive`, `/ansx:onboard`), select it with `anchorspec config profile` and apply with `anchorspec update`.
 
+`/ansx:propose` is the canonical name; your tool may spell it `/ansx-propose` (Cursor, GitHub Copilot), `@ansx-propose` (Amazon Q) or `$anchorspec-propose` (Codex). `anchorspec init` prints the right form for the tools you picked — see [How To Invoke](docs/supported-tools.md#how-to-invoke).
+
 > [!NOTE]
-> Not sure if your tool is supported? [View the full list](docs/supported-tools.md) – we support 25+ tools and growing.
+> Not sure if your tool is supported? [View the full list](docs/supported-tools.md) – we support 30+ tools and growing.
 >
 > Also works with pnpm, yarn, bun, and nix. [See installation options](docs/installation.md).
 

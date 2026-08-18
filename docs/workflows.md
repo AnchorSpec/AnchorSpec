@@ -36,6 +36,7 @@ New installs default to `core`, which provides:
 - `/ansx:explore`
 - `/ansx:propose`
 - `/ansx:apply`
+- `/ansx:update`
 - `/ansx:sync`
 - `/ansx:archive`
 

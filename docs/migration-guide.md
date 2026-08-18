@@ -8,7 +8,7 @@ ANSX replaces the old phase-locked workflow with a fluid, action-based approach.
 
 | Aspect | Legacy | ANSX |
 |--------|--------|------|
-| **Commands** | `/anchorspec:proposal`, `/anchorspec:apply`, `/anchorspec:archive` | Default: `/ansx:propose`, `/ansx:apply`, `/ansx:sync`, `/ansx:archive` (expanded workflow commands optional) |
+| **Commands** | `/anchorspec:proposal`, `/anchorspec:apply`, `/anchorspec:archive` | Default: `/ansx:propose`, `/ansx:explore`, `/ansx:apply`, `/ansx:update`, `/ansx:sync`, `/ansx:archive` (expanded workflow commands optional) |
 | **Workflow** | Create all artifacts at once | Create incrementally or all at once—your choice |
 | **Going back** | Awkward phase gates | Natural—update any artifact anytime |
 | **Customization** | Fixed structure | Schema-driven, fully hackable |
@@ -43,10 +43,11 @@ Only AnchorSpec-managed files that are being replaced:
 
 - Claude Code: `.claude/commands/anchorspec/`
 - Cursor: `.cursor/commands/anchorspec-*.md`
-- Windsurf: `.windsurf/workflows/anchorspec-*.md`
+- Devin Desktop, formerly Windsurf: `.windsurf/workflows/anchorspec-*.md`
 - Cline: `.clinerules/workflows/anchorspec-*.md`
 - Roo: `.roo/commands/anchorspec-*.md`
 - GitHub Copilot: `.github/prompts/anchorspec-*.prompt.md` (IDE extensions only; not supported in Copilot CLI)
+- Codex: AnchorSpec now uses `.codex/skills/anchorspec-*`; legacy cleanup only targets AnchorSpec's allowlisted prompt filenames in `$CODEX_HOME/prompts` or `~/.codex/prompts`, and only removes them after replacement skills exist.
 - And others (Augment, Continue, Amazon Q, etc.)
 
 The migration detects whichever tools you have configured and cleans up their legacy files.
@@ -84,7 +85,7 @@ Don't worry about getting it perfect. We're still learning what works best here,
 
 Both `anchorspec init` and `anchorspec update` detect legacy files and guide you through the same cleanup process. Use whichever fits your situation:
 
-- New installs default to profile `core` (`propose`, `explore`, `apply`, `sync`, `archive`).
+- New installs default to profile `core` (`propose`, `explore`, `apply`, `update`, `sync`, `archive`).
 - Migrated installs preserve your previously installed workflows by writing a `custom` profile when needed.
 
 ### Using `anchorspec init`
@@ -155,6 +156,8 @@ anchorspec init --force --tools claude
 ```
 
 The `--force` flag skips prompts and auto-accepts cleanup.
+
+This includes cleanup of AnchorSpec-managed Codex prompt files in the global Codex prompt directory. Cleanup only targets AnchorSpec's allowlisted legacy Codex prompt filenames, removes them only after replacement `.codex/skills/anchorspec-*` skills exist, and preserves all other files.
 
 ---
 
@@ -287,6 +290,8 @@ Command availability is profile-dependent:
 | `/ansx:propose` | Create a change and generate planning artifacts in one step |
 | `/ansx:explore` | Think through ideas with no structure |
 | `/ansx:apply` | Implement tasks from tasks.md |
+| `/ansx:update` | Revise a change's planning artifacts and keep them coherent |
+| `/ansx:sync` | Merge delta specs into main specs |
 | `/ansx:archive` | Finalize and archive the change |
 
 **Expanded workflow (custom selection):**
@@ -297,7 +302,6 @@ Command availability is profile-dependent:
 | `/ansx:continue` | Create the next artifact (one at a time) |
 | `/ansx:ff` | Fast-forward—create planning artifacts at once |
 | `/ansx:verify` | Validate implementation matches specs |
-| `/ansx:sync` | Merge delta specs into main specs |
 | `/ansx:bulk-archive` | Archive multiple changes at once |
 | `/ansx:onboard` | Guided end-to-end onboarding workflow |
 
@@ -406,6 +410,8 @@ ANSX uses the emerging **skills** standard:
 ```
 
 Skills are recognized across multiple AI coding tools and provide richer metadata.
+
+Codex is skills-only in ANSX. AnchorSpec no longer generates Codex custom prompt files; use the generated `.codex/skills/anchorspec-*` directories instead.
 
 ---
 
@@ -561,7 +567,9 @@ project/
 │       ├── anchorspec-propose/     # default core profile
 │       ├── anchorspec-explore/
 │       ├── anchorspec-apply-change/
+│       ├── anchorspec-update-change/
 │       ├── anchorspec-sync-specs/
+│       ├── anchorspec-archive-change/
 │       └── ...                   # expanded profile adds new/continue/ff/etc.
 ├── CLAUDE.md                     # AnchorSpec markers removed, your content preserved
 └── AGENTS.md                     # AnchorSpec markers removed, your content preserved

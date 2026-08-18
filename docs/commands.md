@@ -1,8 +1,13 @@
 # Commands
 
-This is the reference for AnchorSpec's slash commands. These commands are invoked in your AI coding assistant's chat interface (e.g., Claude Code, Cursor, Windsurf).
+This is the reference for AnchorSpec's slash commands. These commands are invoked in your AI coding assistant's chat interface (e.g., Claude Code, Cursor, Devin Desktop).
 
 For workflow patterns and when to use each command, see [Workflows](workflows.md). For CLI commands, see [CLI](cli.md).
+
+These pages use `/ansx:<command>` as the canonical name. Some tools spell it
+differently — Cursor and GitHub Copilot register `/ansx-propose`, Codex uses
+`$anchorspec-propose` — so check [How To Invoke](supported-tools.md#how-to-invoke)
+for your tool. The files AnchorSpec generates already use the right form.
 
 ## Quick Reference
 
@@ -205,7 +210,7 @@ AI:  Change: add-dark-mode
      ✓ proposal    (done)
      ◆ specs       (ready)
      ◆ design      (ready)
-     ○ tasks       (blocked - needs: specs)
+     ○ tasks       (blocked - needs: specs, design)
 
      Creating specs...
 
@@ -213,7 +218,7 @@ AI:  Change: add-dark-mode
 
      ✓ Created anchorspec/changes/add-dark-mode/specs/ui/spec.md
 
-     Now available: tasks
+     Now available: design
      Run /ansx:continue to create the next artifact.
 ```
 
@@ -664,17 +669,20 @@ AI:  Welcome to AnchorSpec!
 
 Different AI tools use slightly different command syntax. Use the format that matches your tool:
 
-| Tool | Syntax Example |
-|------|----------------|
-| Claude Code | `/ansx:propose`, `/ansx:apply` |
-| Cursor | `/ansx-propose`, `/ansx-apply` |
-| Windsurf | `/ansx-propose`, `/ansx-apply` |
-| Copilot (IDE) | `/ansx-propose`, `/ansx-apply` |
-| Oh My Pi | `/ansx-propose`, `/ansx-apply` |
-| Kimi CLI | Skill-based invocations such as `/skill:anchorspec-propose`, `/skill:anchorspec-apply-change` (no generated `ansx-*` command files) |
-| Trae | `/ansx-propose`, `/ansx-apply` |
+| Your tool's command file | Syntax example | Example tools |
+|--------------------------|----------------|---------------|
+| `.../commands/ansx/<id>.*` | `/ansx:propose`, `/ansx:apply` | Claude Code, Gemini CLI, Crush |
+| `.../ansx-<id>.*` | `/ansx-propose`, `/ansx-apply` | Cursor, Devin Desktop, Copilot (IDE), Trae, Oh My Pi |
+| none — skills only | `/anchorspec-propose`, `/anchorspec-apply-change` | CodeArts, ForgeCode, Hermes, Mistral Vibe |
+| none — Kimi Code | `/skill:anchorspec-propose` | Kimi Code |
+| none — Codex CLI | `$anchorspec-propose` | Codex |
 
-The intent is the same across tools, but how commands are surfaced can differ by integration.
+> **Devin Desktop vs Devin Local:** the `.devin/workflows/ansx-*.md` files give
+> Devin Desktop `/ansx-propose`. Devin Local has no workflows — use the skills
+> AnchorSpec writes to `.devin/skills/`, e.g. `/anchorspec-propose`, which work on
+> both agents.
+
+The intent is the same across tools, but how commands are surfaced can differ by integration. [How To Invoke](supported-tools.md#how-to-invoke) lists every supported tool; this table shows only examples of each shape.
 
 > **Note:** GitHub Copilot commands (`.github/prompts/*.prompt.md`) are only available in IDE extensions (VS Code, JetBrains, Visual Studio). GitHub Copilot CLI does not currently support custom prompt files — see [Supported Tools](supported-tools.md) for details and workarounds.
 
