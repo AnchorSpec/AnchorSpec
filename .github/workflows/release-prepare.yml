@@ -33,6 +33,10 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
+      # No explicit version input: pnpm/action-setup reads the pinned version
+      # from package.json's "packageManager" field. Passing both caused
+      # "Multiple versions of pnpm specified" and failed every release run
+      # (see the v1.6.0 release-prepare failure on 2026-07-10, fixed in #57).
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
