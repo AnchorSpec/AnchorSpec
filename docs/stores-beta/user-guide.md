@@ -153,7 +153,7 @@ code repos that all plan into the same store, set it once, globally,
 instead of adding the `store:` line to each repo:
 
 ```bash
-openspec config set defaultStore team-plans
+anchorspec config set defaultStore team-plans
 ```
 
 Now any command run outside a planning root — and with no `--store` and no
@@ -162,7 +162,7 @@ precedence list, so `--store`, a local root, and a project `store:` pointer
 all still win. The root banner and JSON `root` block report
 `source: "global_default"` with the store id, so you can always tell a
 machine-wide default from a repo's own pointer. Clear it with
-`openspec config unset defaultStore`. If the id is not registered, commands
+`anchorspec config unset defaultStore`. If the id is not registered, commands
 error and tell you to register it or clear the stale default.
 
 ## Story: requirements that cross team lines

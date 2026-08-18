@@ -1,12 +1,12 @@
 # Workflows
 
-This guide covers common workflow patterns for OpenSpec and when to use each one. For basic setup, see [Getting Started](getting-started.md). For command reference, see [Commands](commands.md).
+This guide covers common workflow patterns for AnchorSpec and when to use each one. For basic setup, see [Getting Started](getting-started.md). For command reference, see [Commands](commands.md).
 
 ## Philosophy: Actions, Not Phases
 
 Traditional workflows force you through phases: planning, then implementation, then done. But real work doesn't fit neatly into boxes.
 
-OPSX takes a different approach:
+ANSX takes a different approach:
 
 ```text
 Traditional (phase-locked):
@@ -16,7 +16,7 @@ Traditional (phase-locked):
       │   "Can't go back"  │
       └────────────────────┘
 
-OPSX (fluid actions):
+ANSX (fluid actions):
 
   proposal ──► specs ──► design ──► tasks ──► implement
 ```
@@ -26,33 +26,33 @@ OPSX (fluid actions):
 - **Actions, not phases** - Commands are things you can do, not stages you're stuck in
 - **Dependencies are enablers** - They show what's possible, not what's required next
 
-> **Customization:** OPSX workflows are driven by schemas that define artifact sequences. See [Customization](customization.md) for details on creating custom schemas.
+> **Customization:** ANSX workflows are driven by schemas that define artifact sequences. See [Customization](customization.md) for details on creating custom schemas.
 
 ## Two Modes
 
 ### Default Quick Path (`core` profile)
 
 New installs default to `core`, which provides:
-- `/opsx:explore`
-- `/opsx:propose`
-- `/opsx:apply`
-- `/opsx:update`
-- `/opsx:sync`
-- `/opsx:archive`
+- `/ansx:explore`
+- `/ansx:propose`
+- `/ansx:apply`
+- `/ansx:update`
+- `/ansx:sync`
+- `/ansx:archive`
 
 Typical flow:
 
 ```text
-/opsx:explore ──► /opsx:propose ──► /opsx:apply ──► /opsx:sync ──► /opsx:archive
+/ansx:explore ──► /ansx:propose ──► /ansx:apply ──► /ansx:sync ──► /ansx:archive
   (optional)
 ```
 
 #### Start by exploring (the habit worth forming)
 
-`/opsx:explore` is part of the default profile, not an advanced add-on. It's the move to make whenever you have a problem but not yet a plan, which, with an AI assistant, is most of the time.
+`/ansx:explore` is part of the default profile, not an advanced add-on. It's the move to make whenever you have a problem but not yet a plan, which, with an AI assistant, is most of the time.
 
 ```text
-You: /opsx:explore
+You: /ansx:explore
 
 AI:  What would you like to explore?
 
@@ -68,18 +68,18 @@ AI:  Let me look... [reads the search service and cache layer]
 
 You: Yes.
 
-You: /opsx:propose rebuild-search-index-on-write
+You: /ansx:propose rebuild-search-index-on-write
 ```
 
-Explore creates no artifacts and writes no code. It's a free, no-stakes conversation that turns a vague worry into a precise change, so the proposal that follows is sharp. Already know exactly what you want? Skip it and go straight to `/opsx:propose`. Full guide: [Explore First](explore.md).
+Explore creates no artifacts and writes no code. It's a free, no-stakes conversation that turns a vague worry into a precise change, so the proposal that follows is sharp. Already know exactly what you want? Skip it and go straight to `/ansx:propose`. Full guide: [Explore First](explore.md).
 
 ### Expanded/Full Workflow (custom selection)
 
-If you want explicit scaffold-and-build commands (`/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/opsx:verify`, `/opsx:bulk-archive`, `/opsx:onboard`), enable them with:
+If you want explicit scaffold-and-build commands (`/ansx:new`, `/ansx:continue`, `/ansx:ff`, `/ansx:verify`, `/ansx:bulk-archive`, `/ansx:onboard`), enable them with:
 
 ```bash
-openspec config profile
-openspec update
+anchorspec config profile
+anchorspec update
 ```
 
 ## Workflow Patterns (Expanded Mode)
@@ -89,18 +89,18 @@ openspec update
 When you know what you want to build and just need to execute:
 
 ```text
-/opsx:new ──► /opsx:ff ──► /opsx:apply ──► /opsx:verify ──► /opsx:archive
+/ansx:new ──► /ansx:ff ──► /ansx:apply ──► /ansx:verify ──► /ansx:archive
 ```
 
 **Example conversation:**
 
 ```text
-You: /opsx:new add-logout-button
+You: /ansx:new add-logout-button
 
-AI:  Created openspec/changes/add-logout-button/
+AI:  Created anchorspec/changes/add-logout-button/
      Ready to create: proposal
 
-You: /opsx:ff
+You: /ansx:ff
 
 AI:  Creating all planning artifacts...
      ✓ proposal.md
@@ -109,7 +109,7 @@ AI:  Creating all planning artifacts...
      ✓ tasks.md
      Ready for implementation!
 
-You: /opsx:apply
+You: /ansx:apply
 
 AI:  Working through tasks...
      ✓ Added logout button to header
@@ -117,7 +117,7 @@ AI:  Working through tasks...
      ✓ Added confirmation dialog
      All tasks complete!
 
-You: /opsx:archive
+You: /ansx:archive
 
 AI:  ✓ Merged specs
      ✓ Archived change
@@ -130,13 +130,13 @@ AI:  ✓ Merged specs
 When requirements are unclear or you need to investigate first:
 
 ```text
-/opsx:explore ──► /opsx:new ──► /opsx:continue ──► ... ──► /opsx:apply
+/ansx:explore ──► /ansx:new ──► /ansx:continue ──► ... ──► /ansx:apply
 ```
 
 **Example conversation:**
 
 ```text
-You: /opsx:explore
+You: /ansx:explore
 
 AI:  What would you like to explore?
 
@@ -156,11 +156,11 @@ AI:  Let me help investigate...
 
 You: Let's tackle the data fetching issue.
 
-You: /opsx:new optimize-product-list-fetching
+You: /ansx:new optimize-product-list-fetching
 
 AI:  Created change. Ready to create: proposal
 
-You: /opsx:continue
+You: /ansx:continue
 
 AI:  Creating proposal based on our exploration...
      [Writes proposal incorporating investigation insights]
@@ -168,7 +168,7 @@ AI:  Creating proposal based on our exploration...
      Ready to create: specs, design
      Which would you like next?
 
-You: /opsx:continue
+You: /ansx:continue
 
 AI:  Creating specs...
 ```
@@ -180,11 +180,11 @@ AI:  Creating specs...
 Work on multiple changes at once:
 
 ```text
-Change A: /opsx:new ──► /opsx:ff ──► /opsx:apply (in progress)
+Change A: /ansx:new ──► /ansx:ff ──► /ansx:apply (in progress)
                                          │
                                     context switch
                                          │
-Change B: /opsx:new ──► /opsx:ff ──────► /opsx:apply
+Change B: /ansx:new ──► /ansx:ff ──────► /ansx:apply
 ```
 
 **Example conversation:**
@@ -192,27 +192,27 @@ Change B: /opsx:new ──► /opsx:ff ──────► /opsx:apply
 ```text
 You: I'm working on add-dark-mode but got pulled into a bug fix
 
-You: /opsx:new fix-login-redirect
+You: /ansx:new fix-login-redirect
 
-AI:  Created openspec/changes/fix-login-redirect/
+AI:  Created anchorspec/changes/fix-login-redirect/
 
-You: /opsx:ff
+You: /ansx:ff
 
 AI:  ✓ Created planning artifacts
 
-You: /opsx:apply
+You: /ansx:apply
 
 AI:  Working on fix-login-redirect...
      [Implements the fix]
      All tasks complete!
 
-You: /opsx:archive
+You: /ansx:archive
 
 AI:  ✓ Archived fix-login-redirect
 
 You: Let's get back to dark mode
 
-You: /opsx:apply add-dark-mode
+You: /ansx:apply add-dark-mode
 
 AI:  Resuming add-dark-mode...
      Picking up at task 2.3: Update Header...
@@ -220,10 +220,10 @@ AI:  Resuming add-dark-mode...
 
 **Best for:** Parallel work streams, urgent interrupts, team collaboration.
 
-When you have multiple completed changes, use `/opsx:bulk-archive`:
+When you have multiple completed changes, use `/ansx:bulk-archive`:
 
 ```text
-You: /opsx:bulk-archive
+You: /ansx:bulk-archive
 
 AI:  Found 3 completed changes:
      - add-dark-mode (all tasks done)
@@ -253,7 +253,7 @@ Bulk archive detects when multiple changes touch the same specs and resolves con
 The recommended completion flow:
 
 ```text
-/opsx:apply ──► /opsx:verify ──► /opsx:archive
+/ansx:apply ──► /ansx:verify ──► /ansx:archive
                     │                 │
               validates          prompts to sync
               implementation     if needed
@@ -261,10 +261,10 @@ The recommended completion flow:
 
 #### Verify: Check Your Work
 
-`/opsx:verify` validates implementation against your artifacts across three dimensions:
+`/ansx:verify` validates implementation against your artifacts across three dimensions:
 
 ```text
-You: /opsx:verify
+You: /ansx:verify
 
 AI:  Verifying add-auth...
 
@@ -306,10 +306,10 @@ Verify won't block archive, but it surfaces issues you might want to address fir
 
 #### Archive: Finalize the Change
 
-`/opsx:archive` completes the change and moves it to the archive:
+`/ansx:archive` completes the change and moves it to the archive:
 
 ```text
-You: /opsx:archive
+You: /ansx:archive
 
 AI:  Archiving add-auth...
 
@@ -324,8 +324,8 @@ AI:  Archiving add-auth...
 
 You: Yes
 
-AI:  ✓ Synced specs to openspec/specs/auth/spec.md
-     ✓ Moved to openspec/changes/archive/2025-01-24-add-auth/
+AI:  ✓ Synced specs to anchorspec/specs/auth/spec.md
+     ✓ Moved to anchorspec/changes/archive/2025-01-24-add-auth/
 
      Change archived successfully.
 ```
@@ -334,17 +334,17 @@ Archive will prompt if specs aren't synced. It won't block on incomplete tasks, 
 
 ## When to Use What
 
-### `/opsx:ff` vs `/opsx:continue`
+### `/ansx:ff` vs `/ansx:continue`
 
 | Situation | Use |
 |-----------|-----|
-| Clear requirements, ready to build | `/opsx:ff` |
-| Exploring, want to review each step | `/opsx:continue` |
-| Want to iterate on proposal before specs | `/opsx:continue` |
-| Time pressure, need to move fast | `/opsx:ff` |
-| Complex change, want control | `/opsx:continue` |
+| Clear requirements, ready to build | `/ansx:ff` |
+| Exploring, want to review each step | `/ansx:continue` |
+| Want to iterate on proposal before specs | `/ansx:continue` |
+| Time pressure, need to move fast | `/ansx:ff` |
+| Complex change, want control | `/ansx:continue` |
 
-**Rule of thumb:** If you can describe the full scope upfront, use `/opsx:ff`. If you're figuring it out as you go, use `/opsx:continue`.
+**Rule of thumb:** If you can describe the full scope upfront, use `/ansx:ff`. If you're figuring it out as you go, use `/ansx:continue`.
 
 ### When to Update vs Start Fresh
 
@@ -402,12 +402,12 @@ One logical unit of work per change. If you're doing "add feature X and also ref
 - Can ship independently
 - Simpler rollback if needed
 
-### Use `/opsx:explore` for Unclear Requirements
+### Use `/ansx:explore` for Unclear Requirements
 
 Before committing to a change, explore the problem space:
 
 ```text
-You: /opsx:explore
+You: /ansx:explore
 
 AI:  What would you like to explore?
 
@@ -428,10 +428,10 @@ Exploration clarifies thinking before you create artifacts.
 
 ### Verify Before Archiving
 
-Use `/opsx:verify` to check implementation matches artifacts:
+Use `/ansx:verify` to check implementation matches artifacts:
 
 ```text
-You: /opsx:verify
+You: /ansx:verify
 
 AI:  Verifying add-dark-mode...
 
@@ -446,7 +446,7 @@ Catches mismatches before you close out the change.
 
 ### Name Changes Clearly
 
-Good names make `openspec list` useful:
+Good names make `anchorspec list` useful:
 
 ```text
 Good:                          Avoid:
@@ -462,22 +462,22 @@ For full command details and options, see [Commands](commands.md).
 
 | Command | Purpose | When to Use |
 |---------|---------|-------------|
-| `/opsx:propose` | Create change + planning artifacts | Fast default path (`core` profile) |
-| `/opsx:explore` | Think through ideas with the AI | Start here when unsure: unclear requirements, investigation, comparing options |
-| `/opsx:new` | Start a change scaffold | Expanded mode, explicit artifact control |
-| `/opsx:continue` | Create next artifact | Expanded mode, step-by-step artifact creation |
-| `/opsx:ff` | Create all planning artifacts | Expanded mode, clear scope |
-| `/opsx:apply` | Implement tasks | Ready to write code |
-| `/opsx:verify` | Validate implementation | Expanded mode, before archiving |
-| `/opsx:sync` | Merge delta specs | Expanded mode, optional |
-| `/opsx:archive` | Complete the change | All work finished |
-| `/opsx:bulk-archive` | Archive multiple changes | Expanded mode, parallel work |
+| `/ansx:propose` | Create change + planning artifacts | Fast default path (`core` profile) |
+| `/ansx:explore` | Think through ideas with the AI | Start here when unsure: unclear requirements, investigation, comparing options |
+| `/ansx:new` | Start a change scaffold | Expanded mode, explicit artifact control |
+| `/ansx:continue` | Create next artifact | Expanded mode, step-by-step artifact creation |
+| `/ansx:ff` | Create all planning artifacts | Expanded mode, clear scope |
+| `/ansx:apply` | Implement tasks | Ready to write code |
+| `/ansx:verify` | Validate implementation | Expanded mode, before archiving |
+| `/ansx:sync` | Merge delta specs | Expanded mode, optional |
+| `/ansx:archive` | Complete the change | All work finished |
+| `/ansx:bulk-archive` | Archive multiple changes | Expanded mode, parallel work |
 
 ## Next Steps
 
 - [Writing Good Specs](writing-specs.md) - What a strong requirement and scenario look like, and how to right-size a change
 - [Reviewing a Change](reviewing-changes.md) - The two-minute pass on a drafted plan before any code
-- [OpenSpec on a Team](team-workflow.md) - How changes fit branches and pull requests
+- [AnchorSpec on a Team](team-workflow.md) - How changes fit branches and pull requests
 - [Commands](commands.md) - Full command reference with options
 - [Concepts](concepts.md) - Deep dive into specs, artifacts, and schemas
 - [Customization](customization.md) - Create custom workflows

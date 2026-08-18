@@ -140,14 +140,14 @@ AI:  Created the change. The proposal states the goal (split the
      Ready for implementation.
 ```
 
-Declare the empty delta explicitly by setting `skip_specs: true` in the change's `.openspec.yaml`:
+Declare the empty delta explicitly by setting `skip_specs: true` in the change's `.anchorspec.yaml`:
 
 ```yaml
 schema: spec-driven
 skip_specs: true
 ```
 
-Without the marker, `openspec validate` rejects a change with zero deltas (so a forgotten specs phase still gets caught); with it, validation passes and `openspec status` shows the specs stage as explicitly skipped rather than pending. If the refactor turns out to change behavior after all, remove `skip_specs` from `.openspec.yaml` and write the delta specs — validate treats the marker plus spec files as a conflict, so the stale marker can't linger silently.
+Without the marker, `anchorspec validate` rejects a change with zero deltas (so a forgotten specs phase still gets caught); with it, validation passes and `anchorspec status` shows the specs stage as explicitly skipped rather than pending. If the refactor turns out to change behavior after all, remove `skip_specs` from `.anchorspec.yaml` and write the delta specs — validate treats the marker plus spec files as a conflict, so the stale marker can't linger silently.
 
 Archiving a marked change needs no extra flags (there are no deltas to merge). Independently, the `--skip-specs` flag tells the terminal command to skip the spec step explicitly:
 
